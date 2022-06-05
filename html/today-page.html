@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>NutCount</title>
+	
+    <script>window.$ = window.jQuery = require('jquery');</script>
+	<!--
+	<script type = "text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	-->
+	<script>
+		const dbmgr = require("../js/dbmgr.js");
+		var db = dbmgr.loadDatabase();
+		var items = dbmgr.getAvailableItems();
+	</script>
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	
+  </head>
+  <body>
+	<div id = "navbar"></div>
+	<script>$("#navbar").load("nav.html")</script>
+	
+	<div style = "text-align:center;">
+		<p style = "font-size:40px;">Dziejszy dzień</p>
+	</div>
+	
+	<div id = "today-page-widgets" style = "text-align:center;border: 1px green solid">
+		<div id = "today-page-inputs" style = "display:inline-block;">
+			<div class = "input-widget">
+				<label for = "today-add-name">Nazwa</label><br>
+				<select name = "today-add-name" id = "today-add-name">
+				</select>
+			</div>
+			<div class = "input-widget">
+				<label for = "today-add-amount">Ilość</label><br>
+				<input type = "text" id = "today-add-amount"></input>
+			</div>
+			<div class = "input-widget">
+				<button id = "today-add-button">Dodaj</button>
+			</div>
+		</div>
+		<div id = "today-page-summary" style = "background-color:orange;display:inline-block;">
+			<p>
+				Dzisiejsza konsumpcja: <p id = "today-sum"></p> kcal
+			</p>
+		</div>
+		
+	</div>
+	<br><br>
+	<div id = "today-table" class = "table-container"></div>
+	<script>
+		// get item names for the picklist
+		const selectElement = document.getElementById("today-add-name");
+		for (let item of items) {
+			selectElement.add(new Option(item.name));
+		};
+		
+		// add items for today
+		document.getElementById("today-add-button").onclick = function() {
+			let added_name = $("#today-add-name").val();
+			let added_amount = $("#today-add-amount").val();
+			
+			dbmgr.addTodayItem(added_amount, added_name);
+			
+			renderTodayTable();
+			showSummary();
+		};
+		
+		// render table
+		const renderTodayTable = function() {
+			var today_table = dbmgr.getTodayTable();
+			
+			let rows = []
+			
+			for (let item of today_table) {
+			
+				console.log(item);
+				switch (item.unit) {
+					case '100g':
+						var kcal_today = item.amount * (item.calories / 100);
+						break;
+					case 'sztuka':
+						var kcal_today = item.amount * item.calories;
+						break;
+				};
+				
+				let row = "<tr><td>" + item.name + "</td><td>" + item.amount + "</td><td>" + kcal_today + "</td></tr>";
+				
+				rows.push(row);
+			}
+			
+			console.log(rows)
+			let table = "<table><tr><th>Nazwa</th><th>Ilość</th><th>Kalorie</th>" +
+							rows.join('') +
+						"</table>";
+						
+			document.getElementById("today-table").innerHTML = table
+		};
+		
+		// show summary
+		const showSummary = function() {
+			var today_table = dbmgr.getTodayTable();
+			
+			let sum = 0;
+			
+			for (let item of today_table) {
+				switch (item.unit) {
+					case '100g':
+						var kcal_today = item.amount * (item.calories / 100);
+						break;
+					case 'sztuka':
+						var kcal_today = item.amount * item.calories;
+						break;
+				};
+				
+				sum = sum + kcal_today
+			}
+
+			document.getElementById("today-sum").innerHTML = sum
+		}
+		
+		renderTodayTable();
+		showSummary();
+	</script>
+  </body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>NutCount</title>
+    <script>window.$ = window.jQuery = require('jquery');</script>
+	<script>
+		dbmgr = require("../js/dbmgr.js")
+		var db = dbmgr.loadDatabase();
+	</script>
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+  </head>
+  <body>
+	<div id = "navbar"></div>
+	<script>$("#navbar").load("nav.html")</script>
+	
+	<div style = "text-align:center;">
+		<p style = "font-size:40px;">Katalog dań</p>
+	</div>
+	<div id = "adding-widgets">
+		<div class = "input-widget">
+			<label for="text">Nazwa</label><br>
+			<input type = "text" id = "name"></input>
+		</div>
+		<div class = "input-widget">
+			<label for = "category">Kategoria</label><br>
+			<input type = "text" id = "category"></input>
+		</div>
+		<div class = "input-widget">
+			<label for = "calories">Kalorie</label><br>
+			<input type = "text" id = "calories"></input>
+		</div>
+		<div class = "input-widget">
+			<label for = "unit">Jednostka</label><br>
+			<select name = "unit" id = "unit">
+				<option value = "sztuka">sztuka</option>
+				<option value = "100g">100g</option>
+			</select>
+		</div>
+		<div class = "input-widget">
+			<button id = "add-things">Dodaj</button>
+		</div>
+	</div>
+	<br><br>
+	<div id = "food-catalogue" class = "table-container"></div>
+    
+	<script>
+		renderCatalogue = function() {
+			let val = db.prepare("SELECT * FROM food").all();
+	
+			let rows = []
+	
+			for (let i = 0; i < val.length; i++) {
+				let row = "<tr><td>" + val[i]['name'] + "</td><td>" + val[i]['category'] + "</td><td>" +
+					val[i]['calories'] + "</td><td>" + val[i]['unit'] + "</td></tr>"
+				rows.push(row)
+			}
+	
+			let table = `<table>
+							<tr><th>Nazwa</th><th>Kategoria</th><th>Kalorie/j</th><th>Jednostki</th></tr>` +
+							rows.join('') +
+						`</table>`
+				
+			document.getElementById("food-catalogue").innerHTML = table
+		}
+
+		document.getElementById("add-things").onclick = function() {
+			dbmgr.addNewItem();
+			renderCatalogue();
+		}
+
+		renderCatalogue();
+	</script>
+  </body>
+</html>

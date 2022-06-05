@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>NutCount</title>
+    <script>window.$ = window.jQuery = require('jquery');</script>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+  </head>
+  <body>
+	<div class = "load-screen" style = "text-align:center;">
+		<p style = "font-size:40px;display:none" id = "load1">Przygotuj</p><br>
+		<p style = "font-size:40px;display:none" id = "load2">swoje</p><br>
+		<p style = "font-size:40px;display:none" id = "load3">orzeszki...</p><br>
+	</div>
+	
+	<script>
+		// temp for dev
+		console.log("This is still showing");
+		const fs = require('fs')
+	
+		$("#load1").fadeIn(1000);
+		$("#load2").delay(1000).fadeIn(1000);
+		$("#load3").delay(2000).fadeIn(1000);
+		$(".load-screen").delay(3000).fadeOut(1000);
+		
+		// check if database exists
+		
+		fs.access('./nuts.db', fs.F_OK, (err) => {
+			const dbmgr = require('./js/dbmgr.js');
+			db = dbmgr.loadDatabase()
+				
+			if (err) {
+				console.log("Creating DB")
+				dbmgr.createNewDatabase()
+			} else {
+				console.log("DB exists")
+			}
+			
+		});
+		
+		setTimeout(function(){window.location.href = "html/today-page.html"}, 4000);
+		
+	</script>
+    
+  </body>
+</html>
