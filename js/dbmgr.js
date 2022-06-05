@@ -17,16 +17,6 @@ createNewDatabase = function() {
 	amount INTEGER,\
 	name TEXT,\
 	FOREIGN KEY (name) REFERENCES food (name))")
-	
-	//db.exec("ALTER TABLE food ADD name TEXT PRIMARY KEY UNIQUE");
-	//db.exec("ALTER TABLE food ADD category TEXT");
-	//db.exec("ALTER TABLE food ADD calories INTEGER");
-	//db.exec("ALTER TABLE food ADD unit TEXT");
-	//db.exec("CREATE TABLE daily (id INTEGER PRIMARY KEY)");
-	//db.exec("ALTER TABLE daily ADD date DATE");
-	//db.exect("ALTER TABLE daily ADD amount INTEGER");
-	//db.exect("ALTER TABLE daily ADD name TEXT");
-	//db.exect("AL")
 }
 
 addNewItem = function() {
@@ -61,7 +51,7 @@ getTodayTable = function() {
 	
 	let full_date = yyyy.toString() + "-" + mm.toString() + "-" + dd.toString()
 	
-	var query = "SELECT daily.*, food.* FROM daily INNER JOIN food ON daily.name = food.name WHERE daily.date = '" + full_date + "';";
+	var query = "SELECT daily.*, food.*, SUM(daily.amount) AS amount FROM daily INNER JOIN food ON daily.name = food.name WHERE daily.date = '" + full_date + "' GROUP BY daily.name;";
 	var table = db.prepare(query).all();
 	
 	return table
