@@ -4,10 +4,6 @@
     <meta charset="UTF-8">
     <title>NutCount</title>
     <script>window.$ = window.jQuery = require('jquery');</script>
-	<script>
-		dbmgr = require("../js/dbmgr.js")
-		var db = dbmgr.loadDatabase();
-	</script>
 	<link rel="stylesheet" type="text/css" href="../css/style.css">
   </head>
   <body>
@@ -44,32 +40,6 @@
 	<br><br>
 	<div id = "food-catalogue" class = "table-container"></div>
     
-	<script>
-		renderCatalogue = function() {
-			let val = db.prepare("SELECT * FROM food").all();
-	
-			let rows = []
-	
-			for (let i = 0; i < val.length; i++) {
-				let row = "<tr><td>" + val[i]['name'] + "</td><td>" + val[i]['category'] + "</td><td>" +
-					val[i]['calories'] + "</td><td>" + val[i]['unit'] + "</td></tr>"
-				rows.push(row)
-			}
-	
-			let table = `<table>
-							<tr><th>Nazwa</th><th>Kategoria</th><th>Kalorie/j</th><th>Jednostki</th></tr>` +
-							rows.join('') +
-						`</table>`
-				
-			document.getElementById("food-catalogue").innerHTML = table
-		}
-
-		document.getElementById("add-things").onclick = function() {
-			dbmgr.addNewItem();
-			renderCatalogue();
-		}
-
-		renderCatalogue();
-	</script>
+	<script type = "text/javascript" src = "../js/catalogue-page.js"></script>
   </body>
 </html>

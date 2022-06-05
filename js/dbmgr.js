@@ -36,7 +36,7 @@ addTodayItem = function(amount, name) {
 	let date = new Date();
 	let yyyy = date.getFullYear();
 	let mm = date.getMonth() + 1;
-	let dd = date.getDay();
+	let dd = date.getDate();
 	
 	let full_date = yyyy.toString() + "-" + mm.toString() + "-" + dd.toString()
 	
@@ -47,7 +47,7 @@ getTodayTable = function() {
 	let date = new Date();
 	let yyyy = date.getFullYear();
 	let mm = date.getMonth() + 1;
-	let dd = date.getDay();
+	let dd = date.getDate();
 	
 	let full_date = yyyy.toString() + "-" + mm.toString() + "-" + dd.toString()
 	
