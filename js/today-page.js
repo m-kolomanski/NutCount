@@ -48,7 +48,7 @@ const renderTodayTable = function() {
 					rows.join('') +
 				"</table>";
 				
-	document.getElementById("today-table").innerHTML = table
+	document.getElementById("today-table").innerHTML = table;
 };
 
 // show summary
@@ -68,11 +68,49 @@ const showSummary = function() {
 		};
 		
 		sum = sum + kcal_today
-	}
+	};
 
 	document.getElementById("today-sum").innerHTML = sum
 }
 
-// change amount on click 
+// change amount on click
+const changeDailyAmount = function(event) {
+	var current_value = document.getElementById(event.target.id).innerHTML
+	var current_change_name = event.target.id - 1
+	var current_text_id = Number(event.target.id) + 1
+	document.getElementById(event.target.id).innerHTML = "<input type = 'text' value = '" + current_value +
+	"' id = " + current_text_id + "><button id = 'change-value-" + current_change_name + "'>V</button><button id = 'cancel-change-" +
+	current_change_name + "'>X</button>"
+	
+	$("#" + event.target.id).removeClass("today-amount-cell").off('click')
+	
+	// change value in the database
+	$("#change-value-" + current_change_name).click(function(event) {
+		let current_id = event.target.id.split("-")[2]
+		var name_to_change = $("#" + current_id).html();
+		var value_to_change = $("#".concat(Number(current_id) + 2)).val();
+		dbmgr.changeAmount(name_to_change, value_to_change);
+		$("#".concat(Number(current_id) + 1)).html(value_to_change).addClass("today-amount-cell");
+		
+	});
+	
+	// cancel, reverse
+	$("#cancel-change-" + current_change_name).click(function(event) {
+		let button_parent = document.querySelector("#" + event.target.id).parentNode;
+		$("#" + button_parent.id).addClass("today-amount-cell");
+		button_parent.innerHTML = current_value;
+	});
+}
+
+
+// delete entry completely
+
+// prepare page
 renderTodayTable();
 showSummary();
+
+// prepare events
+$(document).on("click", ".today-amount-cell", function(event) {
+	changeDailyAmount(event);
+});
+

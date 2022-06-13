@@ -1,5 +1,16 @@
 const sqlite = require('better-sqlite3-with-prebuilds');
 
+const getTodayDate = function () {
+	let date = new Date();
+	let yyyy = date.getFullYear();
+	let mm = date.getMonth() + 1;
+	let dd = date.getDate();
+	
+	let full_date = yyyy.toString() + "-" + mm.toString() + "-" + dd.toString()
+	
+	return full_date
+}
+
 loadDatabase = function() {
 	const db = new sqlite("./nuts.db");
 	return db
@@ -32,24 +43,14 @@ getAvailableItems = function() {
 	return items
 }
 
-addTodayItem = function(amount, name) {
-	let date = new Date();
-	let yyyy = date.getFullYear();
-	let mm = date.getMonth() + 1;
-	let dd = date.getDate();
-	
-	let full_date = yyyy.toString() + "-" + mm.toString() + "-" + dd.toString()
+addTodayItem = function(amount, name) {	
+	let full_date = getTodayDate();
 	
 	db.exec("INSERT INTO daily (date, amount, name) VALUES ('" + full_date + "', '" + amount + "', '" + name + "')")
 }
 
 getTodayTable = function() {
-	let date = new Date();
-	let yyyy = date.getFullYear();
-	let mm = date.getMonth() + 1;
-	let dd = date.getDate();
-	
-	let full_date = yyyy.toString() + "-" + mm.toString() + "-" + dd.toString()
+	let full_date = getTodayDate();
 	
 	var query = "SELECT daily.*, food.*, SUM(daily.amount) AS amount FROM daily INNER JOIN food ON daily.name = food.name WHERE daily.date = '" + full_date + "' GROUP BY daily.name;";
 	var table = db.prepare(query).all();
@@ -57,4 +58,13 @@ getTodayTable = function() {
 	return table
 }
 
-module.exports = { loadDatabase, createNewDatabase, addNewItem, getAvailableItems, addTodayItem, getTodayTable }; 
+changeAmount = function(name, new_amount) {
+	let full_date = getTodayDate();
+	var old_amount = db.prepare("SELECT SUM(daily.amount) FROM daily WHERE daily.name = '" + name +
+	"' AND daily.date = '" + full_date + "' ;").all();
+	let amount_to_add = Number(new_amount) - Number(old_amount[0]['SUM(daily.amount)']);
+	
+	db.exec("INSERT INTO daily (date, amount, name) VALUES ('" + full_date + "', " + amount_to_add + ", '" + name + "');");
+};
+
+module.exports = { loadDatabase, createNewDatabase, addNewItem, getAvailableItems, addTodayItem, getTodayTable, changeAmount }; 
