@@ -35,10 +35,11 @@ const renderTodayTable = function() {
 		
 		let name_id = row_id + 1
 		let amount_id = row_id + 2
+		let delete_id = row_id + 3
 		
 		let row = "<tr id = '" + row_id + "'><td id = '" + name_id + "'>" +
 		item.name + "</td><td class = 'today-amount-cell' id = '" + amount_id + "'>" + item.amount + "</td><td>" +
-		kcal_today + "</td></tr>";
+		kcal_today + "</td><td class = 'today-delete' id = '" + delete_id + "'></td></tr>";
 		
 		rows.push(row);
 		row_id += 10
@@ -70,8 +71,8 @@ const showSummary = function() {
 		sum = sum + kcal_today
 	};
 
-	document.getElementById("today-sum").innerHTML = sum
-}
+	document.getElementById("today-sum").innerHTML = sum;
+};
 
 // change amount on click
 const changeDailyAmount = function(event) {
@@ -90,7 +91,9 @@ const changeDailyAmount = function(event) {
 		var name_to_change = $("#" + current_id).html();
 		var value_to_change = $("#".concat(Number(current_id) + 2)).val();
 		dbmgr.changeAmount(name_to_change, value_to_change);
-		$("#".concat(Number(current_id) + 1)).html(value_to_change).addClass("today-amount-cell");
+		
+		renderTodayTable();
+		showSummary();
 		
 	});
 	
@@ -100,10 +103,18 @@ const changeDailyAmount = function(event) {
 		$("#" + button_parent.id).addClass("today-amount-cell");
 		button_parent.innerHTML = current_value;
 	});
-}
-
+};
 
 // delete entry completely
+const deleteDailyEntry = function(event) {
+	let id_to_delete = event.target.id - 2;
+	let name_to_delete = $("#" + id_to_delete).html();
+	
+	dbmgr.deleteItem(name_to_delete, "daily");
+	
+	renderTodayTable();
+	showSummary();
+};
 
 // prepare page
 renderTodayTable();
@@ -114,3 +125,6 @@ $(document).on("click", ".today-amount-cell", function(event) {
 	changeDailyAmount(event);
 });
 
+$(document).on("click", ".today-delete", function(event) {
+	deleteDailyEntry(event);
+});

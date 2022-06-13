@@ -1,0 +1,11 @@
+.today-delete {
+	transition: background-color 0.5s;
+}
+.today-delete:hover {
+	background-color: red;
+}
+.today-delete:after {
+	content: "X";
+	color: white;
+	font-weight: bold;	
+}

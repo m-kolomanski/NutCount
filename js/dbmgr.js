@@ -67,4 +67,15 @@ changeAmount = function(name, new_amount) {
 	db.exec("INSERT INTO daily (date, amount, name) VALUES ('" + full_date + "', " + amount_to_add + ", '" + name + "');");
 };
 
-module.exports = { loadDatabase, createNewDatabase, addNewItem, getAvailableItems, addTodayItem, getTodayTable, changeAmount }; 
+deleteItem = function(name, mode) {
+	if (mode == "daily") {
+		let full_date = getTodayDate();
+		db.exec("DELETE FROM daily WHERE name = '" + name + "' AND date = '" + full_date + "';");
+	} else if (mode == "catalogue") {
+		db.exec("DELETE FROM food WHERE name = '" + name + "';");
+	} else {
+		console.log("UNKNOWN MODE")
+	};
+};
+
+module.exports = { loadDatabase, createNewDatabase, addNewItem, getAvailableItems, addTodayItem, getTodayTable, changeAmount, deleteItem }; 
