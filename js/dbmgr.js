@@ -26,8 +26,7 @@ createNewDatabase = function() {
 	db.exec("CREATE TABLE daily \
 	(date DATE,\
 	amount INTEGER,\
-	name TEXT,\
-	FOREIGN KEY (name) REFERENCES food (name))")
+	name TEXT)")
 }
 
 addNewItem = function() {
@@ -72,6 +71,7 @@ deleteItem = function(name, mode) {
 		let full_date = getTodayDate();
 		db.exec("DELETE FROM daily WHERE name = '" + name + "' AND date = '" + full_date + "';");
 	} else if (mode == "catalogue") {
+		console.log(name)
 		db.exec("DELETE FROM food WHERE name = '" + name + "';");
 	} else {
 		console.log("UNKNOWN MODE")

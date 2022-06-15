@@ -23,21 +23,6 @@
 		$("#load3").delay(2000).fadeIn(1000);
 		$(".load-screen").delay(3000).fadeOut(1000);
 		
-		// check if database exists
-		
-		fs.access('./nuts.db', fs.F_OK, (err) => {
-			const dbmgr = require('./js/dbmgr.js');
-			db = dbmgr.loadDatabase()
-				
-			if (err) {
-				console.log("Creating DB")
-				dbmgr.createNewDatabase()
-			} else {
-				console.log("DB exists")
-			}
-			
-		});
-		
 		setTimeout(function(){window.location.href = "html/today-page.html"}, 4000);
 		
 	</script>

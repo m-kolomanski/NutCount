@@ -50,3 +50,18 @@ td, tr, th {
 	vertical-align: middle;
 	padding: 0.5rem;
 }
+
+.today-delete,
+.catalogue-delete {
+	transition: background-color 0.5s;
+}
+.today-delete:hover,
+.catalogue-delete:hover {
+	background-color: red;
+}
+.today-delete:after,
+.catalogue-delete:after {
+	content: "X";
+	color: white;
+	font-weight: bold;	
+}
