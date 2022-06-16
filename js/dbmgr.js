@@ -1,4 +1,5 @@
 const sqlite = require('better-sqlite3-with-prebuilds');
+//const fs = require('fs');
 
 const getTodayDate = function () {
 	let date = new Date();
@@ -12,34 +13,57 @@ const getTodayDate = function () {
 }
 
 loadDatabase = function() {
-	const db = new sqlite("./nuts.db");
+	const db = new sqlite("./db/nuts.db");
 	return db
 };
 
+saveJSON = function() {
+	let jsonString = JSON.stringify(nuts);
+	fs.writeFile("./db/nuts.json", jsonString, err => {
+		if (err) console.log("Error writing file:", err);
+	});	
+}
+
 createNewDatabase = function() {
-	db.exec("CREATE TABLE food \
-	(name TEXT PRIMARY KEY UNIQUE,\
-	category TEXT,\
-	calories INTEGER,\
-	unit TEXT)")
+	var fs = require('fs');
+	
+	let nuts = {
+		"categories": [],
+		"catalogue": {},
+	};
+	
+	let jsonString = JSON.stringify(nuts);
+	fs.writeFile("./db/nuts.json", jsonString, err => {
+		if (err) console.log("Error writing file:", err);
+	});
+	//saveJSON();
 	
 	db.exec("CREATE TABLE daily \
 	(date DATE,\
 	amount INTEGER,\
 	name TEXT)")
+	
 }
 
 addNewItem = function() {
-	let query = "INSERT INTO food (name, category, calories, unit) VALUES ('" +  $("#name").val() + "', '" +
-				$("#category").val() + "', '" + $("#calories").val() + "', '" + $("#unit").val() + "')"
-	db.exec(query)
+	nuts['catalogue'][$("#name").val()] = {
+		"category" : $("#category").val(),
+		"calories" : $("#calories").val(),
+		"unit" : $("#unit").val()
+	}
+	//let jsonString = JSON.stringify(nuts);
+	//fs.writeFile("./db/nuts.json", jsonString, err => {
+	//	if (err) console.log("Error writing file:", err);
+	//});
+	saveJSON();
 }
 
 getAvailableItems = function() {
-	let query = "SELECT name FROM food";
-	
-	let items = db.prepare(query).all();
-	return items
+	let items = [];
+	for (item in nuts.catalogue) {
+		items.push(item);
+	};
+	return items;
 }
 
 addTodayItem = function(amount, name) {	
@@ -51,8 +75,12 @@ addTodayItem = function(amount, name) {
 getTodayTable = function() {
 	let full_date = getTodayDate();
 	
-	var query = "SELECT daily.*, food.*, SUM(daily.amount) AS amount FROM daily INNER JOIN food ON daily.name = food.name WHERE daily.date = '" + full_date + "' GROUP BY daily.name;";
+	var query = "SELECT daily.*, SUM(daily.amount) AS amount FROM daily WHERE daily.date = '" + full_date + "' GROUP BY daily.name;";
 	var table = db.prepare(query).all();
+	for (let i = 0; i < table.length; i++) {
+		table[i].calories = nuts.catalogue[table[i].name].calories
+		table[i].unit = nuts.catalogue[table[i].name].unit
+	};
 	
 	return table
 }
@@ -71,11 +99,14 @@ deleteItem = function(name, mode) {
 		let full_date = getTodayDate();
 		db.exec("DELETE FROM daily WHERE name = '" + name + "' AND date = '" + full_date + "';");
 	} else if (mode == "catalogue") {
-		console.log(name)
-		db.exec("DELETE FROM food WHERE name = '" + name + "';");
+		console.log(name);
+		delete nuts.catalogue[name];
+		saveJSON();
+		
 	} else {
 		console.log("UNKNOWN MODE")
 	};
 };
 
-module.exports = { loadDatabase, createNewDatabase, addNewItem, getAvailableItems, addTodayItem, getTodayTable, changeAmount, deleteItem }; 
+module.exports = { loadDatabase, createNewDatabase, addNewItem, getAvailableItems, addTodayItem,
+getTodayTable, changeAmount, deleteItem }; 

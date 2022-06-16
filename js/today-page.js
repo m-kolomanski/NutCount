@@ -1,7 +1,8 @@
 // get item names for the picklist
 const selectElement = document.getElementById("today-add-name");
+var items = dbmgr.getAvailableItems();
 for (let item of items) {
-	selectElement.add(new Option(item.name));
+	selectElement.add(new Option(item));
 };
 
 // add items for today

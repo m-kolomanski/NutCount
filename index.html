@@ -14,16 +14,18 @@
 	</div>
 	
 	<script>
-		// temp for dev
-		console.log("This is still showing");
-		const fs = require('fs')
-	
 		$("#load1").fadeIn(1000);
 		$("#load2").delay(1000).fadeIn(1000);
 		$("#load3").delay(2000).fadeIn(1000);
 		$(".load-screen").delay(3000).fadeOut(1000);
 		
-		setTimeout(function(){window.location.href = "html/today-page.html"}, 4000);
+		if (first_time) {
+			setTimeout(function(){window.location.href = "html/setup-page.html"}, 4000);
+		} else {
+			setTimeout(function(){window.location.href = "html/today-page.html"}, 4000);
+		}
+		
+		
 		
 	</script>
     

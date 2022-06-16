@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>NutCount</title>
+    <script>window.$ = window.jQuery = require('jquery');</script>
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+  </head>
+  <body>
+	<div class = "load-screen" style = "text-align:center;">
+		<p style = "font-size:40px;display:none" id = 'header'>Najpierw ustalmy parę spraw.</p><br>
+	</div>
+	
+	<script>
+		$("#header").fadeIn(1000);
+		
+		setTimeout(function(){window.location.href = "../html/today-page.html"}, 4000);
+	</script>
+    
+  </body>
+</html>

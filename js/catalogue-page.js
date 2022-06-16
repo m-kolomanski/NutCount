@@ -1,20 +1,18 @@
 // render food catalogue
 const renderCatalogue = function() {
-	let val = db.prepare("SELECT * FROM food").all();
-
 	let rows = []
 	let row_id = 0
 	
-	for (let i = 0; i < val.length; i++) {
+	for (item in nuts.catalogue) {
 		let name_id = row_id + 1
 		let category_id = row_id + 2
 		let calories_id = row_id + 3
 		let delete_id = row_id + 4
 		
-		let row = "<tr id = '" + row_id + "'><td id = '" + name_id + "'>" + val[i]['name'] +
-		"</td><td id = '" + category_id + "'>" + val[i]['category'] +
-		"</td><td id = '" + calories_id + "'>" + val[i]['calories'] +
-		"</td><td>" + val[i]['unit'] + "</td><td id = '" + delete_id +
+		let row = "<tr id = '" + row_id + "'><td id = '" + name_id + "'>" + item +
+		"</td><td id = '" + category_id + "'>" + nuts.catalogue[item].category +
+		"</td><td id = '" + calories_id + "'>" + nuts.catalogue[item].calories +
+		"</td><td>" + nuts.catalogue[item].unit + "</td><td id = '" + delete_id +
 			"' class = 'catalogue-delete'></td></tr>"
 		rows.push(row)
 		row_id += 1
