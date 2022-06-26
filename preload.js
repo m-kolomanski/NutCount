@@ -11,8 +11,8 @@ fs.access('./db/nuts.db', fs.F_OK, (err) => {
 		dbmgr.createNewDatabase();
 		window.first_time = true;
 	} else {
-		window.first_time = false;
-	}
+		window.first_time = false; /// add true for temp for dev
+ 	}
 });
 
 window.db = dbmgr.loadDatabase();
