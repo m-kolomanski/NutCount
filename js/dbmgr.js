@@ -17,7 +17,7 @@ loadDatabase = function() {
 	return db
 };
 
-saveJSON = function() {
+saveNUTS = function() {
 	let jsonString = JSON.stringify(nuts);
 	fs.writeFile("./db/nuts.json", jsonString, err => {
 		if (err) console.log("Error writing file:", err);
@@ -30,6 +30,7 @@ createNewDatabase = function() {
 	let nuts = {
 		"categories": [],
 		"catalogue": {},
+		"user": {},
 	};
 	
 	let jsonString = JSON.stringify(nuts);
@@ -101,12 +102,26 @@ deleteItem = function(name, mode) {
 	} else if (mode == "catalogue") {
 		console.log(name);
 		delete nuts.catalogue[name];
-		saveJSON();
+		saveNUTS();
 		
 	} else {
 		console.log("UNKNOWN MODE")
 	};
 };
 
+execCategory = function(cat, mode) {
+	if (mode == "add") {
+		nuts['categories'].push(cat);
+	} else if (mode == "delete") {
+		let i = nuts['categories'].indexOf(cat);
+		nuts['categories'].splice(i, 1);
+	} else {
+		alert("Unknown mode")
+	};
+	
+	saveNUTS();
+};
+
+
 module.exports = { loadDatabase, createNewDatabase, addNewItem, getAvailableItems, addTodayItem,
-getTodayTable, changeAmount, deleteItem }; 
+getTodayTable, changeAmount, deleteItem, execCategory }; 

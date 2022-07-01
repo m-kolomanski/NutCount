@@ -36,8 +36,45 @@ const deleteCatalogueEntry = function(event) {
 	renderCatalogue();
 };
 
+// render categories table
+const renderCategories = function() {
+	// get item names for the picklist
+	const selectElement = document.getElementById("category");
+	$("#category").empty();
+
+	var items = nuts.categories;
+	for (let item of items) {
+		selectElement.add(new Option(item));
+	};
+	// generate categories table
+	var categories_rows = [];
+	var id = 0
+	for (let item of items) {
+		let delete_id = id + 1
+		let row = "<tr><td id = 'delete-" + id + "'>" + item +
+		"</td><td class = 'categories-delete' id = 'delete-" + delete_id + "'>X</td></tr>"
+		
+		categories_rows.push(row)
+		id += 10
+	};
+	var categories_table = "<table>" + categories_rows.join('') + "</table>"
+	$("#categories-table").html(categories_table);
+};
+
+// delete categories
+const deleteCategory = function(event) {
+	let id_string = event.target.id.split("-");
+	let id_to_delete = Number(id_string[1]) - 1;
+	let name_to_delete = $("#delete-" + id_to_delete).html();
+	console.log(name_to_delete);
+	dbmgr.execCategory(name_to_delete, "delete");
+	
+	renderCategories();
+};
+
 // on page load
 renderCatalogue();
+renderCategories();
 
 // prepare events
 // add new item to catalogue
@@ -48,4 +85,15 @@ document.getElementById("add-things").onclick = function() {
 // delete catalogue entry
 $(document).on("click", ".catalogue-delete", function(event) {
 	deleteCatalogueEntry(event);
+});
+
+// add category
+$(document).on("click", "#categories-add-button", function() {
+	dbmgr.execCategory($("#categories-add").val(), "add");
+	renderCategories();
+});
+
+// delete category
+$(document).on("click", ".categories-delete", function(event) {
+	deleteCategory(event);
 });
