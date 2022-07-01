@@ -17,8 +17,7 @@ document.getElementById("today-add-button").onclick = function() {
 	
 	dbmgr.addTodayItem(added_amount, added_name);
 	
-	renderTodayTable();
-	showSummary();
+	resetPage();
 };
 
 // render table
@@ -98,8 +97,7 @@ const changeDailyAmount = function(event) {
 		var value_to_change = $("#".concat(Number(current_id) + 2)).val();
 		dbmgr.changeAmount(name_to_change, value_to_change);
 		
-		renderTodayTable();
-		showSummary();
+		resetPage();
 		
 	});
 	
@@ -117,14 +115,24 @@ const deleteDailyEntry = function(event) {
 	let name_to_delete = $("#" + id_to_delete).html();
 	
 	dbmgr.deleteItem(name_to_delete, "daily");
-	
-	renderTodayTable();
-	showSummary();
+
+	resetPage();
 };
 
+// calulate leftover calories
+const calculateLeftover = function() {
+	let leftover = Number($("#today-limit").val()) - Number($("#today-sum").html());
+	
+	$("#today-left").text(leftover); 
+};
+
+const resetPage = function() {
+	renderTodayTable();
+	showSummary();
+	calculateLeftover();
+}
 // prepare page
-renderTodayTable();
-showSummary();
+resetPage();
 
 // prepare events
 $(document).on("click", ".today-amount-cell", function(event) {
@@ -149,4 +157,8 @@ $(document).on("change", "#today-category-filter", function() {
 	for (item of filtered) {
 		item_picklist.add(new Option(item))
 	};
+});
+
+$(document).on("change", "#today-page-limit", function() {
+	calculateLeftover();
 });
