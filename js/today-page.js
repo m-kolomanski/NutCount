@@ -1,8 +1,13 @@
 // get item names for the picklist
-const selectElement = document.getElementById("today-add-name");
+const item_picklist = document.getElementById("today-add-name");
 var items = dbmgr.getAvailableItems();
 for (let item of items) {
-	selectElement.add(new Option(item));
+	item_picklist.add(new Option(item));
+};
+
+const cat_picklist = document.getElementById("today-category-filter");
+for (let cat of nuts.categories) {
+	cat_picklist.add(new Option(cat));
 };
 
 // add items for today
@@ -128,4 +133,20 @@ $(document).on("click", ".today-amount-cell", function(event) {
 
 $(document).on("click", ".today-delete", function(event) {
 	deleteDailyEntry(event);
+});
+
+// filter items by category
+$(document).on("change", "#today-category-filter", function() {
+	let filtered = []
+	for (item in nuts.catalogue) {
+		if (nuts.catalogue[item].category == $("#today-category-filter").val()) {
+			filtered.push(item);
+		};
+	};
+	
+	$("#today-add-name").empty();
+	
+	for (item of filtered) {
+		item_picklist.add(new Option(item))
+	};
 });

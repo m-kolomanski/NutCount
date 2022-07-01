@@ -56,7 +56,7 @@ addNewItem = function() {
 	//fs.writeFile("./db/nuts.json", jsonString, err => {
 	//	if (err) console.log("Error writing file:", err);
 	//});
-	saveJSON();
+	saveNUTS();
 }
 
 getAvailableItems = function() {
