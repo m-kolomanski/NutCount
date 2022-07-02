@@ -31,6 +31,8 @@ createNewDatabase = function() {
 		"categories": [],
 		"catalogue": {},
 		"user": {},
+		"today_burned": 0,
+		"today_deficit": 0
 	};
 	
 	let jsonString = JSON.stringify(nuts);
@@ -123,5 +125,5 @@ execCategory = function(cat, mode) {
 };
 
 
-module.exports = { loadDatabase, createNewDatabase, addNewItem, getAvailableItems, addTodayItem,
+module.exports = { loadDatabase, saveNUTS, createNewDatabase, addNewItem, getAvailableItems, addTodayItem,
 getTodayTable, changeAmount, deleteItem, execCategory }; 

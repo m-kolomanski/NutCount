@@ -18,4 +18,4 @@ fs.access('./db/nuts.db', fs.F_OK, (err) => {
 window.db = dbmgr.loadDatabase();
 try {
 	window.nuts = require("./db/nuts.json");
-} catch (error) { }
+} catch (error) { };

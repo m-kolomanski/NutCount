@@ -1,24 +1,4 @@
-// get item names for the picklist
-const item_picklist = document.getElementById("today-add-name");
-var items = dbmgr.getAvailableItems();
-for (let item of items) {
-	item_picklist.add(new Option(item));
-};
-
-const cat_picklist = document.getElementById("today-category-filter");
-for (let cat of nuts.categories) {
-	cat_picklist.add(new Option(cat));
-};
-
-// add items for today
-document.getElementById("today-add-button").onclick = function() {
-	let added_name = $("#today-add-name").val();
-	let added_amount = $("#today-add-amount").val();
-	
-	dbmgr.addTodayItem(added_amount, added_name);
-	
-	resetPage();
-};
+// FUNCTIONS
 
 // render table
 const renderTodayTable = function() {
@@ -121,7 +101,7 @@ const deleteDailyEntry = function(event) {
 
 // calulate leftover calories
 const calculateLeftover = function() {
-	let leftover = Number($("#today-limit").val()) - Number($("#today-sum").html());
+	let leftover = Number($("#today-burned").val()) - Number($("#today-sum").html()) - Number($("#today-deficit").val());
 	
 	$("#today-left").text(leftover); 
 };
@@ -131,10 +111,37 @@ const resetPage = function() {
 	showSummary();
 	calculateLeftover();
 }
-// prepare page
-resetPage();
 
-// prepare events
+// STARTUP
+
+// get constant values
+$("#today-burned").val(nuts.today_burned);
+$("#today-deficit").val(nuts.today_deficit);
+
+// get item names for the picklist
+const item_picklist = document.getElementById("today-add-name");
+var items = dbmgr.getAvailableItems();
+for (let item of items) {
+	item_picklist.add(new Option(item));
+};
+
+const cat_picklist = document.getElementById("today-category-filter");
+for (let cat of nuts.categories) {
+	cat_picklist.add(new Option(cat));
+};
+
+
+// EVENTS
+// add items for today
+document.getElementById("today-add-button").onclick = function() {
+	let added_name = $("#today-add-name").val();
+	let added_amount = $("#today-add-amount").val();
+	
+	dbmgr.addTodayItem(added_amount, added_name);
+	
+	resetPage();
+};
+
 $(document).on("click", ".today-amount-cell", function(event) {
 	changeDailyAmount(event);
 });
@@ -159,6 +166,11 @@ $(document).on("change", "#today-category-filter", function() {
 	};
 });
 
-$(document).on("change", "#today-page-limit", function() {
+
+$(document).on("change", ".today-calc", function() {
 	calculateLeftover();
+	nuts.today_burned = $("#today-burned").val();
+	nuts.today_deficit = $("#today-deficit").val();
+	dbmgr.saveNUTS();
 });
+
