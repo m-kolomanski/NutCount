@@ -30,6 +30,8 @@ createNewDatabase = function() {
 	let nuts = {
 		"categories": [],
 		"catalogue": {},
+		"cookbook": {},
+		"containers": {},
 		"user": {},
 		"today_burned": 0,
 		"today_deficit": 0
@@ -50,14 +52,11 @@ createNewDatabase = function() {
 
 addNewItem = function() {
 	nuts['catalogue'][$("#name").val()] = {
-		"category" : $("#category").val(),
+		"category" : [$("#category").val()],
 		"calories" : $("#calories").val(),
 		"unit" : $("#unit").val()
 	}
-	//let jsonString = JSON.stringify(nuts);
-	//fs.writeFile("./db/nuts.json", jsonString, err => {
-	//	if (err) console.log("Error writing file:", err);
-	//});
+
 	saveNUTS();
 }
 
@@ -102,7 +101,6 @@ deleteItem = function(name, mode) {
 		let full_date = getTodayDate();
 		db.exec("DELETE FROM daily WHERE name = '" + name + "' AND date = '" + full_date + "';");
 	} else if (mode == "catalogue") {
-		console.log(name);
 		delete nuts.catalogue[name];
 		saveNUTS();
 		
@@ -117,6 +115,13 @@ execCategory = function(cat, mode) {
 	} else if (mode == "delete") {
 		let i = nuts['categories'].indexOf(cat);
 		nuts['categories'].splice(i, 1);
+		
+		for (item in nuts.catalogue) {
+			if (nuts.catalogue[item].category.includes(cat)) {
+				let i = nuts.catalogue[item].category.indexOf(cat);
+				nuts.catalogue[item].category.splice(i, 1);
+			}
+		}
 	} else {
 		alert("Unknown mode")
 	};
@@ -124,6 +129,17 @@ execCategory = function(cat, mode) {
 	saveNUTS();
 };
 
+execContainer = function(con, weight, mode) {
+	if (mode == "add") {
+		nuts['containers'][con] = weight
+	} else if (mode == "delete") {
+		delete nuts['containers'][con]
+	} else {
+		alert("Unknown mode")
+	};
+	
+	saveNUTS();
+};
 
 module.exports = { loadDatabase, saveNUTS, createNewDatabase, addNewItem, getAvailableItems, addTodayItem,
-getTodayTable, changeAmount, deleteItem, execCategory }; 
+getTodayTable, changeAmount, deleteItem, execCategory, execContainer }; 

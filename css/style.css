@@ -51,16 +51,13 @@ td, tr, th {
 	padding: 0.5rem;
 }
 
-.today-delete,
-.catalogue-delete {
+.delete-field {
 	transition: background-color 0.5s;
 }
-.today-delete:hover,
-.catalogue-delete:hover {
+.delete-field:hover {
 	background-color: red;
 }
-.today-delete:after,
-.catalogue-delete:after {
+.delete-field:after {
 	content: "X";
 	color: white;
 	font-weight: bold;	

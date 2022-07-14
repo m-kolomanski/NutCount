@@ -13,7 +13,7 @@ const renderCatalogue = function() {
 		"</td><td id = '" + category_id + "'>" + nuts.catalogue[item].category +
 		"</td><td id = '" + calories_id + "'>" + nuts.catalogue[item].calories +
 		"</td><td>" + nuts.catalogue[item].unit + "</td><td id = '" + delete_id +
-			"' class = 'catalogue-delete'></td></tr>"
+			"' class = 'delete-field catalogue-delete'></td></tr>"
 		rows.push(row)
 		row_id += 1
 	}
@@ -43,6 +43,7 @@ const renderCategories = function() {
 	$("#category").empty();
 
 	var items = nuts.categories;
+	selectElement.add(new Option(""));
 	for (let item of items) {
 		selectElement.add(new Option(item));
 	};
@@ -52,7 +53,7 @@ const renderCategories = function() {
 	for (let item of items) {
 		let delete_id = id + 1
 		let row = "<tr><td id = 'delete-" + id + "'>" + item +
-		"</td><td class = 'categories-delete' id = 'delete-" + delete_id + "'>X</td></tr>"
+		"</td><td class = 'delete-field categories-delete' id = 'delete-" + delete_id + "'></td></tr>"
 		
 		categories_rows.push(row)
 		id += 10
@@ -70,6 +71,7 @@ const deleteCategory = function(event) {
 	dbmgr.execCategory(name_to_delete, "delete");
 	
 	renderCategories();
+	renderCatalogue();
 };
 
 // on page load

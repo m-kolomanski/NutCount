@@ -24,7 +24,7 @@ const renderTodayTable = function() {
 		
 		let row = "<tr id = '" + row_id + "'><td id = '" + name_id + "'>" +
 		item.name + "</td><td class = 'today-amount-cell' id = '" + amount_id + "'>" + item.amount + "</td><td>" +
-		kcal_today + "</td><td class = 'today-delete' id = '" + delete_id + "'></td></tr>";
+		kcal_today + "</td><td class = 'delete-field today-delete' id = '" + delete_id + "'></td></tr>";
 		
 		rows.push(row);
 		row_id += 10
@@ -121,25 +121,40 @@ $("#today-deficit").val(nuts.today_deficit);
 // get item names for the picklist
 const item_picklist = document.getElementById("today-add-name");
 var items = dbmgr.getAvailableItems();
+item_picklist.add(new Option(""));
 for (let item of items) {
 	item_picklist.add(new Option(item));
 };
 
 const cat_picklist = document.getElementById("today-category-filter");
+cat_picklist.add(new Option(""));
 for (let cat of nuts.categories) {
 	cat_picklist.add(new Option(cat));
 };
 
+resetPage();
+
 
 // EVENTS
 // add items for today
-document.getElementById("today-add-button").onclick = function() {
+document.getElementById("today-add-button").onclick = function(event) {
 	let added_name = $("#today-add-name").val();
 	let added_amount = $("#today-add-amount").val();
 	
-	dbmgr.addTodayItem(added_amount, added_name);
+	if (added_name == "") {
+		alert("Proszę wybrać nazwę orzeszka!");
+	} else {
+		if (added_amount == "") {
+			alert("Proszę wybrać ilość!");
+			
+		} else {
+			dbmgr.addTodayItem(added_amount, added_name);
 	
-	resetPage();
+			resetPage();
+		}
+	}
+
+
 };
 
 $(document).on("click", ".today-amount-cell", function(event) {
@@ -154,13 +169,14 @@ $(document).on("click", ".today-delete", function(event) {
 $(document).on("change", "#today-category-filter", function() {
 	let filtered = []
 	for (item in nuts.catalogue) {
-		if (nuts.catalogue[item].category == $("#today-category-filter").val()) {
+		if ($("#today-category-filter").val() == "" || nuts.catalogue[item].category == $("#today-category-filter").val()) {
 			filtered.push(item);
 		};
 	};
 	
 	$("#today-add-name").empty();
 	
+	item_picklist.add(new Option(""))
 	for (item of filtered) {
 		item_picklist.add(new Option(item))
 	};
