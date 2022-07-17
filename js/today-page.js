@@ -8,23 +8,14 @@ const renderTodayTable = function() {
 	let row_id = 0
 	
 	for (let item of today_table) {
-	
-		switch (item.unit) {
-			case '100g':
-				var kcal_today = item.amount * (item.calories / 100);
-				break;
-			case 'sztuka':
-				var kcal_today = item.amount * item.calories;
-				break;
-		};
-		
+
 		let name_id = row_id + 1
 		let amount_id = row_id + 2
 		let delete_id = row_id + 3
 		
 		let row = "<tr id = '" + row_id + "'><td id = '" + name_id + "'>" +
 		item.name + "</td><td class = 'today-amount-cell' id = '" + amount_id + "'>" + item.amount + "</td><td>" +
-		kcal_today + "</td><td class = 'delete-field today-delete' id = '" + delete_id + "'></td></tr>";
+		item.kcal + "</td><td class = 'delete-field today-delete' id = '" + delete_id + "'></td></tr>";
 		
 		rows.push(row);
 		row_id += 10
@@ -44,16 +35,7 @@ const showSummary = function() {
 	let sum = 0;
 	
 	for (let item of today_table) {
-		switch (item.unit) {
-			case '100g':
-				var kcal_today = item.amount * (item.calories / 100);
-				break;
-			case 'sztuka':
-				var kcal_today = item.amount * item.calories;
-				break;
-		};
-		
-		sum = sum + kcal_today
+		sum = sum + item.kcal
 	};
 
 	document.getElementById("today-sum").innerHTML = sum;

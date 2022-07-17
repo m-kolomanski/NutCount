@@ -45,9 +45,9 @@ createNewDatabase = function() {
 	
 	db.exec("CREATE TABLE daily \
 	(date DATE,\
+	name TEXT,\
 	amount INTEGER,\
-	name TEXT)")
-	
+	kcal INTEGER)")	
 }
 
 addNewItem = function() {
@@ -70,19 +70,32 @@ getAvailableItems = function() {
 
 addTodayItem = function(amount, name) {	
 	let full_date = getTodayDate();
+	var item = nuts.catalogue[name]
 	
-	db.exec("INSERT INTO daily (date, amount, name) VALUES ('" + full_date + "', '" + amount + "', '" + name + "')")
+	switch (item.unit) {
+		case "100g":
+			var kcal = amount * (item.calories / 100);
+			break;
+		case "sztuka":
+			var kcal = amount * item.calories;
+			break;
+	};
+	
+	db.exec("INSERT INTO daily (date, name, amount, kcal) VALUES ('" +
+ 			full_date + "', '" + name + "', '" + amount + "', '" +
+			kcal + "')")
 }
 
 getTodayTable = function() {
 	let full_date = getTodayDate();
 	
-	var query = "SELECT daily.*, SUM(daily.amount) AS amount FROM daily WHERE daily.date = '" + full_date + "' GROUP BY daily.name;";
+	var query = "SELECT daily.*, SUM(daily.amount) AS amount, SUM(daily.kcal) AS kcal FROM daily WHERE daily.date = '" + full_date + "' GROUP BY daily.name;";
 	var table = db.prepare(query).all();
-	for (let i = 0; i < table.length; i++) {
-		table[i].calories = nuts.catalogue[table[i].name].calories
-		table[i].unit = nuts.catalogue[table[i].name].unit
-	};
+	console.log(table);
+	//for (let i = 0; i < table.length; i++) {
+	//	table[i].calories = nuts.catalogue[table[i].name].calories
+	//	table[i].unit = nuts.catalogue[table[i].name].unit
+	//};
 	
 	return table
 }
@@ -93,7 +106,19 @@ changeAmount = function(name, new_amount) {
 	"' AND daily.date = '" + full_date + "' ;").all();
 	let amount_to_add = Number(new_amount) - Number(old_amount[0]['SUM(daily.amount)']);
 	
-	db.exec("INSERT INTO daily (date, amount, name) VALUES ('" + full_date + "', " + amount_to_add + ", '" + name + "');");
+	var item = nuts.catalogue[name];
+	switch (item.unit) {
+		case "100g":
+			var kcal = amount_to_add * (item.calories / 100);
+			break;
+		case "sztuka":
+			var kcal = amount_to_add * item.calories;
+			break;
+	};
+	
+	db.exec("INSERT INTO daily (date, name, amount, kcal) VALUES ('" +
+			full_date + "', '" + name + "', " + amount_to_add + ", " +
+			kcal + ");");
 };
 
 deleteItem = function(name, mode) {
