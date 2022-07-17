@@ -91,11 +91,6 @@ getTodayTable = function() {
 	
 	var query = "SELECT daily.*, SUM(daily.amount) AS amount, SUM(daily.kcal) AS kcal FROM daily WHERE daily.date = '" + full_date + "' GROUP BY daily.name;";
 	var table = db.prepare(query).all();
-	console.log(table);
-	//for (let i = 0; i < table.length; i++) {
-	//	table[i].calories = nuts.catalogue[table[i].name].calories
-	//	table[i].unit = nuts.catalogue[table[i].name].unit
-	//};
 	
 	return table
 }
