@@ -7,7 +7,7 @@ const renderDishTable = function() {
 		
 		var id = 0
 		
-		for (let dish of dishes) {
+		for (let dish in dishes) {
 			let edit_id = id + 1
 			let row = "<tr><td id = '"+ id + "'>" + dish +
 			"</td><td class = 'dish-edit' id = '" + edit_id + "'></td></tr>"
@@ -32,7 +32,24 @@ const renderEditTable = function() {
 		// add existing ingredients
 	};
 	
-	var edit_dish_table = `<table><tr><th>Składnik</th><th>Ilość</th><th>Kalorie</th><th></th></tr></table>`
+	for (item in edited_dish) {
+		switch (nuts.catalogue[item]['unit']) {
+			case "100g":
+				var item_kcal = nuts.catalogue[item]['calories'] * (edited_dish[item] / 100);
+				break;
+			case "sztuka":
+				var item_kcal = nuts.catalogue[item]['calories'] * edited_dish[item];
+				break
+		};
+		
+		let current_row = "<tr><td>" + item + "</td><td>" + edited_dish[item] + "</td><td>" +
+							item_kcal + "</td><td></td></tr>"
+		
+		ingredients_rows.push(current_row);
+	};
+	
+	var edit_dish_table = "<table><tr><th>Składnik</th><th>Ilość</th><th>Kalorie</th><th></th></tr>" +
+							ingredients_rows + "</table>"
 	$("#dish-edit").html(edit_dish_table);
 	
 };
@@ -103,6 +120,8 @@ $(document).on("click", ".edit-dish", function(event) {
 	
 	if (event.target.id != "add-new-dish") {
 		// change edited dish
+	} else {
+		edited_dish = {}
 	};
 	
 	renderEditTable();
@@ -110,12 +129,45 @@ $(document).on("click", ".edit-dish", function(event) {
 
 // save dish
 $(document).on("click", "#save-dish", function(event) {
+	let dish_weight = Number($("#save-dish-weight").val());
+	let dish_container = $("#save-dish-container").val();
+	
+	let dish_calories = 0
+	
+	for (item in edited_dish) {
+		switch (nuts.catalogue[item]['unit']) {
+			case "100g":
+				var item_kcal = nuts.catalogue[item]['calories'] * (edited_dish[item] / 100);
+				break;
+			case "sztuka":
+				var item_kcal = nuts.catalogue[item]['calories'] * edited_dish[item];
+				break
+		};
+		dish_calories += item_kcal
+	};
+	
+	console.log(dish_calories)
+	nuts['cookbook'][$("#dish-name").val()] = {
+		"ingredients": edited_dish,
+		"container": dish_container,
+		"weight": dish_weight,
+		"calories": dish_calories / (dish_weight - nuts.containers[dish_container]) * 100
+	};
+	
+	dbmgr.saveNUTS();
+	
 	$("#dish-edit-container").fadeOut();
 	$("#dish-table-container").delay(500).css('display', 'inline-block').hide().fadeIn();
 	
 	edited_dish = null;
 });
 
+// add item to dish
+$(document).on("click", "#dishes-add-button", function(event) {
+	edited_dish[$("#dishes-add-name").val()] = Number($("#dishes-add-amount").val());
+	
+	renderEditTable();
+});
 // filter items by category
 $(document).on("change", "#dishes-category-filter", function() {
 	let filtered = []

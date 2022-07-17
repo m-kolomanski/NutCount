@@ -65,12 +65,15 @@ getAvailableItems = function() {
 	for (item in nuts.catalogue) {
 		items.push(item);
 	};
+	for (dish in nuts.cookbook) {
+		items.push(dish);
+	};
 	return items;
 }
 
-addTodayItem = function(amount, name) {	
+addTodayItem = function(amount, name, source) {	
 	let full_date = getTodayDate();
-	var item = nuts.catalogue[name]
+	var item = nuts[source][name]
 	
 	switch (item.unit) {
 		case "100g":
@@ -79,6 +82,8 @@ addTodayItem = function(amount, name) {
 		case "sztuka":
 			var kcal = amount * item.calories;
 			break;
+		default:
+			var kcal = amount * (item.calories / 100);
 	};
 	
 	db.exec("INSERT INTO daily (date, name, amount, kcal) VALUES ('" +
@@ -151,7 +156,7 @@ execCategory = function(cat, mode) {
 
 execContainer = function(con, weight, mode) {
 	if (mode == "add") {
-		nuts['containers'][con] = weight
+		nuts['containers'][con] = Number(weight)
 	} else if (mode == "delete") {
 		delete nuts['containers'][con]
 	} else {

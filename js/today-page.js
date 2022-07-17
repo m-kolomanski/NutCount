@@ -110,6 +110,7 @@ for (let item of items) {
 
 const cat_picklist = document.getElementById("today-category-filter");
 cat_picklist.add(new Option(""));
+cat_picklist.add(new Option("Dania"));
 for (let cat of nuts.categories) {
 	cat_picklist.add(new Option(cat));
 };
@@ -122,6 +123,14 @@ resetPage();
 document.getElementById("today-add-button").onclick = function(event) {
 	let added_name = $("#today-add-name").val();
 	let added_amount = $("#today-add-amount").val();
+	switch ($("#today-category-filter").val()) {
+		case "Dania":
+			var added_source = "cookbook";
+			break;
+		default:
+			var added_source = "catalogue";
+			break;
+	};
 	
 	if (added_name == "") {
 		alert("Proszę wybrać nazwę orzeszka!");
@@ -130,7 +139,7 @@ document.getElementById("today-add-button").onclick = function(event) {
 			alert("Proszę wybrać ilość!");
 			
 		} else {
-			dbmgr.addTodayItem(added_amount, added_name);
+			dbmgr.addTodayItem(added_amount, added_name, added_source);
 	
 			resetPage();
 		}
@@ -150,11 +159,18 @@ $(document).on("click", ".today-delete", function(event) {
 // filter items by category
 $(document).on("change", "#today-category-filter", function() {
 	let filtered = []
-	for (item in nuts.catalogue) {
-		if ($("#today-category-filter").val() == "" || nuts.catalogue[item].category == $("#today-category-filter").val()) {
-			filtered.push(item);
+	if ($("#today-category-filter").val() == "Dania") {
+		for (dish in nuts.cookbook) {
+			filtered.push(dish)
+		};
+	} else {
+		for (item in nuts.catalogue) {
+			if ($("#today-category-filter").val() == "" || nuts.catalogue[item].category == $("#today-category-filter").val()) {
+				filtered.push(item);
+			};
 		};
 	};
+
 	
 	$("#today-add-name").empty();
 	
