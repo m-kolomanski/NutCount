@@ -62,3 +62,14 @@ td, tr, th {
 	color: white;
 	font-weight: bold;	
 }
+.edit-field {
+	transition: background-color 0.5s;
+}
+.edit-field:hover {
+	background-color: blue;
+}
+.edit-field:after {
+	content: "E";
+	color: white;
+	font-weight: bold;	
+}

@@ -67,7 +67,6 @@ const deleteCategory = function(event) {
 	let id_string = event.target.id.split("-");
 	let id_to_delete = Number(id_string[1]) - 1;
 	let name_to_delete = $("#delete-" + id_to_delete).html();
-	console.log(name_to_delete);
 	dbmgr.execCategory(name_to_delete, "delete");
 	
 	renderCategories();

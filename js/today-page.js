@@ -15,7 +15,7 @@ const renderTodayTable = function() {
 		
 		let row = "<tr id = '" + row_id + "'><td id = '" + name_id + "'>" +
 		item.name + "</td><td class = 'today-amount-cell' id = '" + amount_id + "'>" + item.amount + "</td><td>" +
-		item.kcal + "</td><td class = 'delete-field today-delete' id = '" + delete_id + "'></td></tr>";
+		Math.round(item.kcal) + "</td><td class = 'delete-field today-delete' id = '" + delete_id + "'></td></tr>";
 		
 		rows.push(row);
 		row_id += 10
@@ -38,7 +38,7 @@ const showSummary = function() {
 		sum = sum + item.kcal
 	};
 
-	document.getElementById("today-sum").innerHTML = sum;
+	document.getElementById("today-sum").innerHTML = Math.round(sum);
 };
 
 // change amount on click
