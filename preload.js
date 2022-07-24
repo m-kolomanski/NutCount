@@ -1,10 +1,11 @@
 const { contextBridge, ipcRenderer} = require('electron')
+const path = require('path')
 
-window.dbmgr = require("./js/dbmgr.js");
+window.dbmgr = require(path.join(__dirname, "/js/dbmgr.js"));
 window.fs = require('fs')
 
-fs.access('./db/nuts.db', fs.F_OK, (err) => {
-	const dbmgr = require('./js/dbmgr.js');
+fs.access(path.join(__dirname, './db/nuts.db'), fs.F_OK, (err) => {
+	const dbmgr = require(path.join(__dirname, '/js/dbmgr.js'));
 		
 	if (err) {
 		let db = dbmgr.loadDatabase();
@@ -17,5 +18,5 @@ fs.access('./db/nuts.db', fs.F_OK, (err) => {
 
 window.db = dbmgr.loadDatabase();
 try {
-	window.nuts = require("./db/nuts.json");
+	window.nuts = require(path.join(__dirname, "./db/nuts.json"));
 } catch (error) { };

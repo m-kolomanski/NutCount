@@ -1,5 +1,6 @@
 const sqlite = require('better-sqlite3-with-prebuilds');
 //const fs = require('fs');
+const path = require('path');
 
 const getTodayDate = function () {
 	let date = new Date();
@@ -13,13 +14,13 @@ const getTodayDate = function () {
 }
 
 loadDatabase = function() {
-	const db = new sqlite("./db/nuts.db");
+	const db = new sqlite(path.join(__dirname, "../db/nuts.db"));
 	return db
 };
 
 saveNUTS = function() {
 	let jsonString = JSON.stringify(nuts);
-	fs.writeFile("./db/nuts.json", jsonString, err => {
+	fs.writeFile(path.join(__dirname, "../db/nuts.json"), jsonString, err => {
 		if (err) console.log("Error writing file:", err);
 	});	
 }
@@ -38,7 +39,7 @@ createNewDatabase = function() {
 	};
 	
 	let jsonString = JSON.stringify(nuts);
-	fs.writeFile("./db/nuts.json", jsonString, err => {
+	fs.writeFile(path.join(__dirname, "../db/nuts.json"), jsonString, err => {
 		if (err) console.log("Error writing file:", err);
 	});
 	//saveJSON();
