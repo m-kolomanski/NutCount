@@ -1,4 +1,4 @@
-<div class = "navbar" style = "border: 1px red solid">
+<div class = "navbar">
 	<input type = "button" onclick = "location.href='today-page.html'" value = "Dzisiaj"
 	id = "today-page-button" class = "navbar-button">
 	<input type = "button" onclick = "location.href='catalogue-page.html'" value = "Katalog"
@@ -7,4 +7,11 @@
 	id = "compose-dish-page-button" class = "navbar-button">
 	<input type = "button" onclick = "location.href='options-page.html'" value = "Opcje"
 	id = "options-page-button" class = "navbar-button">
+	
+	<script>
+		let path = window.location.href.split("/")
+		let current_page = path[path.length - 1].split(".")[0]
+		console.log("#" + current_page + "-button")
+		$("#" + current_page + "-button").addClass("navbar-button-active")
+	</script>
 </div>

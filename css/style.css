@@ -1,3 +1,10 @@
+/* COLOUR PALETTE
+squirell-orange: #f88d35
+squirell-orange-muted: #fdb05e
+
+
+*/
+
 /* NAVBAR */
 .navbar {
 	justify-content: center;
@@ -5,10 +12,16 @@
 	width: 100%;
 	height: 3rem;
 	vertical-align: middle;
+	margin: 0px;
+	font-size: 0px;
 }
 
 .navbar-button {
-	border: green 1px solid;
+	border-left: #f88d35 3px solid;
+	border-right: #f88d35 3px solid;
+	border-bottom: black 0px solid;
+	border-top: black 0px solid;
+	background: white;
 	display: inline-block;
 	width: 15%;
 	min-width:8rem;
@@ -16,12 +29,26 @@
 	position: relative;
 	top: 10%;
 	padding: 0px;
+	margin: 0px;
+	font-size: 20px;
+	font-family: "Times New Roman";
+	transition: background-color 1s, color 0.5s;
+}
+
+.navbar-button.navbar-button-active {
+	background-color: #fdb05e;
+	color: white;
 }
 
 .navbar-button:hover {
-	background-color: pink;
+	background-color: #fdb05e;
+	color: white;
 }
 
+/* BODY */
+.body {
+	font-family: Calibri;
+}
 
 /* INPUT WIDGETS */
 .input-widget {
