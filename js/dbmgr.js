@@ -138,6 +138,7 @@ deleteItem = function(name, mode) {
 execCategory = function(cat, mode) {
 	if (mode == "add") {
 		nuts['categories'].push(cat);
+		nuts['categories'].sort();
 	} else if (mode == "delete") {
 		let i = nuts['categories'].indexOf(cat);
 		nuts['categories'].splice(i, 1);

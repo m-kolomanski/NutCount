@@ -102,7 +102,7 @@ $("#today-deficit").val(nuts.today_deficit);
 
 // get item names for the picklist
 const item_picklist = document.getElementById("today-add-name");
-var items = dbmgr.getAvailableItems();
+var items = dbmgr.getAvailableItems().sort();
 item_picklist.add(new Option(""));
 for (let item of items) {
 	item_picklist.add(new Option(item));
@@ -111,6 +111,7 @@ for (let item of items) {
 const cat_picklist = document.getElementById("today-category-filter");
 cat_picklist.add(new Option(""));
 cat_picklist.add(new Option("Dania"));
+
 for (let cat of nuts.categories) {
 	cat_picklist.add(new Option(cat));
 };
@@ -171,6 +172,7 @@ $(document).on("change", "#today-category-filter", function() {
 		};
 	};
 
+	filtered.sort();
 	
 	$("#today-add-name").empty();
 	

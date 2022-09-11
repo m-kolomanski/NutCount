@@ -3,7 +3,15 @@ const renderCatalogue = function() {
 	let rows = []
 	let row_id = 0
 	
-	for (item in nuts.catalogue) {
+	var ordered_catalogue = Object.keys(nuts.catalogue).sort().reduce(
+		(obj, key) => {
+			obj[key] = nuts.catalogue[key];
+			return obj;
+		},
+		{}
+	);
+	
+	for (item in ordered_catalogue) {
 		let name_id = row_id + 1
 		let category_id = row_id + 2
 		let calories_id = row_id + 3
