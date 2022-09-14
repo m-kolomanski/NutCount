@@ -143,7 +143,9 @@ document.getElementById("today-add-button").onclick = function(event) {
 			dbmgr.addTodayItem(added_amount, added_name, added_source);
 	
 			resetPage();
-			
+			$("#today-category-filter").val("");
+			$("#today-add-name").val("");
+			$("#today-add-amount").val("");
 			$("#notification-container").empty().css("background-color","green").show().append("Produkt został dodany").delay(3000).fadeOut();
 		}
 	}
