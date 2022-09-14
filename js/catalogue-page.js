@@ -23,7 +23,7 @@ const renderCatalogue = function() {
 		"</td><td>" + nuts.catalogue[item].unit + "</td><td id = '" + delete_id +
 			"' class = 'delete-field catalogue-delete'></td></tr>"
 		rows.push(row)
-		row_id += 1
+		row_id += 10
 	}
 
 	let table = `<table>
@@ -88,8 +88,24 @@ renderCategories();
 // prepare events
 // add new item to catalogue
 document.getElementById("add-things").onclick = function() {
+	if ($("#name").val() in nuts.catalogue) {
+		var overwrite_alert = true;
+	} else {
+		var overwrite_alert = false;
+	};
+	
 	dbmgr.addNewItem();
 	renderCatalogue();
+	
+	if (overwrite_alert) {
+		$("#notification-container").empty().css("background-color","yellow").show().append("Produkt został nadpisany").delay(3000).fadeOut();
+	} else {
+		$("#notification-container").empty().css("background-color","green").show().append("Produkt został dodany").delay(3000).fadeOut();
+	};
+	
+	$("#name").val("");
+	$("#category").val("");
+	$("#calories").val("");
 }
 // delete catalogue entry
 $(document).on("click", ".catalogue-delete", function(event) {
