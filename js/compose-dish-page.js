@@ -8,31 +8,62 @@ function Portions(weight, kcal) {
 };
 const renderDishTable = function() {
 	var dishes = nuts.cookbook;
+	const dishes_table = document.createElement("table");
 	
-	var dishes_rows = [];
+	// header
+	const thead = document.createElement("thead");
+	const header_row = document.createElement("tr");
+	
+	for (let header of ["Nazwa", "100g", "4 porcje", "6 porcji", ""]) {
+		const head_cell = document.createElement("th");
+		head_cell.appendChild(document.createTextNode(header));
+		header_row.appendChild(head_cell);
+	};
+	
+	thead.appendChild(header_row);
+	dishes_table.appendChild(thead);
+	
+	// body
+	const tbody = document.createElement("tbody");
 	if (Object.keys(dishes).length > 0) {
-		
 		var id = 0
 		
 		for (let dish in dishes) {
 			var portions_data = new Portions(dishes[dish]["weight"], dishes[dish]["calories"]);
 			
-			let edit_id = id + 1
-			let row = "<tr><td id = '"+ id + "'>" + dish +
-			"</td><td>" + portions_data["four_portions_weight"] + "g / " + portions_data["four_portions_kcal"] +
-			"kcal</td><td>" + portions_data["six_portions_weight"] + "g / " + portions_data["six_portions_kcal"] +
-			"kcal</td><td class = 'edit-field edit-dish' id = '" + edit_id + "'></td></tr>"
-		
-			dishes_rows.push(row)
-			id += 10
+			const dish_row = document.createElement("tr");
+			//dish_row.setAttribute("id", id);
+			
+			const name_cell = document.createElement("td")
+			name_cell.appendChild(document.createTextNode(dish))
+			dish_row.appendChild(name_cell);
+			
+			const calories_cell = document.createElement("td");
+			calories_cell.appendChild(document.createTextNode(Math.round(nuts.cookbook[dish].calories)));
+			dish_row.appendChild(calories_cell);
+			
+			let four_portions_text = `${portions_data['four_portions_weight']}g / ${portions_data['four_portions_kcal']}kcal`
+			const four_portions_cell = document.createElement("td");
+			four_portions_cell.appendChild(document.createTextNode(four_portions_text));
+			dish_row.appendChild(four_portions_cell);
+			
+			let six_portions_text = `${portions_data['six_portions_weight']}g / ${portions_data['six_portions_kcal']}kcal`
+			const six_portions_cell = document.createElement("td");
+			six_portions_cell.appendChild(document.createTextNode(six_portions_text));
+			dish_row.appendChild(six_portions_cell);
+			
+			let edit_cell = document.createElement("td");
+			edit_cell.classList.add("edit-field");
+			edit_cell.classList.add("dish");
+			dish_row.appendChild(edit_cell);
+			
+			tbody.appendChild(dish_row);
+			id += 1
 		};
 	};
 
+	dishes_table.appendChild(tbody);
 	
-	var dishes_table = `<table>
-							<tr><th>Nazwa</th><th>4 porcje</th><th>6 porcji</th><th></th></tr>` +
-							dishes_rows.join('') +
-						`</table>`
 	$("#dish-table").html(dishes_table);
 };
 
@@ -54,15 +85,42 @@ const renderEditTable = function(name = null) {
 		
 	};
 	
-	var ingredients_rows = [];
+	const dish_edit_table = document.createElement("table");
+	
+	// header
+	const thead = document.createElement("thead");
+	const header_row = document.createElement("tr");
+	for (let header of ["Składnik", "Ilość", "Kalorie", ""]) {
+		const header_cell = document.createElement("th");
+		header_cell.appendChild(document.createTextNode(header));
+		header_row.appendChild(header_cell);
+	};
+	
+	thead.appendChild(header_row);
+	dish_edit_table.appendChild(thead);
+	
+	// body
+	tbody = document.createElement("tbody");
 
 	if (edited_dish != null) {
 		var id = 0
 
 		for (item in edited_dish) {
-			let amount_id = id + 1
-			let delete_id = id + 2
-
+			
+			let item_row = document.createElement("tr");
+			//item_row.setAttribute("id", id);
+			
+			const name_cell = document.createElement("td");
+			name_cell.appendChild(document.createTextNode(item));
+			item_row.appendChild(name_cell);
+			
+			const amount_cell = document.createElement("td");
+			amount_cell.appendChild(document.createTextNode(edited_dish[item]));
+			amount_cell.classList.add("ingredient-amount");
+			amount_cell.setAttribute("id", `amount-${id}`)
+			item_row.appendChild(amount_cell);
+			
+			const kcal_cell = document.createElement("td");
 			switch (nuts.catalogue[item]['unit']) {
 				case "100g":
 					var item_kcal = nuts.catalogue[item]['calories'] * (edited_dish[item] / 100);
@@ -71,54 +129,24 @@ const renderEditTable = function(name = null) {
 					var item_kcal = nuts.catalogue[item]['calories'] * edited_dish[item];
 					break
 			};
-		
-			let current_row = "<tr><td id = 'edit-" + id + "'>" + item +
-								"</td><td class = 'ingredient-amount' id = 'amount-" +
-								amount_id + "'>" +
-								edited_dish[item] + "</td><td>" +
-								Math.round(item_kcal) + "</td><td class = 'delete-field ingredient-delete' id = 'edit-" +
-								 + delete_id + "'></td></tr>"
-		
-			ingredients_rows.push(current_row);
+			kcal_cell.appendChild(document.createTextNode(Math.round(item_kcal)));
+			item_row.appendChild(kcal_cell);
+			
+			const delete_cell = document.createElement("td");
+			delete_cell.classList.add("delete-field");
+			delete_cell.classList.add("ingredients");
+			item_row.appendChild(delete_cell);
+			
+			tbody.appendChild(item_row);
 
-			var id = id + 10
+			id += 1
 		};
 	};
 	
-	var edit_dish_table = "<table><tr><th>Składnik</th><th>Ilość</th><th>Kalorie</th><th></th></tr>" +
-							ingredients_rows + "</table>"
-	$("#dish-edit").html(edit_dish_table);
+	dish_edit_table.appendChild(tbody);
 	
-};
-// change amount on click
-const changeIngredientAmount = function(event) {
-	var current_value = document.getElementById(event.target.id).innerHTML
-	var current_change_name = "edit-" + (Number(event.target.id.split("-")[1]) - 1)
-	var current_text_id = "text-" + (Number(event.target.id.split("-")[1]) + 5)
+	$("#dish-edit").html(dish_edit_table);
 	
-	document.getElementById(event.target.id).innerHTML = "<input type = 'text' value = '" + current_value +
-	"' id = " + current_text_id + "><button id = 'change-value-" + current_change_name + "'>V</button><button id = 'cancel-change-" +
-	current_change_name + "'>X</button>"
-	
-	$("#" + event.target.id).removeClass("ingredient-amount").off('click')
-	
-	// change value in the database
-	$("#change-value-" + current_change_name).click(function(event) {
-		let current_id = event.target.id.split("-")[3]
-		var name_to_change = $("#edit-" + current_id).html();
-		var value_to_change = $("#text-".concat(Number(current_id) + 6)).val();
-		edited_dish[name_to_change] = value_to_change
-		
-		renderEditTable();
-		
-	});
-	
-	// cancel, reverse
-	$("#cancel-change-" + current_change_name).click(function(event) {
-		let button_parent = document.querySelector("#" + event.target.id).parentNode;
-		$("#" + button_parent.id).addClass("ingredient-amount");
-		button_parent.innerHTML = current_value;
-	});
 };
 
 // render containers table
@@ -161,7 +189,8 @@ const deleteContainers = function(event) {
 };
 
 // STARTUP
-var edited_dish = null;
+edited_dish = null;
+edited_dish_name = null;
 
 // get item names for the picklist
 const item_picklist = document.getElementById("dishes-add-name");
@@ -181,19 +210,24 @@ renderDishTable();
 renderContainers();
 
 // EVENTS
-// add or edit dish
-$(document).on("click", ".edit-dish", function(event) {
+const addNewOrEdit = function(event) {
 	$("#dish-table-container").fadeOut();
 	$("#dish-edit-container").delay(500).css('display', 'inline-block').hide().fadeIn();;
 	
 	if (event.target.id != "add-new-dish") {
-		let edited_dish_name = $("#" + Number(event.target.id - 1)).html();
+		edited_dish_name = event.target.parentElement.childNodes[0].innerHTML;
 		edited_dish = nuts.cookbook[edited_dish_name]["ingredients"];
 		renderEditTable(edited_dish_name);
 	} else {
 		edited_dish = {}
 		renderEditTable();
 	};
+};
+$(document).on("click", ".edit-field.dish", function(event) {
+	addNewOrEdit(event);
+});
+$(document).on("click", "#add-new-dish", function(event) {
+	addNewOrEdit(event);
 });
 
 // save dish
@@ -240,7 +274,18 @@ $(document).on("click", "#save-dish", function(event) {
 });
 // delete dish
 $(document).on("click", "#delete-dish", function(event) {
-	alert("Not implemented yet");
+	if (edited_dish_name !== null) {
+		delete nuts.cookbook[edited_dish_name];
+		dbmgr.saveNUTS();
+		$("#dish-edit-container").fadeOut();
+		$("#dish-table-container").delay(500).css('display', 'inline-block').hide().fadeIn();
+		renderDishTable();
+	
+		edited_dish = null;
+		edited_dish_name = null;
+	} else {
+		alert("Nie znaleziono zapisanego dania, spróbuj anulować");
+	};
 });
 // cancel editing
 $(document).on("click", "#cancel-dish", function(event) {
@@ -249,6 +294,7 @@ $(document).on("click", "#cancel-dish", function(event) {
 	renderDishTable();
 	
 	edited_dish = null;
+	edited_dish_name = null;
 });
 
 // add item to dish
@@ -259,17 +305,54 @@ $(document).on("click", "#dishes-add-button", function(event) {
 });
 // edit ingredient amount
 $(document).on("click", ".ingredient-amount", function(event) {
-	changeIngredientAmount(event);
+	var current_value = event.target.innerHTML;
+	var current_change_name = event.target.parentElement.childNodes[0].innerHTML;
+	//var current_text_id = "text-" + (Number(event.target.id.split("-")[1]) + 5)
+	
+	const edit_widget = document.createElement("div");
+	
+	const text_input = document.createElement("input");
+	text_input.setAttribute("type", "text");
+	text_input.setAttribute("value", current_value);
+	edit_widget.appendChild(text_input);
+	
+	const confirm_button = document.createElement("button");
+	confirm_button.innerHTML = "V";
+	confirm_button.setAttribute("id", `change-value-${current_change_name}`);
+	edit_widget.appendChild(confirm_button);
+	
+	const cancel_button = document.createElement("button");
+	cancel_button.innerHTML = "X";
+	cancel_button.setAttribute("id", `cancel-change-${current_change_name}`);
+	edit_widget.appendChild(cancel_button);
+	
+	event.target.innerHTML = edit_widget.outerHTML;
+	
+	$("#" + event.target.id).removeClass("ingredient-amount").off('click');
+	
+	// change value in the database
+	$("#change-value-" + current_change_name).click(function(event) {
+		let name_to_change = event.target.parentElement.parentElement.parentElement.childNodes[0].innerHTML;
+		let value_to_change = event.target.parentElement.childNodes[0].value;
+		
+		edited_dish[name_to_change] = value_to_change
+		
+		renderEditTable();
+	});
+
+	// cancel, reverse
+	$("#cancel-change-" + current_change_name).click(function(event) {
+		let button_parent = $("#" + event.target.parentElement.parentElement.id);
+		button_parent.html(current_value);// = current_value;
+		button_parent.addClass("ingredient-amount");
+	});
 });
 
 // delete item from dish
-$(document).on("click", ".ingredient-delete", function(event){
-	let id = event.target.id.split("-")
-	let item_to_delete = $("#edit-" + (Number(id[1]) - 2)).html();
-	
+$(document).on("click", ".delete-field.ingredients", function(event){	
+	let item_to_delete = event.target.parentElement.childNodes[0].innerHTML;
 	delete edited_dish[item_to_delete];
 	renderEditTable();
-	
 });
 
 // filter items by category
