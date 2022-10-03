@@ -129,7 +129,7 @@ document.getElementById("add-things").onclick = function() {
 	$("#calories").val("");
 }
 // delete catalogue entry
-$(".delete-field.catalogue").on("click", function(event) {
+$(document).on("click", ".delete-field.catalogue", function(event) {
 	let name_to_delete = event.target.parentElement.childNodes[0].innerHTML;
 	dbmgr.deleteItem(name_to_delete, "catalogue");
 	renderCatalogue();
@@ -151,7 +151,7 @@ $(document).on("click", "#categories-add-button", function() {
 });
 
 // delete category
-$(".delete-field.categories").on("click", function(event) {
+$(document).on("click", ".delete-field.categories", function(event) {
 	let name_to_delete = event.target.parentElement.childNodes[0].innerHTML;
 	dbmgr.execCategory(name_to_delete, "delete");
 	renderCategories();
