@@ -1,7 +1,6 @@
 // render food catalogue
 const renderCatalogue = function() {
-	let rows = []
-	let row_id = 0
+	const table = document.createElement("table");
 	
 	var ordered_catalogue = Object.keys(nuts.catalogue).sort().reduce(
 		(obj, key) => {
@@ -11,62 +10,83 @@ const renderCatalogue = function() {
 		{}
 	);
 	
+	// render table head
+	const thead = document.createElement("thead");
+	const head_row = document.createElement("tr");
+	
+	for (let header of ["Nazwa", "Kategoria", "Kcal/j", "Jednostka", ""]) {
+		const header_cell = document.createElement("th");
+		header_cell.appendChild(document.createTextNode(header));
+		head_row.appendChild(header_cell);
+	};
+	
+	thead.appendChild(head_row);
+	
+	table.appendChild(thead);
+	
+	// render table body
+	const tbody = document.createElement("tbody");
+	let row_id = 0
 	for (item in ordered_catalogue) {
-		let name_id = row_id + 1
-		let category_id = row_id + 2
-		let calories_id = row_id + 3
-		let delete_id = row_id + 4
+		const item_row = document.createElement("tr");
+		item_row.setAttribute("id", row_id);
 		
-		let row = "<tr id = '" + row_id + "'><td id = '" + name_id + "'>" + item +
-		"</td><td id = '" + category_id + "'>" + nuts.catalogue[item].category +
-		"</td><td id = '" + calories_id + "'>" + nuts.catalogue[item].calories +
-		"</td><td>" + nuts.catalogue[item].unit + "</td><td id = '" + delete_id +
-			"' class = 'delete-field catalogue-delete'></td></tr>"
-		rows.push(row)
-		row_id += 10
+		const name_cell = document.createElement("td");
+		name_cell.appendChild(document.createTextNode(item));
+		item_row.appendChild(name_cell);
+		
+		for (let column in nuts.catalogue[item]) {
+			const cell = document.createElement("td");
+			cell.appendChild(document.createTextNode(nuts.catalogue[item][column]));
+			item_row.appendChild(cell);
+		};
+		
+		const delete_cell = document.createElement("td");
+		delete_cell.classList.add("delete-field");
+		delete_cell.classList.add("catalogue");
+		
+		item_row.appendChild(delete_cell);
+		
+		tbody.appendChild(item_row);
+		
+		row_id += 1
 	}
 
-	let table = `<table>
-					<tr><th>Nazwa</th><th>Kategoria</th><th>Kalorie/j</th><th>Jednostki</th></tr>` +
-					rows.join('') +
-				`</table>`
-		
-	document.getElementById("food-catalogue").innerHTML = table
-}
-
-// delete entry completely
-const deleteCatalogueEntry = function(event) {
-	let id_to_delete = event.target.id - 3;
-	let name_to_delete = $("#" + id_to_delete).html();
+	table.appendChild(tbody);
 	
-	dbmgr.deleteItem(name_to_delete, "catalogue");
-	
-	renderCatalogue();
+	$("#food-catalogue").html(table);
 };
 
 // render categories table
 const renderCategories = function() {
-	// get item names for the picklist
-	const selectElement = document.getElementById("category");
+	// for pick-list
 	$("#category").empty();
-
-	var items = nuts.categories;
+	const selectElement = document.getElementById("category");
+	var categories = nuts.categories;
 	selectElement.add(new Option(""));
-	for (let item of items) {
-		selectElement.add(new Option(item));
-	};
-	// generate categories table
-	var categories_rows = [];
+	
+	// for table
+	const categories_table = document.createElement("table");
 	var id = 0
-	for (let item of items) {
-		let delete_id = id + 1
-		let row = "<tr><td id = 'delete-" + id + "'>" + item +
-		"</td><td class = 'delete-field categories-delete' id = 'delete-" + delete_id + "'></td></tr>"
+	
+	for (let category of categories) {
+		// add to pick-list
+		selectElement.add(new Option(category));
 		
-		categories_rows.push(row)
-		id += 10
+		// generate table
+		const cat_row = document.createElement("tr");
+		cat_row.setAttribute("id", `Cat${id}`);
+		
+		const cat_cell = document.createElement("td");
+		cat_cell.appendChild(document.createTextNode(category));
+		cat_row.appendChild(cat_cell);
+		const delete_cell = document.createElement("td");
+		delete_cell.classList.add("delete-field");
+		delete_cell.classList.add("categories");
+		cat_row.appendChild(delete_cell);
+		
+		categories_table.appendChild(cat_row);
 	};
-	var categories_table = "<table>" + categories_rows.join('') + "</table>"
 	$("#categories-table").html(categories_table);
 };
 
@@ -81,11 +101,12 @@ const deleteCategory = function(event) {
 	renderCatalogue();
 };
 
-// on page load
+//// PAGE LOAD ////
 renderCatalogue();
 renderCategories();
 
-// prepare events
+//// EVENTS ////
+
 // add new item to catalogue
 document.getElementById("add-things").onclick = function() {
 	if ($("#name").val() in nuts.catalogue) {
@@ -98,7 +119,7 @@ document.getElementById("add-things").onclick = function() {
 	renderCatalogue();
 	
 	if (overwrite_alert) {
-		$("#notification-container").empty().css("background-color","yellow").show().append("Produkt został nadpisany").delay(3000).fadeOut();
+		$("#notification-container").empty().css("background-color","orange").show().append("Produkt został nadpisany").delay(3000).fadeOut();
 	} else {
 		$("#notification-container").empty().css("background-color","green").show().append("Produkt został dodany").delay(3000).fadeOut();
 	};
@@ -108,8 +129,19 @@ document.getElementById("add-things").onclick = function() {
 	$("#calories").val("");
 }
 // delete catalogue entry
-$(document).on("click", ".catalogue-delete", function(event) {
-	deleteCatalogueEntry(event);
+$(".delete-field.catalogue").on("click", function(event) {
+	let name_to_delete = event.target.parentElement.childNodes[0].innerHTML;
+	dbmgr.deleteItem(name_to_delete, "catalogue");
+	renderCatalogue();
+});
+// check if item in catalogue
+$("#name").on("input", function(event) {
+	let item_to_search = event.target.value;
+	if (Object.keys(nuts.catalogue).includes(item_to_search)) {
+		$("#notification-container").empty().css("background-color","yellow").show().append("Produkt jest już na liście. Czy chcesz go nadpisać?");
+	} else {
+		$("#notification-container").fadeOut().empty();
+	};
 });
 
 // add category
@@ -119,6 +151,9 @@ $(document).on("click", "#categories-add-button", function() {
 });
 
 // delete category
-$(document).on("click", ".categories-delete", function(event) {
-	deleteCategory(event);
+$(".delete-field.categories").on("click", function(event) {
+	let name_to_delete = event.target.parentElement.childNodes[0].innerHTML;
+	dbmgr.execCategory(name_to_delete, "delete");
+	renderCategories();
+	renderCatalogue();
 });
