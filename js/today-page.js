@@ -125,6 +125,13 @@ document.getElementById("today-add-button").onclick = function(event) {
 	let added_name = $("#today-add-name").val();
 	let added_amount = $("#today-add-amount").val();
 	switch ($("#today-category-filter").val()) {
+		case "":
+			if (Object.keys(nuts.cookbook).includes(added_name)) {
+				var added_source = "cookbook";
+			} else {
+				var added_source = "catalogue";
+			}
+			break
 		case "Dania":
 			var added_source = "cookbook";
 			break;
@@ -133,22 +140,22 @@ document.getElementById("today-add-button").onclick = function(event) {
 			break;
 	};
 	
-	if (added_name == "") {
-		alert("Proszę wybrać nazwę orzeszka!");
+	//if (added_name == "") {
+	//	alert("Proszę wybrać nazwę orzeszka!");
+	//} else {
+	if (added_amount == "") {
+		alert("Proszę podać ilość!");
+		
 	} else {
-		if (added_amount == "") {
-			alert("Proszę wybrać ilość!");
-			
-		} else {
-			dbmgr.addTodayItem(added_amount, added_name, added_source);
-	
-			resetPage();
-			$("#today-category-filter").val("");
-			$("#today-add-name").val("");
-			$("#today-add-amount").val("");
-			$("#notification-container").empty().css("background-color","green").show().append("Produkt został dodany").delay(3000).fadeOut();
-		}
+		dbmgr.addTodayItem(added_amount, added_name, added_source);
+
+		resetPage();
+		$("#today-category-filter").val("");
+		$("#today-add-name").val("");
+		$("#today-add-amount").val("");
+		$("#notification-container").empty().css("background-color","green").show().append("Produkt został dodany").delay(3000).fadeOut();
 	}
+	//}
 
 
 };

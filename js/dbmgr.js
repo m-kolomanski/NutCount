@@ -74,18 +74,24 @@ getAvailableItems = function() {
 
 addTodayItem = function(amount, name, source) {	
 	let full_date = getTodayDate();
-	var item = nuts[source][name]
 	
-	switch (item.unit) {
-		case "100g":
-			var kcal = amount * (item.calories / 100);
-			break;
-		case "sztuka":
-			var kcal = amount * item.calories;
-			break;
-		default:
-			var kcal = amount * (item.calories / 100);
-	};
+	if (name === "") {
+		name = "Inne";
+		var kcal = amount;
+	} else {
+		var item = nuts[source][name]
+	
+		switch (item.unit) {
+			case "100g":
+				var kcal = amount * (item.calories / 100);
+				break;
+			case "sztuka":
+				var kcal = amount * item.calories;
+				break;
+			default:
+				var kcal = amount * (item.calories / 100);
+		};
+	}
 	
 	db.exec("INSERT INTO daily (date, name, amount, kcal) VALUES ('" +
  			full_date + "', '" + name + "', '" + amount + "', '" +
@@ -107,15 +113,21 @@ changeAmount = function(name, new_amount) {
 	"' AND daily.date = '" + full_date + "' ;").all();
 	let amount_to_add = Number(new_amount) - Number(old_amount[0]['SUM(daily.amount)']);
 	
-	var item = nuts.catalogue[name];
-	switch (item.unit) {
-		case "100g":
-			var kcal = amount_to_add * (item.calories / 100);
-			break;
-		case "sztuka":
-			var kcal = amount_to_add * item.calories;
-			break;
-	};
+	if (name === "Inne") {
+		var kcal = amount_to_add;
+	} else if (Object.keys(nuts.cookbook).includes(name)) {
+		var kcal = amount_to_add * (nuts.cookbook[name].calories / 100)
+	} else {
+		let item = nuts.catalogue[name];
+		switch (item.unit) {
+			case "100g":
+				var kcal = amount_to_add * (item.calories / 100);
+				break;
+			case "sztuka":
+				var kcal = amount_to_add * item.calories;
+				break;
+		};
+	}
 	
 	db.exec("INSERT INTO daily (date, name, amount, kcal) VALUES ('" +
 			full_date + "', '" + name + "', " + amount_to_add + ", " +
