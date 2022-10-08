@@ -195,6 +195,7 @@ edited_dish_name = null;
 // get item names for the picklist
 const item_picklist = document.getElementById("dishes-add-name");
 var items = dbmgr.getAvailableItems();
+items.sort();
 item_picklist.add(new Option(""));
 for (let item of items) {
 	item_picklist.add(new Option(item));
@@ -363,6 +364,8 @@ $(document).on("change", "#dishes-category-filter", function() {
 			filtered.push(item);
 		};
 	};
+	
+	filtered.sort();
 	
 	$("#dishes-add-name").empty();
 	

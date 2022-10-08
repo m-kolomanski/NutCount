@@ -140,9 +140,6 @@ document.getElementById("today-add-button").onclick = function(event) {
 			break;
 	};
 	
-	//if (added_name == "") {
-	//	alert("Proszę wybrać nazwę orzeszka!");
-	//} else {
 	if (added_amount == "") {
 		alert("Proszę podać ilość!");
 		
@@ -150,7 +147,9 @@ document.getElementById("today-add-button").onclick = function(event) {
 		dbmgr.addTodayItem(added_amount, added_name, added_source);
 
 		resetPage();
+		
 		$("#today-category-filter").val("");
+		filterItemsByCat();
 		$("#today-add-name").val("");
 		$("#today-add-amount").val("");
 		$("#notification-container").empty().css("background-color","green").show().append("Produkt został dodany").delay(3000).fadeOut();
@@ -169,7 +168,7 @@ $(document).on("click", ".today-delete", function(event) {
 });
 
 // filter items by category
-$(document).on("change", "#today-category-filter", function() {
+const filterItemsByCat = function() {
 	let filtered = []
 	if ($("#today-category-filter").val() == "Dania") {
 		for (dish in nuts.cookbook) {
@@ -191,6 +190,9 @@ $(document).on("change", "#today-category-filter", function() {
 	for (item of filtered) {
 		item_picklist.add(new Option(item))
 	};
+};
+$(document).on("input", "#today-category-filter", function() {
+	filterItemsByCat();
 });
 
 
@@ -200,4 +202,17 @@ $(document).on("change", ".today-calc", function() {
 	nuts.today_deficit = $("#today-deficit").val();
 	dbmgr.saveNUTS();
 });
+
+// inform user of the unit ahead of adding product
+$(document).on("change", "#today-add-name", function(event) {
+	let amount_label = "Ilość";
+	
+	if (Object.keys(nuts.cookbook).includes(event.target.value)) {
+		amount_label += " (g)";
+	} else if (Object.keys(nuts.catalogue).includes(event.target.value)) {
+		amount_label += ` (${nuts.catalogue[event.target.value].unit})`;
+	}
+	
+	$("[for='today-add-amount']").html(amount_label);
+});	
 
