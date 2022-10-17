@@ -1,8 +1,8 @@
 // render food catalogue
-const renderCatalogue = function() {
+const renderCatalogue = function(catalogue = nuts.catalogue) {
 	const table = document.createElement("table");
 	
-	var ordered_catalogue = Object.keys(nuts.catalogue).sort().reduce(
+	var ordered_catalogue = Object.keys(catalogue).sort().reduce(
 		(obj, key) => {
 			obj[key] = nuts.catalogue[key];
 			return obj;
@@ -57,6 +57,22 @@ const renderCatalogue = function() {
 	$("#food-catalogue").html(table);
 };
 
+// filter catalogue
+const filterCatalogue = function(selected_category) {
+	if (selected_category === "") {
+		return nuts.catalogue;
+	} else {
+		let filtered_catalogue = {};
+
+		for (item in nuts.catalogue) {
+			if (nuts.catalogue[item]["category"].includes(selected_category)) {
+				filtered_catalogue[item] = nuts.catalogue[item];
+			}
+		}
+		return filtered_catalogue;
+	}
+};
+
 // render categories table
 const renderCategories = function() {
 	// for pick-list
@@ -105,6 +121,8 @@ const deleteCategory = function(event) {
 renderCatalogue();
 renderCategories();
 
+
+
 //// EVENTS ////
 
 // add new item to catalogue
@@ -132,7 +150,8 @@ document.getElementById("add-things").onclick = function() {
 $(document).on("click", ".delete-field.catalogue", function(event) {
 	let name_to_delete = event.target.parentElement.childNodes[0].innerHTML;
 	dbmgr.deleteItem(name_to_delete, "catalogue");
-	renderCatalogue();
+	
+	renderCatalogue(filterCatalogue($("#category").val()));
 });
 // check if item in catalogue
 $("#name").on("input", function(event) {
@@ -142,6 +161,11 @@ $("#name").on("input", function(event) {
 	} else {
 		$("#notification-container").fadeOut().empty();
 	};
+});
+
+// filter catalogue on category
+$(document).on("change", "#category", function(event) {
+	renderCatalogue(filterCatalogue($("#category").val()));
 });
 
 // add category
