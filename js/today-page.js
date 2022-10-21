@@ -176,7 +176,7 @@ const filterItemsByCat = function() {
 		};
 	} else {
 		for (item in nuts.catalogue) {
-			if ($("#today-category-filter").val() == "" || nuts.catalogue[item].category == $("#today-category-filter").val()) {
+			if ($("#today-category-filter").val() == "" || nuts.catalogue[item].category.includes($("#today-category-filter").val())) {
 				filtered.push(item);
 			};
 		};

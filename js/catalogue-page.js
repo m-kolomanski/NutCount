@@ -37,7 +37,12 @@ const renderCatalogue = function(catalogue = nuts.catalogue) {
 		
 		for (let column in nuts.catalogue[item]) {
 			const cell = document.createElement("td");
-			cell.appendChild(document.createTextNode(nuts.catalogue[item][column]));
+			if (column == "category") {
+				cell.appendChild(document.createTextNode(nuts.catalogue[item][column].join(", ")));
+			} else {
+				cell.appendChild(document.createTextNode(nuts.catalogue[item][column]));
+			}
+			
 			item_row.appendChild(cell);
 		};
 		
@@ -59,42 +64,45 @@ const renderCatalogue = function(catalogue = nuts.catalogue) {
 
 // filter catalogue
 const filterCatalogue = function(selected_category) {
-	if (selected_category === "") {
+	var selected_categories_cells = $(".category-cell-active");
+	if (selected_categories_cells.length === 0) {
 		return nuts.catalogue;
 	} else {
-		let filtered_catalogue = {};
-
+		var selected_categories = []
+		
+		for (let cell of selected_categories_cells) {
+			selected_categories.push(cell.innerHTML);
+		}
+		
+		selected_categories[selected_categories.indexOf("Bez kategorii")] = ""
+		
+		var filtered_catalogue = {};
 		for (item in nuts.catalogue) {
-			if (nuts.catalogue[item]["category"].includes(selected_category)) {
+			if (nuts.catalogue[item]["category"].filter(x => selected_categories.includes(x)).length != 0) {
 				filtered_catalogue[item] = nuts.catalogue[item];
 			}
 		}
+		
 		return filtered_catalogue;
 	}
 };
 
 // render categories table
 const renderCategories = function() {
-	// for pick-list
-	$("#category").empty();
-	const selectElement = document.getElementById("category");
 	var categories = nuts.categories;
-	selectElement.add(new Option(""));
 	
-	// for table
 	const categories_table = document.createElement("table");
 	var id = 0
 	
-	for (let category of categories) {
-		// add to pick-list
-		selectElement.add(new Option(category));
-		
+	for (let category of [...categories, "Bez kategorii"]) {		
 		// generate table
 		const cat_row = document.createElement("tr");
 		cat_row.setAttribute("id", `Cat${id}`);
 		
 		const cat_cell = document.createElement("td");
 		cat_cell.appendChild(document.createTextNode(category));
+		cat_cell.classList.add("category-cell");
+		cat_cell.setAttribute("id", `${category.replace(" ", "_")}`);
 		cat_row.appendChild(cat_cell);
 		const delete_cell = document.createElement("td");
 		delete_cell.classList.add("delete-field");
@@ -121,8 +129,6 @@ const deleteCategory = function(event) {
 renderCatalogue();
 renderCategories();
 
-
-
 //// EVENTS ////
 
 // add new item to catalogue
@@ -134,7 +140,7 @@ document.getElementById("add-things").onclick = function() {
 	};
 	
 	dbmgr.addNewItem();
-	renderCatalogue();
+	renderCatalogue(filterCatalogue());
 	
 	if (overwrite_alert) {
 		$("#notification-container").empty().css("background-color","orange").show().append("Produkt został nadpisany").delay(3000).fadeOut();
@@ -143,7 +149,6 @@ document.getElementById("add-things").onclick = function() {
 	};
 	
 	$("#name").val("");
-	$("#category").val("");
 	$("#calories").val("");
 }
 // delete catalogue entry
@@ -163,11 +168,6 @@ $("#name").on("input", function(event) {
 	};
 });
 
-// filter catalogue on category
-$(document).on("change", "#category", function(event) {
-	renderCatalogue(filterCatalogue($("#category").val()));
-});
-
 // add category
 $(document).on("click", "#categories-add-button", function() {
 	dbmgr.execCategory($("#categories-add").val(), "add");
@@ -180,4 +180,15 @@ $(document).on("click", ".delete-field.categories", function(event) {
 	dbmgr.execCategory(name_to_delete, "delete");
 	renderCategories();
 	renderCatalogue();
+});
+
+// select category
+$(document).on("click", ".category-cell", function(event) {
+	$(`#${event.target.id}`).removeClass("category-cell").addClass("category-cell-active");
+	renderCatalogue(filterCatalogue());
+});
+// deselect category
+$(document).on("click", ".category-cell-active", function(event) {
+	$(`#${event.target.id}`).removeClass("category-cell-active").addClass("category-cell");
+	renderCatalogue(filterCatalogue());
 });

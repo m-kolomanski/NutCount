@@ -100,3 +100,7 @@ td, tr, th {
 	color: white;
 	font-weight: bold;	
 }
+
+.category-cell-active {
+	background-color: orange;
+}
