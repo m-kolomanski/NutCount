@@ -192,3 +192,4 @@ $(document).on("click", ".category-cell-active", function(event) {
 	$(`#${event.target.id}`).removeClass("category-cell-active").addClass("category-cell");
 	renderCatalogue(filterCatalogue());
 });
+
