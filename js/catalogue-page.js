@@ -107,9 +107,12 @@ const renderCategories = function() {
 		const delete_cell = document.createElement("td");
 		delete_cell.classList.add("delete-field");
 		delete_cell.classList.add("categories");
+		delete_cell.setAttribute("id", `Del${id}`);
 		cat_row.appendChild(delete_cell);
 		
 		categories_table.appendChild(cat_row);
+		
+		id += 1;
 	};
 	$("#categories-table").html(categories_table);
 };
@@ -176,7 +179,11 @@ $(document).on("click", "#categories-add-button", function() {
 
 // delete category
 $(document).on("click", ".delete-field.categories", function(event) {
+	$(`#${event.target.id}`).removeClass('delete-field').addClass('delete-field-confirm')
+});
+$(document).on("click", ".delete-field-confirm.categories", function(event) {
 	let name_to_delete = event.target.parentElement.childNodes[0].innerHTML;
+	
 	dbmgr.execCategory(name_to_delete, "delete");
 	renderCategories();
 	renderCatalogue();

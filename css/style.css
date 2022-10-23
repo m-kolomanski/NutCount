@@ -89,6 +89,19 @@ td, tr, th {
 	color: white;
 	font-weight: bold;	
 }
+.delete-field-confirm {
+	background-color: yellow;
+	transition: background-color 0.5s;
+}
+.delete-field-confirm:after {
+	content: "Na pewno?";
+	color: black;
+	font-weight: bold;
+}
+.delete-field-confirm:hover {
+	background-color: orange;
+}
+
 .edit-field {
 	transition: background-color 0.5s;
 }
