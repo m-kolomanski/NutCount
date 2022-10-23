@@ -57,7 +57,7 @@ const changeDailyAmount = function(event) {
 		let current_id = event.target.id.split("-")[2]
 		var name_to_change = $("#" + current_id).html();
 		var value_to_change = $("#".concat(Number(current_id) + 2)).val();
-		dbmgr.changeAmount(name_to_change, value_to_change);
+		dbmgr.changeAmount(name_to_change, Number(value_to_change));
 		
 		resetPage();
 		
@@ -220,7 +220,6 @@ $(document).on("change", "#today-add-name", function(event) {
 $(document).on("input", ".today-calculator", function() {
 	let weight = $("#today-calculator-weight").val();
 	let kcal = $("#today-calculator-kcal").val();
-	console.log(`${kcal} ${weight}`)
 	
 	if (weight == "" && kcal == "") {
 		$("#today-calculator-result").html("");

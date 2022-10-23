@@ -170,7 +170,7 @@ $("#name").on("input", function(event) {
 
 // add category
 $(document).on("click", "#categories-add-button", function() {
-	dbmgr.execCategory($("#categories-add").val(), "add");
+	dbmgr.execCategory($("#categories-add").val().trim(), "add");
 	renderCategories();
 });
 

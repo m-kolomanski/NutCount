@@ -63,9 +63,9 @@ addNewItem = function() {
 		}
 	}
 		
-	nuts['catalogue'][$("#name").val()] = {
+	nuts['catalogue'][$("#name").val().trim()] = {
 		"category" : selected_categories,
-		"calories" : $("#calories").val(),
+		"calories" : Number($("#calories").val()),
 		"unit" : $("#unit").val()
 	}
 
