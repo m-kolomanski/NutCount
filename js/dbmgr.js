@@ -52,9 +52,20 @@ createNewDatabase = function() {
 }
 
 addNewItem = function() {
-	nuts['catalogue'][$("#name").val()] = {
-		"category" : [$("#category").val()],
-		"calories" : $("#calories").val(),
+	var selected_categories_cells = $(".category-cell-active");
+	var selected_categories = [];
+	
+	if (selected_categories_cells.length === 0) {
+		selected_categories.push("");
+	} else {
+		for (let cell of selected_categories_cells) {
+			selected_categories.push(cell.innerHTML);
+		}
+	}
+		
+	nuts['catalogue'][$("#name").val().trim()] = {
+		"category" : selected_categories,
+		"calories" : Number($("#calories").val()),
 		"unit" : $("#unit").val()
 	}
 
@@ -159,6 +170,10 @@ execCategory = function(cat, mode) {
 			if (nuts.catalogue[item].category.includes(cat)) {
 				let i = nuts.catalogue[item].category.indexOf(cat);
 				nuts.catalogue[item].category.splice(i, 1);
+				
+				if (nuts.catalogue[item].category.length === 0) {
+					nuts.catalogue[item].category.push("");
+				}
 			}
 		}
 	} else {

@@ -1,8 +1,8 @@
 // render food catalogue
-const renderCatalogue = function() {
+const renderCatalogue = function(catalogue = nuts.catalogue) {
 	const table = document.createElement("table");
 	
-	var ordered_catalogue = Object.keys(nuts.catalogue).sort().reduce(
+	var ordered_catalogue = Object.keys(catalogue).sort().reduce(
 		(obj, key) => {
 			obj[key] = nuts.catalogue[key];
 			return obj;
@@ -37,7 +37,12 @@ const renderCatalogue = function() {
 		
 		for (let column in nuts.catalogue[item]) {
 			const cell = document.createElement("td");
-			cell.appendChild(document.createTextNode(nuts.catalogue[item][column]));
+			if (column == "category") {
+				cell.appendChild(document.createTextNode(nuts.catalogue[item][column].join(", ")));
+			} else {
+				cell.appendChild(document.createTextNode(nuts.catalogue[item][column]));
+			}
+			
 			item_row.appendChild(cell);
 		};
 		
@@ -57,35 +62,57 @@ const renderCatalogue = function() {
 	$("#food-catalogue").html(table);
 };
 
+// filter catalogue
+const filterCatalogue = function(selected_category) {
+	var selected_categories_cells = $(".category-cell-active");
+	if (selected_categories_cells.length === 0) {
+		return nuts.catalogue;
+	} else {
+		var selected_categories = []
+		
+		for (let cell of selected_categories_cells) {
+			selected_categories.push(cell.innerHTML);
+		}
+		
+		selected_categories[selected_categories.indexOf("Bez kategorii")] = ""
+		
+		var filtered_catalogue = {};
+		for (item in nuts.catalogue) {
+			if (nuts.catalogue[item]["category"].filter(x => selected_categories.includes(x)).length != 0) {
+				filtered_catalogue[item] = nuts.catalogue[item];
+			}
+		}
+		
+		return filtered_catalogue;
+	}
+};
+
 // render categories table
 const renderCategories = function() {
-	// for pick-list
-	$("#category").empty();
-	const selectElement = document.getElementById("category");
 	var categories = nuts.categories;
-	selectElement.add(new Option(""));
 	
-	// for table
 	const categories_table = document.createElement("table");
 	var id = 0
 	
-	for (let category of categories) {
-		// add to pick-list
-		selectElement.add(new Option(category));
-		
+	for (let category of [...categories, "Bez kategorii"]) {		
 		// generate table
 		const cat_row = document.createElement("tr");
 		cat_row.setAttribute("id", `Cat${id}`);
 		
 		const cat_cell = document.createElement("td");
 		cat_cell.appendChild(document.createTextNode(category));
+		cat_cell.classList.add("category-cell");
+		cat_cell.setAttribute("id", `${category.replace(" ", "_")}`);
 		cat_row.appendChild(cat_cell);
 		const delete_cell = document.createElement("td");
 		delete_cell.classList.add("delete-field");
 		delete_cell.classList.add("categories");
+		delete_cell.setAttribute("id", `Del${id}`);
 		cat_row.appendChild(delete_cell);
 		
 		categories_table.appendChild(cat_row);
+		
+		id += 1;
 	};
 	$("#categories-table").html(categories_table);
 };
@@ -116,7 +143,7 @@ document.getElementById("add-things").onclick = function() {
 	};
 	
 	dbmgr.addNewItem();
-	renderCatalogue();
+	renderCatalogue(filterCatalogue());
 	
 	if (overwrite_alert) {
 		$("#notification-container").empty().css("background-color","orange").show().append("Produkt został nadpisany").delay(3000).fadeOut();
@@ -125,14 +152,14 @@ document.getElementById("add-things").onclick = function() {
 	};
 	
 	$("#name").val("");
-	$("#category").val("");
 	$("#calories").val("");
 }
 // delete catalogue entry
 $(document).on("click", ".delete-field.catalogue", function(event) {
 	let name_to_delete = event.target.parentElement.childNodes[0].innerHTML;
 	dbmgr.deleteItem(name_to_delete, "catalogue");
-	renderCatalogue();
+	
+	renderCatalogue(filterCatalogue($("#category").val()));
 });
 // check if item in catalogue
 $("#name").on("input", function(event) {
@@ -146,14 +173,30 @@ $("#name").on("input", function(event) {
 
 // add category
 $(document).on("click", "#categories-add-button", function() {
-	dbmgr.execCategory($("#categories-add").val(), "add");
+	dbmgr.execCategory($("#categories-add").val().trim(), "add");
 	renderCategories();
 });
 
 // delete category
 $(document).on("click", ".delete-field.categories", function(event) {
+	$(`#${event.target.id}`).removeClass('delete-field').addClass('delete-field-confirm')
+});
+$(document).on("click", ".delete-field-confirm.categories", function(event) {
 	let name_to_delete = event.target.parentElement.childNodes[0].innerHTML;
+	
 	dbmgr.execCategory(name_to_delete, "delete");
 	renderCategories();
 	renderCatalogue();
 });
+
+// select category
+$(document).on("click", ".category-cell", function(event) {
+	$(`#${event.target.id}`).removeClass("category-cell").addClass("category-cell-active");
+	renderCatalogue(filterCatalogue());
+});
+// deselect category
+$(document).on("click", ".category-cell-active", function(event) {
+	$(`#${event.target.id}`).removeClass("category-cell-active").addClass("category-cell");
+	renderCatalogue(filterCatalogue());
+});
+

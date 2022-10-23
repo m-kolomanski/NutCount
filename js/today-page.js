@@ -57,7 +57,7 @@ const changeDailyAmount = function(event) {
 		let current_id = event.target.id.split("-")[2]
 		var name_to_change = $("#" + current_id).html();
 		var value_to_change = $("#".concat(Number(current_id) + 2)).val();
-		dbmgr.changeAmount(name_to_change, value_to_change);
+		dbmgr.changeAmount(name_to_change, Number(value_to_change));
 		
 		resetPage();
 		
@@ -110,7 +110,7 @@ for (let item of items) {
 
 const cat_picklist = document.getElementById("today-category-filter");
 cat_picklist.add(new Option(""));
-cat_picklist.add(new Option("Dania"));
+cat_picklist.add(new Option("Posiłki"));
 
 for (let cat of nuts.categories) {
 	cat_picklist.add(new Option(cat));
@@ -132,7 +132,7 @@ document.getElementById("today-add-button").onclick = function(event) {
 				var added_source = "catalogue";
 			}
 			break
-		case "Dania":
+		case "Posiłki":
 			var added_source = "cookbook";
 			break;
 		default:
@@ -170,13 +170,13 @@ $(document).on("click", ".today-delete", function(event) {
 // filter items by category
 const filterItemsByCat = function() {
 	let filtered = []
-	if ($("#today-category-filter").val() == "Dania") {
+	if ($("#today-category-filter").val() == "Posiłki") {
 		for (dish in nuts.cookbook) {
 			filtered.push(dish)
 		};
 	} else {
 		for (item in nuts.catalogue) {
-			if ($("#today-category-filter").val() == "" || nuts.catalogue[item].category == $("#today-category-filter").val()) {
+			if ($("#today-category-filter").val() == "" || nuts.catalogue[item].category.includes($("#today-category-filter").val())) {
 				filtered.push(item);
 			};
 		};
@@ -216,3 +216,18 @@ $(document).on("change", "#today-add-name", function(event) {
 	$("[for='today-add-amount']").html(amount_label);
 });	
 
+// kcal calulator
+$(document).on("input", ".today-calculator", function() {
+	let weight = $("#today-calculator-weight").val();
+	let kcal = $("#today-calculator-kcal").val();
+	
+	if (weight == "" && kcal == "") {
+		$("#today-calculator-result").html("");
+	} else if (weight == "" || kcal == "") {
+		$("#today-calculator-result").html("Uzupełnij informacje!");
+	} else {
+		let result = Math.round(Number(weight) * (Number(kcal) / 100))
+		$("#today-calculator-result").html(result);
+		$("#today-add-amount").val(result);
+	}
+});

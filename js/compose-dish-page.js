@@ -377,7 +377,7 @@ $(document).on("change", "#dishes-category-filter", function() {
 
 // add new container
 $(document).on("click", "#containers-add-button", function() {
-	dbmgr.execContainer($("#containers-add-name").val(), $("#containers-add-weight").val(), "add");
+	dbmgr.execContainer($("#containers-add-name").val().trim(), $("#containers-add-weight").val(), "add");
 	renderContainers();
 });
 
