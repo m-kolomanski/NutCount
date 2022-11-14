@@ -231,3 +231,11 @@ $(document).on("input", ".today-calculator", function() {
 		$("#today-add-amount").val(result);
 	}
 });
+
+
+// SHORTCUTS //
+document.onkeyup = function(event) {
+	if (event.key === "Enter") {
+		$("#today-add-button").click();
+	}
+}
