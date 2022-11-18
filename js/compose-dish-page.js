@@ -1,10 +1,10 @@
 // FUNCTIONS
 // render dish table
-function Portions(weight, kcal) {
-	this.four_portions_weight = Math.round((weight / 4));
-	this.six_portions_weight = Math.round((weight / 6));
-	this.four_portions_kcal = Math.round(this.four_portions_weight * (kcal / 100));
-	this.six_portions_kcal = Math.round(this.six_portions_weight * (kcal / 100));
+function calculatePortionStats(weight, kcal, n_portions) {
+	let grams_portion = Math.round(weight / n_portions);
+	let kcal_portion = Math.round(grams_portion * (kcal / 100));
+	
+	return `${grams_portion}g / ${kcal_portion}kcal`
 };
 const renderDishTable = function() {
 	var dishes = nuts.cookbook;
@@ -14,7 +14,7 @@ const renderDishTable = function() {
 	const thead = document.createElement("thead");
 	const header_row = document.createElement("tr");
 	
-	for (let header of ["Nazwa", "100g", "4 porcje", "6 porcji", ""]) {
+	for (let header of ["Nazwa", "100g", "Ilość porcji", "Porcja", ""]) {
 		const head_cell = document.createElement("th");
 		head_cell.appendChild(document.createTextNode(header));
 		header_row.appendChild(head_cell);
@@ -29,10 +29,7 @@ const renderDishTable = function() {
 		var id = 0
 		
 		for (let dish in dishes) {
-			var portions_data = new Portions(dishes[dish]["weight"], dishes[dish]["calories"]);
-			
 			const dish_row = document.createElement("tr");
-			//dish_row.setAttribute("id", id);
 			
 			const name_cell = document.createElement("td")
 			name_cell.appendChild(document.createTextNode(dish))
@@ -42,15 +39,21 @@ const renderDishTable = function() {
 			calories_cell.appendChild(document.createTextNode(Math.round(nuts.cookbook[dish].calories)));
 			dish_row.appendChild(calories_cell);
 			
-			let four_portions_text = `${portions_data['four_portions_weight']}g / ${portions_data['four_portions_kcal']}kcal`
-			const four_portions_cell = document.createElement("td");
-			four_portions_cell.appendChild(document.createTextNode(four_portions_text));
-			dish_row.appendChild(four_portions_cell);
+			let dish_portions = Number(nuts.cookbook[dish].portions)
 			
-			let six_portions_text = `${portions_data['six_portions_weight']}g / ${portions_data['six_portions_kcal']}kcal`
-			const six_portions_cell = document.createElement("td");
-			six_portions_cell.appendChild(document.createTextNode(six_portions_text));
-			dish_row.appendChild(six_portions_cell);
+			let portions_number_cell = document.createElement("td");
+			portions_number_cell_widget = document.createElement("input");
+			portions_number_cell_widget.setAttribute("type", "text");
+			portions_number_cell_widget.setAttribute("value", dish_portions);
+			portions_number_cell_widget.classList.add("portions_number_widget");
+			portions_number_cell.appendChild(portions_number_cell_widget);
+			dish_row.appendChild(portions_number_cell);
+			
+			let portions_calculations = document.createElement("td");
+			portions_calculations.appendChild(document.createTextNode(calculatePortionStats(dishes[dish]["weight"],
+																							dishes[dish]["calories"],
+																							dish_portions)));
+			dish_row.appendChild(portions_calculations);
 			
 			let edit_cell = document.createElement("td");
 			edit_cell.classList.add("edit-field");
@@ -83,6 +86,7 @@ const renderEditTable = function(name = null) {
 				break;
 		};
 		
+		$("#save-dish-portions").val(nuts.cookbook[name]["portions"]);
 	};
 	
 	const dish_edit_table = document.createElement("table");
@@ -230,6 +234,17 @@ $(document).on("click", ".edit-field.dish", function(event) {
 $(document).on("click", "#add-new-dish", function(event) {
 	addNewOrEdit(event);
 });
+// change portions
+$(document).on("change", ".portions_number_widget", function(event) {
+	let changed_dish = event.target.parentElement.parentElement.firstChild.innerHTML;
+	nuts.cookbook[changed_dish].portions = event.target.value;
+	dbmgr.saveNUTS();
+	
+	let new_calculation = calculatePortionStats(nuts.cookbook[changed_dish]["weight"],
+											nuts.cookbook[changed_dish]["calories"],
+											event.target.value);
+	event.target.parentElement.nextSibling.innerHTML = new_calculation;
+});
 
 // save dish
 $(document).on("click", "#save-dish", function(event) {
@@ -262,7 +277,8 @@ $(document).on("click", "#save-dish", function(event) {
 		"ingredients": edited_dish,
 		"container": dish_container,
 		"weight": dish_weight,
-		"calories": dish_calories / (dish_weight) * 100
+		"calories": dish_calories / (dish_weight) * 100,
+		"portions": Number($("#save-dish-portions").val())
 	};
 	
 	dbmgr.saveNUTS();

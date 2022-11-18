@@ -10,6 +10,7 @@
 	<div id = "navbar"></div>
 	<script>$("#navbar").load("nav.html")</script>
 	
+	<!-- DISH TABLE -->
 	<div id = "dish-table-container" style = "border: 1px red solid;display:inline-block;width:70%">
 		<div id = "adding-widgets">
 			<div class = "input-widget">
@@ -19,7 +20,7 @@
 		<div class = "table-container" id = "dish-table"></div>
 	</div>
 	
-	
+	<!-- EDIT DISH -->
 	<div id = "dish-edit-container" style = "border: 1px blue solid;display:none;width:70%">
 		<div id = "adding-widgets">
 			<div class = "input-widget">
@@ -34,6 +35,10 @@
 			<div class = "input-widget">
 				<label for = "save-dish-weight">Waga całkowita</label><br>
 				<input type = "text" id = "save-dish-weight"></input>
+			</div>
+			<div class = "input-widget">
+				<label for = "save-dish-portions">Ilość porcji</label><br>
+				<input type = "text" id = "save-dish-portions"></input>
 			</div>
 			<div class = "input-widget">
 				<button id = "save-dish">Zapisz danie</button>
