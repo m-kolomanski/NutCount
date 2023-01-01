@@ -5,15 +5,18 @@
     <title>Hello World!</title>
     <script>window.$ = window.jQuery = require('jquery');</script>
 	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<link rel="stylesheet" type="text/css" href="../css/compose-dish-page.css">
   </head>
   <body>
 	<div id = "navbar"></div>
 	<script>$("#navbar").load("nav.html")</script>
 	
+	<p id = "header">Skomponuj danie</p>
+	<br><br>
 	<!-- DISH TABLE -->
-	<div id = "dish-table-container" style = "border: 1px red solid;display:inline-block;width:70%">
-		<div id = "adding-widgets">
-			<div class = "input-widget">
+	<div id = "dish-table-container" style = "display:inline-block;width:70%;">
+		<div id = "adding-widgets" style = "width:90%;text-align:center;padding-left:5%;padding-bottom:10px;">
+			<div class = "input-widget" style = "width:100%">
 				<button class = "edit-dish" id = "add-new-dish">Dodaj nowe danie</button>
 			</div>
 		</div>
@@ -21,74 +24,94 @@
 	</div>
 	
 	<!-- EDIT DISH -->
-	<div id = "dish-edit-container" style = "border: 1px blue solid;display:none;width:70%">
-		<div id = "adding-widgets">
-			<div class = "input-widget">
-				<label for = "dish-name">Nazwa dania</label><br>
-				<input type = "text" id = "dish-name"></input>
+	<div id = "dish-edit-container" style = "display:none;width:70%">
+		<div id = "adding-widgets" class = "widget-backdrop">
+			<p class = "rotated-label" style = "float:left;">Danie</p>
+			<!-- DISH INFO -->
+			<div style = "display:inline-block;width:50%;float:left;">
+				<!-- input widgets -->
+				<div style = "display:inline-block;width:60%;float:left;">
+					<div class = "input-widget" style = "width:47%;float:left;margin-left:10px;">
+						<label for = "dish-name">Nazwa dania</label><br>
+						<input type = "text" id = "dish-name"></input>
+					</div>
+					<div class = "input-widget" style = "width:47%;float:right;">
+						<label for = "save-dish-container">Pojemnik</label><br>
+						<select id = "save-dish-container">
+						</select>
+					</div>
+					<br>
+					<div class = "input-widget" style = "width:47%;float:left;margin-left:10px;">
+						<label for = "save-dish-weight">Waga całkowita</label><br>
+						<input type = "text" id = "save-dish-weight"></input>
+					</div>
+					<div class = "input-widget" style = "width:46%;float:right;padding-right:5px;">
+						<label for = "save-dish-portions">Ilość porcji</label><br>
+						<input type = "text" id = "save-dish-portions"></input>
+					</div>
+				</div>
+				<!-- buttons -->
+				<div style = "display:inline-block;width:35%;float:left;">
+					<div class = "input-widget" style = "width:90%;padding-bottom:0.3rem;padding-top:0.5rem;">
+						<button id = "save-dish">Zapisz danie</button>
+					</div>
+					<br>
+					<div class = "input-widget" style = "width:90%;">
+						<button id = "cancel-dish">Anuluj</button>
+					</div>
+					<br>
+					<div class = "input-widget" style = "width:90%;padding-top:0.3rem;">
+						<button id = "delete-dish">Usuń danie</button>
+					</div>
+				</div>
 			</div>
-			<div class = "input-widget">
-				<label for = "save-dish-container">Pojemnik</label><br>
-				<select id = "save-dish-container">
-				</select>
-			</div>
-			<div class = "input-widget">
-				<label for = "save-dish-weight">Waga całkowita</label><br>
-				<input type = "text" id = "save-dish-weight"></input>
-			</div>
-			<div class = "input-widget">
-				<label for = "save-dish-portions">Ilość porcji</label><br>
-				<input type = "text" id = "save-dish-portions"></input>
-			</div>
-			<div class = "input-widget">
-				<button id = "save-dish">Zapisz danie</button>
-			</div>
-			<div class = "input-widget">
-				<button id = "cancel-dish">Anuluj</button>
-			</div>
-			<div class = "input-widget">
-				<button id = "delete-dish">Usuń danie</button>
-			</div>
-			
+			<p class = "rotated-label" style = "">Składniki</p>
+			<!-- ADD INGREDIENTS -->
+			<div style = "display:inline-block;width:40%;float:right;padding-right:10px;">
+				<div class = "input-widget" style = "width:49%;float:left;">
+					<label for "dishes-category-filter">Kategoria</label><br>
+					<select name = "dishes-category-filter" id = "dishes-category-filter">
+					</select>
+				</div>
+				<div class = "input-widget" style = "width:49%;float:right;">
+					<label for = "dishes-add-name">Nazwa</label><br>
+					<select name = "dishes-add-name" id = "dishes-add-name">
+					</select>
+				</div>
+				<br>
+				<div class = "input-widget" style = "width:47.5%;float:left;">
+					<label for = "dishes-add-amount">Ilość</label><br>
+					<input type = "text" id = "dishes-add-amount"></input>
+				</div>
+				<div class = "input-widget" style = "width:49%;float:right;margin-top:18px;">
+					<button id = "dishes-add-button" style = "vertical-align:bottom;">Dodaj</button>
+				</div>
+			</div>			
 			<br><br>
-			
-			<div class = "input-widget">
-				<label for "dishes-category-filter">Kategoria</label><br>
-				<select name = "dishes-category-filter" id = "dishes-category-filter">
-				</select>
-			</div>
-			<div class = "input-widget">
-				<label for = "dishes-add-name">Nazwa</label><br>
-				<select name = "dishes-add-name" id = "dishes-add-name">
-				</select>
-			</div>
-			<div class = "input-widget">
-				<label for = "dishes-add-amount">Ilość</label><br>
-				<input type = "text" id = "dishes-add-amount"></input>
-			</div>
-			<div class = "input-widget">
-				<button id = "dishes-add-button">Dodaj</button>
-			</div>
 		</div>
-		<div class = "table-container" id = "dish-edit"></div>
+		<div class = "table-container" id = "dish-edit" style = "padding-top:10px;"></div>
 	</div>
 	
-	<div id = "dish-containers" style = "display:inline-block;width:25%;float:right">
-		<p>Pojemniki</p><br>
-		<div class = "input-widget">
-			<label for = "containers-add-name">Nazwa</label><br>
-			<input type = "text" id = "containers-add-name"></input>
+	<!-- CONTAINERS -->
+	<div style = "display:inline-block;width:25%;float:right">
+		<div id = "dish-containers" class = "widget-backdrop">
+			<span style = "border-bottom: 2px dashed #f88d35">Pojemniki</span><br>
+			<div style = "width:100%;">
+				<div class = "input-widget" style = "width:45%;float:left;padding-left:10px">
+					<label for = "containers-add-name">Nazwa</label><br>
+					<input type = "text" id = "containers-add-name"></input>
+				</div>
+				<div class = "input-widget" style = "display:inline-block;width:45%;float:right;padding-right:20px;">
+					<label for = "containers-add-weight">Waga</label><br>
+					<input type = "text" id = "containers-add-weight">
+				</div>
+			</div>
+			<div class = "input-widget" style = 'width:80%;padding-top:8px;'>
+				<button id = "containers-add-button" style = "width:100%;">Dodaj</button>
+			</div>
 		</div>
-		<div class = "input-widget">
-			<label for = "containers-add-weight">Waga</label><br>
-			<input type = "text" id = "containers-add-weight">
-		</div>
-		<div class = "input-widget">
-			<button id = "containers-add-button">Dodaj</button>
-		</div>
-		<div id = "containers-table" class = "table-container"></div>
-	</div>
-    
+		<div id = "containers-table" class = "table-container" style = "padding-top:15px;"></div>
+    </div>
 	
 	<script src = "../js/compose-dish-page.js"></script>
   </body>

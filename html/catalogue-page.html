@@ -5,50 +5,53 @@
     <title>NutCount</title>
     <script>window.$ = window.jQuery = require('jquery');</script>
 	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<link rel="stylesheet" type="text/css" href="../css/catalogue-page.css">
   </head>
   <body>
 	<div id = "navbar"></div>
 	<script>$("#navbar").load("nav.html")</script>
 	
-	<div style = "text-align:center;">
-		<p style = "font-size:40px;">Katalog produktów</p>
-	</div>
+	<p id = "header">Katalog produktów</p>
 	<div id = "notification-container" style = "height:30px;text-align:center"></div> 
+	
 	<div id = "catalogue-table" style = "display:inline-block;width:70%">
-		<div id = "adding-widgets">
-			<div class = "input-widget">
-				<label for="text">Nazwa</label><br>
-				<input type = "text" id = "name"></input>
-			</div>
-			<!--
-			<div class = "input-widget">
-				<label for = "category">Kategoria</label><br>
-					<select name = "category" id = "category">
+		<div class = "widget-backdrop">
+			<div id = "adding-widgets" class = "widget-container" style = "width:50%">
+				<div class = "input-widget" style = "width:100%">
+					<label for="text">Nazwa</label><br>
+					<input type = "text" id = "name"></input>
+				</div>
+				<br>
+				<div class = "input-widget" style = "width:31%;">
+					<label for = "calories">Kalorie</label><br>
+					<input type = "text" id = "calories"></input>
+				</div>
+				<div class = "input-widget" style = "width:31%;padding-left:2.5%;padding-right:2.5%">
+					<label for = "unit">Jednostka</label><br>
+					<select name = "unit" id = "unit">
+						<option value = "100g">100g</option>
+						<option value = "sztuka">sztuka</option>
 					</select>
-			</div>
-			-->
-			<div class = "input-widget">
-				<label for = "calories">Kalorie</label><br>
-				<input type = "text" id = "calories"></input>
-			</div>
-			<div class = "input-widget">
-				<label for = "unit">Jednostka</label><br>
-				<select name = "unit" id = "unit">
-					<option value = "100g">100g</option>
-					<option value = "sztuka">sztuka</option>
-				</select>
-			</div>
-			<div class = "input-widget">
-				<button id = "add-things">Dodaj</button>
+				</div>
+				<div class = "input-widget" style = "width:31%">
+					<button id = "add-things">Dodaj</button>
+				</div>
+				
 			</div>
 		</div>
-		<br><br>
 		<div id = "food-catalogue" class = "table-container"></div>
 	</div>
-	<div id = "catalogue-categories" style = "display:inline-block;width:25%;float:right">
-		<p>Kategorie</p><br>
-		<input type = "text" id = "categories-add"></input>
-		<button id = "categories-add-button">Dodaj</button>
+	
+	<div id = "catalogue-categories">
+		<div class = "widget-backdrop">
+			<div class = "widget-container">
+				<div class = "input-widget" style = "width:100%;margin-top:0.25em;">
+					<label for = "categories-add">Kategorie</label><br>
+					<input type = "text" id = "categories-add" name = "categories-add"></input>
+				</div>
+				<button id = "categories-add-button">Dodaj</button>
+			</div>
+		</div>
 		<div id = "categories-table" class = "table-container"></div>
 	</div>
     

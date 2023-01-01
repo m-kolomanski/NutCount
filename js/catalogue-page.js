@@ -146,10 +146,18 @@ document.getElementById("add-things").onclick = function() {
 	renderCatalogue(filterCatalogue());
 	
 	if (overwrite_alert) {
-		$("#notification-container").empty().css("background-color","orange").show().append("Produkt został nadpisany").delay(3000).fadeOut();
+		$("#notification-container")
+			.empty()
+			.append("<p id='notification'>Produkt został nadpisany.</p>");
 	} else {
-		$("#notification-container").empty().css("background-color","green").show().append("Produkt został dodany").delay(3000).fadeOut();
-	};
+		$("#notification-container")
+			.empty()
+			.append("<p id='notification'>Produkt został dodany.</p>");
+	}
+	
+	$("#notification")
+		.delay(3000)
+		.fadeOut();
 	
 	$("#name").val("");
 	$("#calories").val("");
@@ -165,10 +173,13 @@ $(document).on("click", ".delete-field.catalogue", function(event) {
 $("#name").on("input", function(event) {
 	let item_to_search = event.target.value;
 	if (Object.keys(nuts.catalogue).includes(item_to_search)) {
-		$("#notification-container").empty().css("background-color","yellow").show().append("Produkt jest już na liście. Czy chcesz go nadpisać?");
+		$("#notification-container")
+			.empty()
+			.append("<p id='notification' style='background-color:#f88d35'>Produkt jest już na liście. Czy chcesz go nadpisać?</p>")
 	} else {
-		$("#notification-container").fadeOut().empty();
-	};
+		$("#notification")
+			.fadeOut();
+	}
 });
 
 // add category

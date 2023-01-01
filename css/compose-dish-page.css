@@ -1,0 +1,7 @@
+.rotated-label {
+	position: relative;
+	top: 23%;
+	transform: rotate(-90deg);
+	display:inline-block;
+	border-bottom: 2px dashed #f88d35;
+}

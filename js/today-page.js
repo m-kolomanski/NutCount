@@ -21,7 +21,7 @@ const renderTodayTable = function() {
 		row_id += 10
 	}
 	
-	let table = "<table><tr><th>Nazwa</th><th>Ilość</th><th>Kalorie</th>" +
+	let table = "<table><tr><th>Nazwa</th><th>Ilość</th><th>Kalorie</th><th></th></tr>" +
 					rows.join('') +
 				"</table>";
 				
@@ -152,11 +152,14 @@ document.getElementById("today-add-button").onclick = function(event) {
 		filterItemsByCat();
 		$("#today-add-name").val("");
 		$("#today-add-amount").val("");
-		$("#notification-container").empty().css("background-color","green").show().append("Produkt został dodany").delay(3000).fadeOut();
+		
+		$("#notification-container")
+			.empty()
+			.append("<p id='notification'>Produkt został dodany.</p>")
+		$("#notification")
+			.delay(3000)
+			.fadeOut();
 	}
-	//}
-
-
 };
 
 $(document).on("click", ".today-amount-cell", function(event) {
@@ -216,7 +219,7 @@ $(document).on("change", "#today-add-name", function(event) {
 	$("[for='today-add-amount']").html(amount_label);
 });	
 
-// kcal calulator
+// kcal calculator
 $(document).on("input", ".today-calculator", function() {
 	let weight = $("#today-calculator-weight").val();
 	let kcal = $("#today-calculator-kcal").val();
@@ -227,7 +230,7 @@ $(document).on("input", ".today-calculator", function() {
 		$("#today-calculator-result").html("Uzupełnij informacje!");
 	} else {
 		let result = Math.round(Number(weight) * (Number(kcal) / 100))
-		$("#today-calculator-result").html(result);
+		$("#today-calculator-result").html(`${result} kcal`);
 		$("#today-add-amount").val(result);
 	}
 });

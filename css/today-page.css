@@ -1,0 +1,40 @@
+.widget-container > p {
+	margin: 0px;
+	height: 100%;
+	line-height: 250%
+}
+.widget-container > p > span.widget-label {
+	position: relative;
+	bottom: 5%;
+	border-bottom: 2px dashed #f88d35
+}
+
+.kcal-bottom-label1 {
+	position:relative;
+	bottom:20%;
+}
+.kcal-bottom-label2 {
+	position:relative;
+	bottom:13%;
+}
+
+#today-page-inputs {
+	display: inline-block;
+	width: 30%;
+}
+#today-table {
+	padding-top:1em;
+}
+th:nth-child(1) { width: 55%; }
+th:nth-child(2) { width: 20%; }
+th:nth-child(3) { width: 20%; }
+th:nth-child(4) { width: 5% ; }
+
+#today-page-calculator-container {
+	line-height: 150%;
+	position: relative;
+	top: 5%;
+}
+#today-calculator-result {
+	font-weight: bold;
+}

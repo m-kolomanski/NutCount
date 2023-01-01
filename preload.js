@@ -21,3 +21,7 @@ window.db = dbmgr.loadDatabase();
 try {
 	window.nuts = require(path.join(__dirname, "./db/nuts.json"));
 } catch (error) { };
+
+window.palette = {
+	green: "yellow"
+}

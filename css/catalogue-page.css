@@ -1,0 +1,25 @@
+#food-catalogue {
+	padding-top:1em;
+}
+#food-catalogue th:nth-child(1) { width: 50%; }
+#food-cataloguet th:nth-child(2) { width: 25%; }
+#food-catalogue th:nth-child(3) { width: 10%; }
+#food-catalogue th:nth-child(4) { width: 10% ; }
+#food-catalogue th:nth-child(5) { width: 5% ; }
+
+#catalogue-categories {
+	display:inline-block;
+	width:25%;
+	float:right;
+}
+
+#categories-add-button {
+	margin-top: 1em;
+	width: 100%;
+}
+#categories-table {
+	padding-top: 1em;
+}
+
+#categories-table td:nth-child(1) { width: 85%; }
+#categories-table td:nth-child(2) { width: 15%; }
