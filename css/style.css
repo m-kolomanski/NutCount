@@ -1,9 +1,20 @@
 /* COLOUR PALETTE
-squirell-orange: #f88d35
-squirell-orange-muted: #fdb05e
-
-
+orange: #f88d35
+orange-muted: #fdb05e
+orange-light: #f3ddc9
+green-dark: #788e12
+green-light: #f0f2dc
+grey: #a39c8e
 */
+/* BODY */
+
+html, body {
+	height: 100%;
+}
+
+body {
+	font-family: Calibri;
+}
 
 /* NAVBAR */
 .navbar {
@@ -45,9 +56,18 @@ squirell-orange-muted: #fdb05e
 	color: white;
 }
 
-/* BODY */
-.body {
-	font-family: Calibri;
+/* PAGE HEADER */
+#header {
+	font-size:46px;
+	font-weight: bold;
+	border-bottom: 0.2em double orange;
+	text-align: center;
+	height: 1.3em;
+	padding:0.2em;
+	margin: 0px;
+	width:25%;
+	position: relative;
+	left:37%
 }
 
 /* INPUT WIDGETS */
@@ -55,10 +75,43 @@ squirell-orange-muted: #fdb05e
 	display: inline-block;
 	text-align: center;
 }
-
+.input-widget > * {
+	width: 100%;
+}
 label {
 	font-weight: bold;
 	padding: 1px;
+}
+
+input {
+	height: 18px;
+	text-align: center;
+	border: 1px solid #f88d35;
+	background-color: #f0f2dc;
+}
+select {
+	height: 22px;
+	border: 1px solid #f88d35;
+	background-color: #f0f2dc;
+}
+
+.widget-container {
+	height: 100%;
+	display: inline-block;
+	border-left: 0.2em #fdb05e solid;
+	border-right: 0.2em #fdb05e solid;
+	border-radius: 1rem;
+	vertical-align: top;
+	padding: 0px;
+	margin-left: -4px;
+	padding: 0px 1rem;
+}
+.widget-backdrop {
+	background-color: #f3ddc9;
+	text-align: center;
+	border-radius: 1rem;
+	height: 100px;
+	min-height: 100px;
 }
 
 /* TABLES */
@@ -68,15 +121,25 @@ label {
 }
 table {
 	width: 100%;
-	border: 1px solid black;
 	border-collapse: collapse;
 }
+tr:nth-child(even) {
+	background-color: #f0f2dc;
+}
 td, tr, th {
-	border: 1px solid black;
+	border: 1px solid #f88d35;
 	text-align: center;
 	vertical-align: middle;
 	padding: 0.5rem;
 }
+th {
+	background-color: #fdb05e;
+	color: white;
+	font-size: 24px;
+	font-weight: bold;
+	padding: 0.05em;
+}
+
 
 .delete-field {
 	transition: background-color 0.5s;
@@ -84,10 +147,15 @@ td, tr, th {
 .delete-field:hover {
 	background-color: red;
 }
-.delete-field:after {
+.delete-field:nth-child(odd):after {
 	content: "X";
 	color: white;
 	font-weight: bold;	
+}
+.delete-field:nth-child(even):after {
+	content: "X";
+	color: #f0f2dc;
+	font-weight: bold;
 }
 .delete-field-confirm {
 	background-color: yellow;
@@ -116,4 +184,37 @@ td, tr, th {
 
 .category-cell-active {
 	background-color: orange;
+}
+
+/* BUTTONS */
+button {
+	background-color: #fdb05e;
+	border: 2px solid #f88d35;
+	border-radius: 0.4em;
+	font-weight: bold;
+	height: 24px;
+}
+button:hover {
+	border: 2px solid #788e12;
+}
+button:active {
+	border: 2px solid #f0f2dc;
+}
+/* NOTIFICATIONS */
+#notification-container {
+	min-height: 1.9em;
+	width: 100%;
+	text-align: center;
+	font-weight: bold;
+	font-size: 28px;
+	padding-top: 0.5rem;
+}
+
+#notification {
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
+	background-color: #788e12;
+	color: white;
+	border-radius: 0.7rem;
+	margin:0px
 }
