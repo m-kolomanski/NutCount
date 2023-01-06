@@ -93,7 +93,15 @@ const renderCategories = function() {
 	
 	const categories_table = document.createElement("table");
 	var id = 0
-	
+
+	const thead = document.createElement("thead");
+	const trow = document.createElement("tr");
+	const tcell = document.createElement("th");
+	tcell.appendChild(document.createTextNode("Kategorie"));
+	trow.appendChild(tcell); trow.appendChild(document.createElement("th"));
+	thead.appendChild(trow); categories_table.appendChild(thead);
+
+	const tbody = document.createElement("tbody");
 	for (let category of [...categories, "Bez kategorii"]) {		
 		// generate table
 		const cat_row = document.createElement("tr");
@@ -110,10 +118,11 @@ const renderCategories = function() {
 		delete_cell.setAttribute("id", `Del${id}`);
 		cat_row.appendChild(delete_cell);
 		
-		categories_table.appendChild(cat_row);
+		tbody.appendChild(cat_row);
 		
 		id += 1;
 	};
+	categories_table.appendChild(tbody);
 	$("#categories-table").html(categories_table);
 };
 

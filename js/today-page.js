@@ -3,29 +3,53 @@
 // render table
 const renderTodayTable = function() {
 	var today_table = dbmgr.getTodayTable();
+
+	const table = document.createElement("table");
 	
-	let rows = []
+	const thead = document.createElement("thead");
+	const hrow = document.createElement("tr");
+	for (let colname of ["Nazwa", "Ilość", "Kalorie", ""]) {
+		const hcell = document.createElement("th");
+		hcell.appendChild(document.createTextNode(colname));
+		hrow.appendChild(hcell);
+	};
+	thead.appendChild(hrow);
+	table.appendChild(thead);
+	
 	let row_id = 0
 	
+	const tbody = document.createElement("tbody");
 	for (let item of today_table) {
+		const brow = document.createElement("tr");
+		brow.classList.add(row_id);
 
-		let name_id = row_id + 1
-		let amount_id = row_id + 2
-		let delete_id = row_id + 3
-		
-		let row = "<tr id = '" + row_id + "'><td id = '" + name_id + "'>" +
-		item.name + "</td><td class = 'today-amount-cell' id = '" + amount_id + "'>" + item.amount + "</td><td>" +
-		Math.round(item.kcal) + "</td><td class = 'delete-field today-delete' id = '" + delete_id + "'></td></tr>";
-		
-		rows.push(row);
+		const name_cell = document.createElement("td");
+		name_cell.setAttribute("id", row_id + 1);
+		name_cell.appendChild(document.createTextNode(item.name));
+		brow.appendChild(name_cell);
+
+		const amount_cell = document.createElement("td");
+		amount_cell.classList.add("today-amount-cell");
+		amount_cell.setAttribute("id", row_id + 2);
+		amount_cell.appendChild(document.createTextNode(item.amount));
+		brow.appendChild(amount_cell);
+
+		const kcal_cell = document.createElement("td");
+		kcal_cell.appendChild(document.createTextNode(Math.round(item.kcal)));
+		brow.appendChild(kcal_cell);
+
+		const delete_cell = document.createElement("td");
+		delete_cell.classList.add("delete-field", "today-delete");
+		delete_cell.setAttribute("id", row_id + 3);
+		brow.appendChild(delete_cell);
+
+		tbody.appendChild(brow);
+
 		row_id += 10
 	}
-	
-	let table = "<table><tr><th>Nazwa</th><th>Ilość</th><th>Kalorie</th><th></th></tr>" +
-					rows.join('') +
-				"</table>";
-				
-	document.getElementById("today-table").innerHTML = table;
+
+	table.appendChild(tbody);
+	document.getElementById("today-table").innerHTML = table.outerHTML;
 };
 
 // show summary

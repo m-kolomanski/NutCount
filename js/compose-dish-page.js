@@ -7,7 +7,13 @@ function calculatePortionStats(weight, kcal, n_portions) {
 	return `${grams_portion}g / ${kcal_portion}kcal`
 };
 const renderDishTable = function() {
-	var dishes = nuts.cookbook;
+	var dishes = Object.keys(nuts.cookbook).sort().reduce(
+		(obj, key) => {
+			obj[key] = nuts.cookbook[key];
+			return obj;
+		},
+		{}
+	);
 	const dishes_table = document.createElement("table");
 	
 	// header
@@ -31,8 +37,8 @@ const renderDishTable = function() {
 		for (let dish in dishes) {
 			const dish_row = document.createElement("tr");
 			
-			const name_cell = document.createElement("td")
-			name_cell.appendChild(document.createTextNode(dish))
+			const name_cell = document.createElement("td");
+			name_cell.appendChild(document.createTextNode(dish));
 			dish_row.appendChild(name_cell);
 			
 			const calories_cell = document.createElement("td");
@@ -109,7 +115,15 @@ const renderEditTable = function(name = null) {
 	if (edited_dish != null) {
 		var id = 0
 
-		for (item in edited_dish) {
+		var sorted_ingredients = Object.keys(edited_dish).sort().reduce(
+			(obj, key) => {
+				obj[key] = edited_dish[key];
+				return obj;
+			},
+			{}
+		)
+
+		for (let item in sorted_ingredients) {
 			
 			let item_row = document.createElement("tr");
 			//item_row.setAttribute("id", id);
@@ -164,22 +178,43 @@ const renderContainers = function() {
 	for (let con in containers) {
 		selectElement.add(new Option(con));
 	};
-	
+
 	// generate containers table
-	var containers_rows = [];
+	const con_table = document.createElement("table");
+
+	const thead = document.createElement("thead");
+	const hrow = document.createElement("tr");
+	for (let colname of ["Nazwa", "Waga [g]", ""]) {
+		const tcell = document.createElement("th");
+		tcell.appendChild(document.createTextNode(colname));
+		hrow.appendChild(tcell);
+	};
+	thead.appendChild(hrow); con_table.appendChild(thead);
+
+	tbody = document.createElement("tbody");
 	var id = 0
 	for (let con in containers) {
-		let delete_id = id + 1
-		let row = "<tr><td id = 'delete-" + id + "'>" + con +
-		"</td><td>" + nuts.containers[con] + 
-		"</td><td class = 'delete-field containers-delete' id = 'delete-" + delete_id + "'></td></tr>"
-		
-		containers_rows.push(row)
+		const brow = document.createElement("tr");
+
+		const name_cell = document.createElement("td");
+		name_cell.setAttribute("id", `delete-${id}`);
+		name_cell.appendChild(document.createTextNode(con));
+		brow.appendChild(name_cell);
+
+		const weight_cell = document.createElement("td");
+		weight_cell.appendChild(document.createTextNode(nuts.containers[con]));
+		brow.appendChild(weight_cell);
+
+		const delete_cell = document.createElement("td");
+		delete_cell.classList.add("delete-field", "containers-delete");
+		delete_cell.setAttribute("id", `delete-${id + 1}`);
+		brow.appendChild(delete_cell);
+
+		tbody.appendChild(brow);
 		id += 10
 	};
-	var containers_table = "<table><tr><th>Nazwa</th><th>Waga [g]</th><th></th></tr>" +
-							containers_rows.join('') + "</table>"
-	$("#containers-table").html(containers_table);
+	con_table.appendChild(tbody);
+	$("#containers-table").html(con_table);
 };
 
 // delete containers

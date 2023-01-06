@@ -147,12 +147,12 @@ th {
 .delete-field:hover {
 	background-color: red;
 }
-.delete-field:nth-child(odd):after {
+tr:nth-child(odd) > td.delete-field:after {
 	content: "X";
 	color: white;
 	font-weight: bold;	
 }
-.delete-field:nth-child(even):after {
+tr:nth-child(even) > td.delete-field:after {
 	content: "X";
 	color: #f0f2dc;
 	font-weight: bold;
@@ -176,10 +176,15 @@ th {
 .edit-field:hover {
 	background-color: blue;
 }
-.edit-field:after {
+tr:nth-child(odd) > td.edit-field:after {
 	content: "E";
 	color: white;
 	font-weight: bold;	
+}
+tr:nth-child(even) > td.edit-field:after {
+	content: "E";
+	color: #f0f2dc;
+	font-weight: bold;
 }
 
 .category-cell-active {
