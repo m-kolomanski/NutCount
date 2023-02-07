@@ -3,6 +3,7 @@ const path = require('path')
 
 window.dbmgr = require(path.join(__dirname, "/js/dbmgr.js"));
 window.fs = require('fs');
+window.dm = require(path.join(__dirname, "/js/DropdownMenu.js"))
 //require('selectize');
 
 fs.access(path.join(__dirname, './db/nuts.db'), fs.F_OK, (err) => {

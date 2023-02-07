@@ -1,5 +1,4 @@
 // FUNCTIONS
-
 // render table
 const renderTodayTable = function() {
 	var today_table = dbmgr.getTodayTable();
@@ -124,13 +123,7 @@ const resetPage = function() {
 $("#today-burned").val(nuts.today_burned);
 $("#today-deficit").val(nuts.today_deficit);
 
-// get item names for the picklist
-const item_picklist = document.getElementById("today-add-name");
-var items = dbmgr.getAvailableItems().sort();
-item_picklist.add(new Option(""));
-for (let item of items) {
-	item_picklist.add(new Option(item));
-};
+dm.addDropdownMenu("today-add-name", dbmgr.getAvailableItems().sort())
 
 const cat_picklist = document.getElementById("today-category-filter");
 cat_picklist.add(new Option(""));
@@ -210,13 +203,8 @@ const filterItemsByCat = function() {
 	};
 
 	filtered.sort();
-	
-	$("#today-add-name").empty();
-	
-	item_picklist.add(new Option(""))
-	for (item of filtered) {
-		item_picklist.add(new Option(item))
-	};
+
+	dm.addDropdownMenu("today-add-name", filtered);
 };
 $(document).on("input", "#today-category-filter", function() {
 	filterItemsByCat();
@@ -259,10 +247,20 @@ $(document).on("input", ".today-calculator", function() {
 	}
 });
 
-
 // SHORTCUTS //
 document.onkeyup = function(event) {
 	if (event.key === "Enter") {
-		$("#today-add-button").click();
+		if ($(`.dropdown-options`)[0].style.display === "block") {
+			if ($(".dropdown-option.selected").length !== 0) {
+				let value_to_insert = $(".dropdown-option.selected")[0].innerHTML;
+				$("#today-add-name").val(value_to_insert);
+				document.getElementById("today-add-amount").focus();
+
+			}
+		} else {
+			$("#today-add-button").click();
+			document.getElementById("today-add-name").focus();
+		}
+		
 	}
-}
+};

@@ -74,6 +74,7 @@ body {
 .input-widget {
 	display: inline-block;
 	text-align: center;
+	position: relative;
 }
 .input-widget > * {
 	width: 100%;
@@ -222,4 +223,26 @@ button:active {
 	color: white;
 	border-radius: 0.7rem;
 	margin:0px
+}
+
+/* DROPDOWN MENU */
+.dropdown-options {
+	height: max-content;
+	max-height: 20em;
+	overflow-y: scroll;
+	background-color: white;
+	display: none;
+	position: absolute;
+	width:100%;
+	z-index: 102;
+	border-color: black 1px solid;
+}
+.dropdown-option {
+	position: relative;
+	z-index: 100;
+	padding: 0.5em;
+	margin: 0px;
+}
+.dropdown-option.selected {
+	background-color: #fdb05e;
 }
