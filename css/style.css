@@ -1,13 +1,13 @@
-/* COLOUR PALETTE
-orange: #f88d35
-orange-muted: #fdb05e
-orange-light: #f3ddc9
-green-dark: #788e12
-green-light: #f0f2dc
-grey: #a39c8e
-*/
-/* BODY */
+:root {
+	--orange: #f88d35;
+	--orange-muted: #fdb05e;
+	--orange-light: #f3ddc9;
+	--green-dark: #788e12;
+	--green-light: #f0f2dc;
+	--grey: #a39c8e;
+}
 
+/* BODY */
 html, body {
 	height: 100%;
 }
@@ -28,8 +28,8 @@ body {
 }
 
 .navbar-button {
-	border-left: #f88d35 3px solid;
-	border-right: #f88d35 3px solid;
+	border-left: var(--orange) 3px solid;
+	border-right: var(--orange) 3px solid;
 	border-bottom: black 0px solid;
 	border-top: black 0px solid;
 	background: white;
@@ -47,12 +47,12 @@ body {
 }
 
 .navbar-button.navbar-button-active {
-	background-color: #fdb05e;
+	background-color: var(--orange-muted);
 	color: white;
 }
 
 .navbar-button:hover {
-	background-color: #fdb05e;
+	background-color: var(--orange-muted);
 	color: white;
 }
 
@@ -87,20 +87,20 @@ label {
 input {
 	height: 18px;
 	text-align: center;
-	border: 1px solid #f88d35;
-	background-color: #f0f2dc;
+	border: 1px solid var(--orange);
+	background-color: var(--green-light);
 }
 select {
 	height: 22px;
-	border: 1px solid #f88d35;
-	background-color: #f0f2dc;
+	border: 1px solid var(--orange);
+	background-color: var(--green-light);
 }
 
 .widget-container {
 	height: 100%;
 	display: inline-block;
-	border-left: 0.2em #fdb05e solid;
-	border-right: 0.2em #fdb05e solid;
+	border-left: 0.2em var(--orange-muted) solid;
+	border-right: 0.2em var(--orange-muted) solid;
 	border-radius: 1rem;
 	vertical-align: top;
 	padding: 0px;
@@ -108,7 +108,7 @@ select {
 	padding: 0px 1rem;
 }
 .widget-backdrop {
-	background-color: #f3ddc9;
+	background-color: var(--orange-light);
 	text-align: center;
 	border-radius: 1rem;
 	height: 100px;
@@ -125,16 +125,16 @@ table {
 	border-collapse: collapse;
 }
 tr:nth-child(even) {
-	background-color: #f0f2dc;
+	background-color: var(--green-light);
 }
 td, tr, th {
-	border: 1px solid #f88d35;
+	border: 1px solid var(--orange);
 	text-align: center;
 	vertical-align: middle;
 	padding: 0.5rem;
 }
 th {
-	background-color: #fdb05e;
+	background-color: var(--orange-muted);
 	color: white;
 	font-size: 24px;
 	font-weight: bold;
@@ -155,7 +155,7 @@ tr:nth-child(odd) > td.delete-field:after {
 }
 tr:nth-child(even) > td.delete-field:after {
 	content: "X";
-	color: #f0f2dc;
+	color: var(--green-light);
 	font-weight: bold;
 }
 .delete-field-confirm {
@@ -184,7 +184,7 @@ tr:nth-child(odd) > td.edit-field:after {
 }
 tr:nth-child(even) > td.edit-field:after {
 	content: "E";
-	color: #f0f2dc;
+	color: var(--green-light);
 	font-weight: bold;
 }
 
@@ -194,17 +194,17 @@ tr:nth-child(even) > td.edit-field:after {
 
 /* BUTTONS */
 button {
-	background-color: #fdb05e;
-	border: 2px solid #f88d35;
+	background-color: var(--orange-muted);
+	border: 2px solid var(--orange);
 	border-radius: 0.4em;
 	font-weight: bold;
 	height: 24px;
 }
 button:hover {
-	border: 2px solid #788e12;
+	border: 2px solid var(--green-dark);
 }
 button:active {
-	border: 2px solid #f0f2dc;
+	border: 2px solid var(--green-light);
 }
 /* NOTIFICATIONS */
 #notification-container {
@@ -219,7 +219,7 @@ button:active {
 #notification {
 	padding-top: 0.2em;
 	padding-bottom: 0.2em;
-	background-color: #788e12;
+	background-color: var(--green-dark);
 	color: white;
 	border-radius: 0.7rem;
 	margin:0px
@@ -230,19 +230,19 @@ button:active {
 	height: max-content;
 	max-height: 20em;
 	overflow-y: scroll;
-	background-color: white;
+	background-color: var(--orange);
 	display: none;
 	position: absolute;
 	width:100%;
 	z-index: 102;
-	border-color: black 1px solid;
 }
 .dropdown-option {
+	background-color: rgb(247, 246, 246);
+	margin: 0px 0px 0px 0px;
 	position: relative;
 	z-index: 100;
 	padding: 0.5em;
-	margin: 0px;
 }
 .dropdown-option.selected {
-	background-color: #fdb05e;
+	background-color: var(--orange-muted);
 }

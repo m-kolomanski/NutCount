@@ -1,5 +1,7 @@
 // render food catalogue
-const renderCatalogue = function(catalogue = nuts.catalogue) {
+const renderCatalogue = function() {
+	const catalogue = filterCatalogueByName(filterCatalogueByCategory(nuts.catalogue));
+
 	const table = document.createElement("table");
 	
 	var ordered_catalogue = Object.keys(catalogue).sort().reduce(
@@ -62,11 +64,22 @@ const renderCatalogue = function(catalogue = nuts.catalogue) {
 	$("#food-catalogue").html(table);
 };
 
-// filter catalogue
-const filterCatalogue = function(selected_category) {
+// filter catalogue by name
+const filterCatalogueByName = function(catalogue) {
+	var filtered_catalogue = {};
+	for (let item of Object.keys(catalogue)) {
+		if (item.toLowerCase().includes($("#name").val().toLowerCase())) {
+			filtered_catalogue[item] = catalogue
+		}
+	}
+	return filtered_catalogue;
+};
+
+// filter catalogue by category
+const filterCatalogueByCategory = function(catalogue) {
 	var selected_categories_cells = $(".category-cell-active");
 	if (selected_categories_cells.length === 0) {
-		return nuts.catalogue;
+		return catalogue;
 	} else {
 		var selected_categories = []
 		
@@ -77,9 +90,9 @@ const filterCatalogue = function(selected_category) {
 		selected_categories[selected_categories.indexOf("Bez kategorii")] = ""
 		
 		var filtered_catalogue = {};
-		for (item in nuts.catalogue) {
-			if (nuts.catalogue[item]["category"].filter(x => selected_categories.includes(x)).length != 0) {
-				filtered_catalogue[item] = nuts.catalogue[item];
+		for (let item in catalogue) {
+			if (catalogue[item]["category"].filter(x => selected_categories.includes(x)).length != 0) {
+				filtered_catalogue[item] = catalogue[item];
 			}
 		}
 		
@@ -189,6 +202,8 @@ $("#name").on("input", function(event) {
 		$("#notification")
 			.fadeOut();
 	}
+
+	renderCatalogue();
 });
 
 // add category
@@ -212,11 +227,11 @@ $(document).on("click", ".delete-field-confirm.categories", function(event) {
 // select category
 $(document).on("click", ".category-cell", function(event) {
 	$(`#${event.target.id}`).removeClass("category-cell").addClass("category-cell-active");
-	renderCatalogue(filterCatalogue());
+	renderCatalogue();
 });
 // deselect category
 $(document).on("click", ".category-cell-active", function(event) {
 	$(`#${event.target.id}`).removeClass("category-cell-active").addClass("category-cell");
-	renderCatalogue(filterCatalogue());
+	renderCatalogue();
 });
 

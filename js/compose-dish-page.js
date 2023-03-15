@@ -231,14 +231,7 @@ const deleteContainers = function(event) {
 edited_dish = null;
 edited_dish_name = null;
 
-// get item names for the picklist
-const item_picklist = document.getElementById("dishes-add-name");
-var items = dbmgr.getAvailableItems();
-items.sort();
-item_picklist.add(new Option(""));
-for (let item of items) {
-	item_picklist.add(new Option(item));
-};
+dm.addDropdownMenu("dishes-add-name", dbmgr.getAvailableItems().sort());
 
 const cat_picklist = document.getElementById("dishes-category-filter");
 cat_picklist.add(new Option(""));
