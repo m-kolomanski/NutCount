@@ -75,4 +75,21 @@ addDropdownMenu = function(text_input_id, full_item_list) {
     })
 }
 
-module.exports = {addDropdownMenu};
+/**
+ * Function for showing a popup menu.
+ * 
+ * @param {html} contents Contents to be displayed within popup window
+ */
+displayPopupMenu = function(contents) {
+    $("body").append($("<div/>", {
+        id: "backdrop",
+        html: $("<div/>", {
+            id: "popup-menu",
+            html: contents
+        })
+    }));
+
+    document.getElementById("backdrop").addEventListener("click", () => {$("#backdrop").remove();}, { once: true });
+}
+
+module.exports = {addDropdownMenu, displayPopupMenu};
