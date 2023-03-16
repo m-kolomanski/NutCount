@@ -231,7 +231,7 @@ const deleteContainers = function(event) {
 edited_dish = null;
 edited_dish_name = null;
 
-dm.addDropdownMenu("dishes-add-name", dbmgr.getAvailableItems().sort());
+utils.addDropdownMenu("dishes-add-name", dbmgr.getAvailableItems().sort());
 
 const cat_picklist = document.getElementById("dishes-category-filter");
 cat_picklist.add(new Option(""));
@@ -317,6 +317,24 @@ $(document).on("click", "#save-dish", function(event) {
 	
 	edited_dish = null;
 });
+
+$("#export-dish").prop("disabled", true);
+$("#import-dish").prop("disabled", true);
+// export dish
+$(document).on("click", "#export-dish", function(event) {
+	console.log(JSON.stringify(nuts.cookbook[$("#dish-name").val()]))
+	utils.displayPopupMenu($("<div/>", {
+		html: [
+			$("<p/>", {
+				html: "This is a thng for export"
+			}),
+			$("<p/>", {
+				html: JSON.stringify(nuts.cookbook[$("#dish-name").val()])
+			})
+		]
+	}));
+})
+
 // delete dish
 $(document).on("click", "#delete-dish", function(event) {
 	if (edited_dish_name !== null) {

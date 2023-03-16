@@ -89,7 +89,16 @@ displayPopupMenu = function(contents) {
         })
     }));
 
-    document.getElementById("backdrop").addEventListener("click", () => {$("#backdrop").remove();}, { once: true });
+    easyClose();
+}
+easyClose = function() {
+    document.getElementById("backdrop").addEventListener("click", (event) => {
+        if (event.target.id === "backdrop") {
+            $("#backdrop").remove(); 
+        } else {
+            easyClose();
+        }  
+    }, { once: true });
 }
 
 module.exports = {addDropdownMenu, displayPopupMenu};

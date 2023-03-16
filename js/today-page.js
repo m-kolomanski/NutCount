@@ -123,7 +123,7 @@ const resetPage = function() {
 $("#today-burned").val(nuts.today_burned);
 $("#today-deficit").val(nuts.today_deficit);
 
-dm.addDropdownMenu("today-add-name", dbmgr.getAvailableItems().sort())
+util.addDropdownMenu("today-add-name", dbmgr.getAvailableItems().sort())
 
 const cat_picklist = document.getElementById("today-category-filter");
 cat_picklist.add(new Option(""));
@@ -204,7 +204,7 @@ const filterItemsByCat = function() {
 
 	filtered.sort();
 
-	dm.addDropdownMenu("today-add-name", filtered);
+	utils.addDropdownMenu("today-add-name", filtered);
 };
 $(document).on("input", "#today-category-filter", function() {
 	filterItemsByCat();
