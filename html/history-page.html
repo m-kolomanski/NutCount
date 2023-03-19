@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+    <script>window.$ = window.jQuery = require('jquery');</script>
+	  <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <link rel="stylesheet" type="text/css" href="../css/history-page.css">
+  </head>
+  <body>
+	<div id = "navbar"></div>
+	<script>$("#navbar").load("nav.html")</script>
+
+    <p id = "header">Historia</p>
+	
+	<div id = "notification-container"></div> 
+
+	<div id = "history-table"></div>
+  <div id = "stats-and-options">
+    <p id = "options-header">Display options</p>
+    <label for = "days-to-show">Dni do wyświetlenia:</label>
+    <input type = "text" id = "days-to-show" value = 7>
+    <br>
+    <label for = "combine-items">Połącz produkty z jednego dnia:</label>
+    <input type = "checkbox" id = "combine-items" checked>
+  </div>
+
+    <script src = "../js/history-page.js"></script>
+  </body>
+</html>

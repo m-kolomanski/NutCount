@@ -123,7 +123,7 @@ const resetPage = function() {
 $("#today-burned").val(nuts.today_burned);
 $("#today-deficit").val(nuts.today_deficit);
 
-util.addDropdownMenu("today-add-name", dbmgr.getAvailableItems().sort())
+utils.addDropdownMenu("today-add-name", dbmgr.getAvailableItems().sort())
 
 const cat_picklist = document.getElementById("today-category-filter");
 cat_picklist.add(new Option(""));
