@@ -165,7 +165,7 @@ document.getElementById("add-things").onclick = function() {
 	};
 	
 	dbmgr.addNewItem();
-	renderCatalogue(filterCatalogue());
+	renderCatalogue();
 	
 	if (overwrite_alert) {
 		$("#notification-container")
@@ -189,7 +189,7 @@ $(document).on("click", ".delete-field.catalogue", function(event) {
 	let name_to_delete = event.target.parentElement.childNodes[0].innerHTML;
 	dbmgr.deleteItem(name_to_delete, "catalogue");
 	
-	renderCatalogue(filterCatalogue($("#category").val()));
+	renderCatalogue();
 });
 // check if item in catalogue
 $("#name").on("input", function(event) {
