@@ -3,7 +3,7 @@ const path = require('path')
 
 window.dbmgr = require(path.join(__dirname, "/js/dbmgr.js"));
 window.fs = require('fs');
-//require('selectize');
+window.utils = require(path.join(__dirname, "/js/utils.js"))
 
 fs.access(path.join(__dirname, './db/nuts.db'), fs.F_OK, (err) => {
 	const dbmgr = require(path.join(__dirname, '/js/dbmgr.js'));
@@ -21,7 +21,3 @@ window.db = dbmgr.loadDatabase();
 try {
 	window.nuts = require(path.join(__dirname, "./db/nuts.json"));
 } catch (error) { };
-
-window.palette = {
-	green: "yellow"
-}
