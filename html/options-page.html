@@ -10,8 +10,45 @@
 	<div id = "navbar"></div>
 	<script>$("#navbar").load("nav.html")</script>
 	
-	<div style = "text-align:center;">
-		<p style = "font-size:40px;">THIS IS OPTIONS PAGE</p>
-	</div>
+	<div id="details" style="padding-top:5em;">
+    Autor: Mateusz Kołomański<br>
+    Github: https://github.com/m-kolomanski/NutCount<br>
+    Wersja: <span id = 'version'></span><br>
+    <br>
+    <button id="check-for-update">Sprawdź dostępność aktualizacji</button>
+    <p id="version-notification"></p>
+  </div>
+  <script>
+    const version = require(path.join(__dirname, "../package.json"))['version'];
+    $("#version").html(version);
+
+    $("#check-for-update").on('click', () => {
+      $.ajax({
+        url: "https://api.github.com/repos/m-kolomanski/NutCount/releases/latest",
+        type: "GET",
+        success: (data) => {
+          const latest_version = data['tag_name'].slice(-6);
+          if (latest_version > version.slice(-6)) {
+            var download_link;
+            $("#version-notification").html("Nowa wersja jest dostępna!").css("color","blue");
+            for (var asset in data['assets']) {
+              if (data['assets'][asset]['content_type'] == "application/x-gzip") {
+                download_link = data['assets'][asset]['browser_download_url'];
+              }
+            }
+            $("#check-for-update").html("Pobierz nową wersję!").off().on("click", (e, link = download_link) => {
+              window.location = link;
+              //ipcRenderer.invoke("quitApp");
+            });
+          } else {
+            $("#version-notification").html("Brak nowych aktualizacji.").css("color","green");
+          }
+        },
+        error: () => {
+          $("#version-notification").html("Brak dostępu do repozytorium, sprawdź połączenie z internetem lub spróbuj ponownie później.").css("color", "red");
+        }
+      })
+    })
+  </script>
   </body>
 </html>
