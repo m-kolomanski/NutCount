@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 
 const createWindow = () => {
@@ -26,3 +26,6 @@ app.on('window-all-closed', () => {
   }
 })
 
+ipcMain.handle('quitApp', async () => {
+  app.quit();
+})

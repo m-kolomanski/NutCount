@@ -19,6 +19,9 @@
 			<div class = "input-widget" style = "width:100%">
 				<button class = "edit-dish" id = "add-new-dish">Dodaj nowe danie</button>
 			</div>
+			<div class = "input-widget" style = "width:100%">
+				<button id = "import-dish">Importuj nowe danie</button>
+			</div>
 		</div>
 		<div class = "table-container" id = "dish-table"></div>
 	</div>
@@ -51,17 +54,22 @@
 					</div>
 				</div>
 				<!-- buttons -->
-				<div style = "display:inline-block;width:35%;float:left;">
-					<div class = "input-widget" style = "width:90%;padding-bottom:0.3rem;padding-top:0.5rem;">
-						<button id = "save-dish">Zapisz danie</button>
+				<div id = "f-grid">
+					<div>
+						<div class = "input-widget">
+							<button id = "save-dish">Zapisz danie</button>
+						</div>
+						<div class = "input-widget">
+							<button id = "cancel-dish">Anuluj</button>
+						</div>
 					</div>
-					<br>
-					<div class = "input-widget" style = "width:90%;">
-						<button id = "cancel-dish">Anuluj</button>
-					</div>
-					<br>
-					<div class = "input-widget" style = "width:90%;padding-top:0.3rem;">
-						<button id = "delete-dish">Usuń danie</button>
+					<div>
+						<div class = "input-widget">
+							<button id = "export-dish">Eksportuj danie</button>
+						</div>
+						<div class = "input-widget">
+							<button id = "delete-dish">Usuń danie</button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -75,8 +83,7 @@
 				</div>
 				<div class = "input-widget" style = "width:49%;float:right;">
 					<label for = "dishes-add-name">Nazwa</label><br>
-					<select name = "dishes-add-name" id = "dishes-add-name">
-					</select>
+					<input type = 'text' name = "dishes-add-name" id = "dishes-add-name"></input>
 				</div>
 				<br>
 				<div class = "input-widget" style = "width:47.5%;float:left;">

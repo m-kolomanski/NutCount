@@ -195,5 +195,22 @@ execContainer = function(con, weight, mode) {
 	saveNUTS();
 };
 
+getHistory = function(last_days = 6, separate = true) {
+	let query = "SELECT DISTINCT Date FROM daily;"
+	let available_days = db.prepare(query).all();
+	var days_to_fetch = []
+	
+	for (let day = available_days.length - 1; (available_days.length - day) < last_days; day--) {
+		days_to_fetch.push(available_days[day]["date"]);
+	}
+
+
+	query = separate ?
+		`SELECT * FROM daily WHERE Date in ('${days_to_fetch.join("','")}');` :
+		`SELECT daily.*, SUM(daily.amount) AS amount, SUM(daily.kcal) AS kcal FROM daily WHERE daily.date in ('${days_to_fetch.join("','")}') GROUP BY daily.name, daily.date ORDER BY daily.date;`;
+	let history_data = db.prepare(query).all();
+	return history_data;
+}
+
 module.exports = { loadDatabase, saveNUTS, createNewDatabase, addNewItem, getAvailableItems, addTodayItem,
-getTodayTable, changeAmount, deleteItem, execCategory, execContainer }; 
+getTodayTable, changeAmount, deleteItem, execCategory, execContainer, getHistory }; 
