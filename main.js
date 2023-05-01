@@ -9,7 +9,8 @@ const createWindow = () => {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,
       contextIsolation: false
-    }
+    },
+    icon: 'ico.png'
   })
   
   win.maximize();

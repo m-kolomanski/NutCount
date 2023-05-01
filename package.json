@@ -10,6 +10,11 @@
   },
   "author": "Mateusz Kolomanski",
   "license": "ISC",
+  "build": {
+    "appId": "mkolomanski.NutCountApp",
+    "productName": "NutCount"
+  },
+
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.63",
     "@electron-forge/maker-deb": "^6.0.0-beta.63",
@@ -27,7 +32,9 @@
   },
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "icon": "./img/icon"
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
