@@ -1,9 +1,11 @@
 # NutCount
-This is a simple calorie counting app. A side-project to learn more raw HTML, JavaScript and SQLite, as well as deploying applications using Electron.
+This is a very simple calorie counting app. A side-project to learn more raw HTML, JavaScript and SQLite, as well as deploying applications using Electron. Crude and could have been written better, but works for my needs.
 
 # Installation
 ### Download
-You can download the newest version here in the <i>Releases</i> section. Simply run the NutCount.exe file to boot up the app.
+You can download the newest version here in the <i>Releases</i> section. The app comes with a simple .bat installer which will copy all the files and create a desktop shortcut for you. If it finds already existing installation, your products database will be copied to the new instantion.
+
+Alternatively, you can simply run the NutCount.exe file to start the app.
 
 ### Via npm
 You can always clone this repo and use npm to set up all required dependencies for you:
@@ -15,16 +17,17 @@ npm start
 ```
 
 # Quick-start
-Currently the app in only available in Polish (target user requirement). I will add english language support in the future.
+Currently the app in only available in Polish (target user requirement). I will add English language support in the future.
 
-You can add new food items to your catalogue in the *Katalog* tab. You will need to specify the name, category, calories and unit. Then you will be able to select desired food item from the pick-list in the *Dzisiaj* tab, provide consumed amount and add the item to your daily intake. The app will display table with food intake for the day and show a summary of caloric intake. You can also use the "Skomponuj danie" to create a dish - simply click on "Dodaj nowe danie" and add whichever ingridients you need, along with total weight and container for the dish. The app will calculate calories per 100grams, as well as calories and weight for 4-portions and 6-portions split. The dish will be added to your cookbook and will be available for easy editing later on. 
+Five tabs are available:
 
-# Version history
-<b>v0.3.221008</b> - Multiple QOL improvements and critical bugfixes to all basic features. All implemented features are now fully functional.
-<b>v0.2.220724</b> - Working basis for the app. All functionalities needed to work with the app on basic level are there. BETA testing with users started.\
-<b>v0.1.220605</b> - Barely working app prototype. Basic UI and SQLite database is set up. You can add new food items to a catalogue and provide your daily intake. The app will calculate calorie intake and show a summary for the day. Currently only Polish is available.
-
-# Timeline
-<b>2022-07-24</b> - Working basis for the app. All functionalities needed to work with the app on basic level are there. BETA testing with users started.\
-<b>2022-06-05</b> - Barely working app prototype. Basic UI and SQLite database is set up. You can add new food items to a catalogue and provide your daily intake. The app will calculate calorie intake and show a summary for the day. Currently only Polish is available.\
-<b>2022-05-21</b> - The beginning.
+### Today
+Allows you to count the calorie intake for current day. You can search and find items and add them to the database. Filtering by categories is available. The app will count added callories and display them. You can set two additional values: **burned calories** and **planned deficit**. Based on those three values the app will calculate remaining calories for the day. You can also use the **burned calories** simply as a calorie limit - no need to set the deficit then. A simple calculator for miscallenous items is also available - provide amount and kcal per 100g and total number of calories will be calculated.
+### Catalogue
+Allows you to add new items to the database. Provide name, calorie value and unit (per 100g or per portion). You can also add and set categories for particular items - simply select any number of categories on the list to the right. This will filter displayed table. Additionally, typing a name will filter the table, so you can see whether a particular item is already present in your database. The app will inform you if provided name matches an existing item. Currently the only way to edit an item is to overwrite it.
+### Compose dish
+Allows you to compose a dish ingredient list. Main view displays existing dishes, calculated value per 100g and allows you to provide desired portions number - this will calculate weight and calories per portion. From here you can also add container such as pans, pots and boxes, along with their weight. When adding or editing a dish, you will need to provied a name, but also can provide a main container and total weight (including container). This will allow the app to calculate accurate calorie value along with portion size. Here you can add new items to the dish or edit their value - if you are preparing the same dish again, there is no need to add everything again - you can reuse existing recipe and just change weight values for items.
+### History
+Allows you to view your eating history. Currently just a simple table view is available. From here, you can add particular items to the **today** list, which means there is no need to search the list for repeatable items.
+### Options
+Currently you can only see some basic info about the app and check for a new version. If updates are available, you will be able to download them directly from the app - no need to visit github!
