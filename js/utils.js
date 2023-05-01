@@ -5,6 +5,8 @@
  * @param {array} full_item_list Array of all items to be added to the picklist 
  */
 addDropdownMenu = function(text_input_id, full_item_list) {
+    const main_container = $(`#${text_input_id}`).parent();
+    main_container.off();
     // create container
     container_id = `${text_input_id}-options`;
     $(`#${container_id}`).remove();
@@ -24,19 +26,19 @@ addDropdownMenu = function(text_input_id, full_item_list) {
     $(`#${text_input_id}`).after(dropdown_container);
 
     // show dropdown
-    $(document).on("focus", `#${text_input_id}`, () => {
+    $(main_container).on("focus", `#${text_input_id}`, () => {
         $(`#${container_id}`).css("display", "block");
     });
     // hide dropdown
-    $(document).on("blur", `#${text_input_id}`, () => {
+    $(main_container).on("blur", `#${text_input_id}`, () => {
         $(`#${container_id}`).css("display", "none");
     });
     // select option
-    $(document).on("mousedown", ".dropdown-option", (event) => {
+    $(main_container).on("mousedown", ".dropdown-option", (event) => {
         $(`#${text_input_id}`).val(event.target.id);
     });
     // filter dropdown
-    $(document).on("input", `#${text_input_id}`, (event) => {
+    $(main_container).on("input", `#${text_input_id}`, (event) => {
         $(`#${container_id}`).empty();
         for (let item of full_item_list) {
             if (item.toLowerCase().includes(event.target.value.toLowerCase())) {
@@ -49,7 +51,7 @@ addDropdownMenu = function(text_input_id, full_item_list) {
         }
     });
     // set as active
-    $(document).on("keydown", (event) => {
+    $(main_container).on("keydown", (event) => {
         if ((event.which !== 40 && event.which !== 38) ||
             $(`#${container_id}`)[0].style.display !== "block") {
                 return null;
@@ -58,17 +60,19 @@ addDropdownMenu = function(text_input_id, full_item_list) {
                 if (current_active_element == null) {
                     $(`#${container_id} > .dropdown-option`)[0].classList.add("selected");
                 } else {
-                    if (event.which === 38) {
+                    if (event.which === 38 && current_active_element.previousElementSibling != null) {
                         current_active_element.previousElementSibling.classList.add("selected");
-                    } else {
+                    } else if (event.which === 40 && current_active_element.nextElementSibling != null) {
                         current_active_element.nextElementSibling.classList.add("selected");
+                    } else {
+                        return null;
                     }
                     current_active_element.classList.remove("selected");
                     $(`#${container_id} > .dropdown-option.selected`)[0].scrollIntoView({block: "center"});
                 }
             }
     });
-    $(document).on("mouseenter", ".dropdown-option", (event) => {
+    $(main_container).on("mouseenter", ".dropdown-option", (event) => {
         var currently_selected = $(`#${container_id} > .dropdown-option.selected`)[0]
         if (currently_selected != null) $(`#${container_id} > .dropdown-option.selected`)[0].classList.remove("selected");
         $(`[id='${event.target.id}']`).addClass("selected");
