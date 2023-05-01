@@ -139,14 +139,21 @@ const renderEditTable = function(name = null) {
 			item_row.appendChild(amount_cell);
 			
 			const kcal_cell = document.createElement("td");
-			switch (nuts.catalogue[item]['unit']) {
-				case "100g":
-					var item_kcal = nuts.catalogue[item]['calories'] * (edited_dish[item] / 100);
-					break;
-				case "sztuka":
-					var item_kcal = nuts.catalogue[item]['calories'] * edited_dish[item];
-					break
-			};
+			var item_kcal;
+			if (item == "Inne") {
+				item_kcal = edited_dish[item]
+			} else {
+				switch (nuts.catalogue[item]['unit']) {
+					case "100g":
+						item_kcal = nuts.catalogue[item]['calories'] * (edited_dish[item] / 100);
+						break;
+					case "sztuka":
+						item_kcal = nuts.catalogue[item]['calories'] * edited_dish[item];
+						break
+				}
+			}
+
+
 			kcal_cell.appendChild(document.createTextNode(Math.round(item_kcal)));
 			item_row.appendChild(kcal_cell);
 			
@@ -290,14 +297,20 @@ $(document).on("click", "#save-dish", function(event) {
 	let dish_calories = 0
 	
 	for (item in edited_dish) {
-		switch (nuts.catalogue[item]['unit']) {
-			case "100g":
-				var item_kcal = nuts.catalogue[item]['calories'] * (edited_dish[item] / 100);
-				break;
-			case "sztuka":
-				var item_kcal = nuts.catalogue[item]['calories'] * edited_dish[item];
-				break
-		};
+		var item_kcal;
+		if (item == "Inne") {
+			item_kcal = edited_dish[item]
+		} else {
+			switch (nuts.catalogue[item]['unit']) {
+				case "100g":
+					var item_kcal = nuts.catalogue[item]['calories'] * (edited_dish[item] / 100);
+					break;
+				case "sztuka":
+					var item_kcal = nuts.catalogue[item]['calories'] * edited_dish[item];
+					break
+			};
+		}
+
 		dish_calories += item_kcal
 	};
 	
@@ -362,7 +375,8 @@ $(document).on("click", "#cancel-dish", function(event) {
 
 // add item to dish
 $(document).on("click", "#dishes-add-button", function(event) {
-	edited_dish[$("#dishes-add-name").val()] = Number($("#dishes-add-amount").val());
+	let item_name = $("#dishes-add-name").val() == "" ? "Inne" : $("#dishes-add-name").val(); 
+	edited_dish[item_name] = Number($("#dishes-add-amount").val());
 	
 	renderEditTable();
 });
