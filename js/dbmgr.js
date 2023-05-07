@@ -5,8 +5,8 @@ const path = require('path');
 const getTodayDate = function () {
 	let date = new Date();
 	let yyyy = date.getFullYear();
-	let mm = date.getMonth() + 1;
-	let dd = date.getDate();
+	let mm = String(date.getMonth() + 1).padStart(2,'0');
+	let dd = String(date.getDate()).padStart(2,'0');
 	
 	let full_date = yyyy.toString() + "-" + mm.toString() + "-" + dd.toString()
 	
@@ -204,10 +204,10 @@ getHistory = function(last_days = 6, separate = true) {
 		days_to_fetch.push(available_days[day]["date"]);
 	}
 
-
 	query = separate ?
 		`SELECT * FROM daily WHERE Date in ('${days_to_fetch.join("','")}');` :
-		`SELECT daily.*, SUM(daily.amount) AS amount, SUM(daily.kcal) AS kcal FROM daily WHERE daily.date in ('${days_to_fetch.join("','")}') GROUP BY daily.name, daily.date ORDER BY daily.date;`;
+		`SELECT daily.*, SUM(daily.amount) AS amount, SUM(daily.kcal) AS kcal
+		FROM daily WHERE daily.date in ('${days_to_fetch.join("','")}') GROUP BY daily.date, daily.name ORDER BY daily.date ASC;`;
 	let history_data = db.prepare(query).all();
 	return history_data;
 }
