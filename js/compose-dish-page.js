@@ -59,6 +59,7 @@ const renderDishTable = function() {
 			portions_calculations.appendChild(document.createTextNode(calculatePortionStats(dishes[dish]["weight"],
 																							dishes[dish]["calories"],
 																							dish_portions)));
+
 			dish_row.appendChild(portions_calculations);
 			
 			let edit_cell = document.createElement("td");
@@ -133,7 +134,7 @@ const renderEditTable = function(name = null) {
 			item_row.appendChild(name_cell);
 			
 			const amount_cell = document.createElement("td");
-			amount_cell.appendChild(document.createTextNode(edited_dish[item]));
+			amount_cell.appendChild(document.createTextNode(typeof edited_dish[item] === "object" ? edited_dish[item]['amount'] : edited_dish[item]));
 			amount_cell.classList.add("ingredient-amount");
 			amount_cell.setAttribute("id", `amount-${id}`)
 			item_row.appendChild(amount_cell);
@@ -143,13 +144,24 @@ const renderEditTable = function(name = null) {
 			if (item == "Inne") {
 				item_kcal = edited_dish[item]
 			} else {
-				switch (nuts.catalogue[item]['unit']) {
-					case "100g":
-						item_kcal = nuts.catalogue[item]['calories'] * (edited_dish[item] / 100);
-						break;
-					case "sztuka":
-						item_kcal = nuts.catalogue[item]['calories'] * edited_dish[item];
-						break
+				if (typeof edited_dish[item] === "object") {
+					switch (edited_dish[item]['kcal_unit']) {
+						case "100g":
+							item_kcal = edited_dish[item]['kcal_value'] * (edited_dish[item]['amount'] / 100);
+							break;
+						case "sztuka":
+							item_kcal = edited_dish[item]['kcal_value'] * edited_dish[item]['amount']
+							break
+					}
+				} else {
+					switch (nuts.catalogue[item]['unit']) {
+						case "100g":
+							item_kcal = nuts.catalogue[item]['calories'] * (edited_dish[item] / 100);
+							break;
+						case "sztuka":
+							item_kcal = nuts.catalogue[item]['calories'] * edited_dish[item];
+							break
+					}
 				}
 			}
 
@@ -301,14 +313,26 @@ $(document).on("click", "#save-dish", function(event) {
 		if (item == "Inne") {
 			item_kcal = edited_dish[item]
 		} else {
-			switch (nuts.catalogue[item]['unit']) {
-				case "100g":
-					var item_kcal = nuts.catalogue[item]['calories'] * (edited_dish[item] / 100);
-					break;
-				case "sztuka":
-					var item_kcal = nuts.catalogue[item]['calories'] * edited_dish[item];
-					break
-			};
+			if (typeof edited_dish[item] === "object") {
+				switch (edited_dish[item]['kcal_unit']) {
+					case "100g":
+						item_kcal = edited_dish[item]['kcal_value'] * (edited_dish[item]['amount'] / 100);
+						break;
+					case "sztuka":
+						item_kcal = edited_dish[item]['kcal_value'] * edited_dish[item]['amount']
+						break
+				}
+			} else {
+				switch (nuts.catalogue[item]['unit']) {
+					case "100g":
+						item_kcal = nuts.catalogue[item]['calories'] * (edited_dish[item] / 100);
+						break;
+					case "sztuka":
+						item_kcal = nuts.catalogue[item]['calories'] * edited_dish[item];
+						break
+				}
+			}
+
 		}
 
 		dish_calories += item_kcal
@@ -331,21 +355,291 @@ $(document).on("click", "#save-dish", function(event) {
 	edited_dish = null;
 });
 
-$("#export-dish").prop("disabled", true);
-$("#import-dish").prop("disabled", true);
+//$("#export-dish").prop("disabled", true);
+//$("#import-dish").prop("disabled", true);
 // export dish
 $(document).on("click", "#export-dish", function(event) {
-	console.log(JSON.stringify(nuts.cookbook[$("#dish-name").val()]))
+	let dish_raw = nuts.cookbook[$("#dish-name").val()];
+
+	for (let ingredient of Object.keys(dish_raw["ingredients"])) {
+		if (typeof dish_raw['ingredients'][ingredient] === "object") {
+			dish_raw['ingredients'][ingredient] = {
+				"amount": dish_raw['ingredients'][ingredient]['amount'],
+				"kcal_value": dish_raw['ingredients'][ingredient]['kcal_value'],
+				"kcal_unit": dish_raw['ingredients'][ingredient]['kcal_unit']
+			}
+		} else {
+			dish_raw['ingredients'][ingredient] = {
+				"amount": dish_raw['ingredients'][ingredient],
+				"kcal_value": nuts.catalogue[ingredient]['calories'],
+				"kcal_unit": nuts.catalogue[ingredient]['unit']
+			}
+		}
+
+	}
+
+	if (dish_raw['container'] != "") {
+		dish_raw['container_weight'] = nuts.containers[dish_raw['container']];
+	}
+	
+	dish_raw['dish_name'] = $("#dish-name").val();
+
 	utils.displayPopupMenu($("<div/>", {
 		html: [
 			$("<p/>", {
-				html: "This is a thng for export"
+				html: "Zamportuj danie poprzez skopiowanie poniższego tekstu i wklejenie go w innej instancji aplikacji:",
+				style: "text-align:center;"
 			}),
 			$("<p/>", {
-				html: JSON.stringify(nuts.cookbook[$("#dish-name").val()])
+				html: JSON.stringify(dish_raw),
+				style: "overflow-wrap:anywhere;font-weight:bold;padding:.5em;"
 			})
 		]
 	}));
+})
+
+// import dish
+$(document).on("click", "#import-dish", (event) => {
+	utils.displayPopupMenu($("<div/>", {
+		id: "dish-import-container",
+		style: "text-align:center;",
+		html: [
+			$("<p/>", {
+				html: "Podaj zakodowane danie:",
+				style: "font-weight:bold;font-size:26px"
+			}),
+			$("<textarea/>", {
+				id: "dish-import",
+				style: "width:75%;height:15rem;max-width:100%, max-height:50%" // TEMP
+			}),
+			$("<br/>"), $("<br/>"),
+			$("<button/>", {
+				id: "begin-dish-import",
+				html: "Zaimportuj"
+			})
+		]
+	}));
+})
+$(document).on("click", "#begin-dish-import", (event) => {
+	// parse import JSON
+	dish_import_object = JSON.parse($("#dish-import").val());
+
+	const container_div = $("<div/>");
+	
+	// compare container
+	if (dish_import_object['container'] != "") {
+		if (Object.keys(nuts.containers).includes(dish_import_object['container'])) {
+			if (nuts.containers[dish_import_object['container']] == dish_import_object['container_weight']) {
+				container_div.append($("<p/>", {html: `Pojemnik znaleziony: <p id='imported-container-name'>${dish_import_object['container']}</p>, waga zgodna`}))
+			} else {
+				container_div.append($("<div/>", {
+					html: [
+						$("<label/>", {for: "imported-container-name", html: "Nazwa pojemnika:"}),
+						$("<input/>", {id: "imported-container-name", type: 'text', value: dish_import_object['container']}),
+						$("<p/>", {html: `Waga pojemnika: <p id='imported-container-weight'>${dish_import_object['container_weight']}</p>`}),
+						$("<select/>", {
+							id: "imported-container-action",
+							html: () => {
+								var options = [
+									new Option("Dodaj nowy lub nadpisz", "add-new-imported-container")
+								]
+
+								for (var container of Object.keys(nuts.containers)) {
+									options.push(new Option(container, container));
+								}
+								return options
+							}
+						})
+					]
+				}))
+			}
+		}
+
+	}
+
+	// compare ingredients
+	const ingredients_table = $("<table/>", {
+		id: "import-dish-ingredients-table",
+		html: [
+			$("<tr/>", {
+				html: [
+					$("<th/>", {html: "Nazwa dania"}),
+					$("<th/>", {html: "Kcal/100 w imporcie"}),
+					$("<th/>", {html: "Kcal/100 w bazie"}),
+					$("<th/>", {html: "Decyzja"})
+				]
+			})
+		]
+	});
+
+	var row_id = 0;
+	for (let ingredient in dish_import_object['ingredients']) {
+		const ingredient_row = $("<tr/>", {
+			html: [
+				$("<td/>", {
+					html: ingredient,
+				}),
+				$("<td/>", {
+					html: dish_import_object['ingredients'][ingredient]['kcal_value']
+				}),
+				$("<td/>", {
+					html: Object.keys(nuts.catalogue).includes(ingredient) ? nuts.catalogue[ingredient]['calories'] : ""
+				}),
+				$("<td/>", {
+					html: () => {
+						let decision_widget;
+						const decision_id = `decision-${ingredient}`.replaceAll(" ", "_");
+						if (Object.keys(nuts.catalogue).includes(ingredient)) {
+							if (dish_import_object['ingredients'][ingredient]['kcal_value'] == nuts.catalogue[ingredient]['calories']) {
+								decision_widget = `<p id='${decision_id}'>OK</p>`;
+							} else {
+								decision_widget = $("<select/>", { id: decision_id, html: [
+									new Option("Wybierz import", 'choose-import'),
+									new Option("Wybierz bazę", "choose-database-item")
+								]})
+							}
+						} else {
+							decision_widget = $("<input/>", {
+								type: "text", class: "choose-item-to-replace", id: decision_id
+							})
+
+						}
+						
+						return decision_widget;
+					}
+				})
+			]
+		})
+		ingredients_table.append(ingredient_row);
+		row_id += 1;
+	}
+
+	const import_dish_table = $("<div/>", {
+		html: [
+			// dish name
+			$("<div/>", {
+				class: "input-widget",
+				html: [
+					$("<label/>", {html: "Nazwa dania", for: "imported-dish-name"}),
+					$("<input/>", {
+						type: "text",
+						id: "imported-dish-name",
+						value: dish_import_object['dish_name']
+					})
+				]
+			}),
+			// dish container
+			container_div,
+			// ingredients table
+			ingredients_table,
+			$("<button/>", {html: "Importuj", id: "confirm-dish-import"})
+		]	
+	})
+
+
+	$("#dish-import-container").empty();
+	$("#dish-import-container").append(import_dish_table);
+
+	for (let element of $(".choose-item-to-replace")) {
+		utils.addDropdownMenu(element.id, ["Pozostaw", "Dodaj do katalogu", ...dbmgr.getAvailableItems().sort()]);
+	}
+
+})
+
+$(document).on("click", "#confirm-dish-import", (event) => {
+	var new_dish = {
+		"ingredients": {},
+		"portions": 1,
+		"weight": dish_import_object['weight']
+	};
+
+	if ($(`#imported-container-action`).length !== 0) {
+		if ($(`#imported-container-action`).val() === "add-new-imported-container") {
+			nuts.containers[`${$(`#imported-container-name`).val()}`] = Number(dish_import_object['container_weight']);
+			new_dish['container'] = $("#imported-container-name").val();
+		} else {
+			new_dish['container'] = $("#imported-container-action").val();
+		}
+		
+	} else {
+		new_dish['container'] = dish_import_object['container'];
+	}
+
+	for (let ingredient in dish_import_object['ingredients']) {
+		let decision = $(`#decision-${ingredient}`.replaceAll(" ", "_").replaceAll("&", "\\&")); // temporary, needs better fix in terms of special characters
+		decision = decision.val() === "" ? decision.html() : decision.val();
+
+		switch(decision) {
+			case "":
+				alert("Decisions missing! Please fill all blank widgest"); return null;
+			case "OK":
+			case "choose-database-item":
+				new_dish["ingredients"][ingredient] = dish_import_object['ingredients'][ingredient]['amount']; break;
+			case "choose-import":
+			case "Pozostaw": // TODO: Change this to not rely on the language version
+				new_dish["ingredients"][ingredient] = dish_import_object["ingredients"][ingredient]; break;
+			case "Dodaj do katalogu":
+				new_dish["ingredients"][ingredient] = dish_import_object['ingredients'][ingredient]['amount'];
+				nuts.catalogue[ingredient] = {
+					"category": [],
+					"unit": dish_import_object['ingredients'][ingredient]['kcal_unit'],
+					"calories": dish_import_object['ingredients'][ingredient]['kcal_value']
+				};
+				break;
+			default:
+				new_dish["ingredients"][decision] = dish_import_object['ingredients'][ingredient]['amount']; break;
+		}
+
+	}
+
+	var dish_weight;
+	switch (new_dish['container']) {
+		case "":
+			dish_weight = new_dish['weight'];
+			break;
+		default:
+			dish_weight = Number(new_dish['weight']) - nuts.containers[new_dish['container']];
+			break;
+	};		
+	
+	let dish_calories = 0
+	
+	for (item in new_dish['ingredients']) {
+		var item_kcal;
+		if (item == "Inne") {
+			item_kcal = new_dish['ingredients'][item];
+		} else {
+			if (typeof new_dish['ingredients'][item] == "number") {
+				switch (nuts.catalogue[item]['unit']) {
+					case "100g":
+						item_kcal = nuts.catalogue[item]['calories'] * (new_dish['ingredients'][item] / 100);
+						break;
+					case "sztuka":
+						item_kcal = nuts.catalogue[item]['calories'] * new_dish['ingredients'][item];
+						break
+				};
+			} else if (typeof new_dish['ingredients'][item] == "object") {
+				switch (new_dish['ingredients'][item]['kcal_unit']) {
+					case "100g":
+						item_kcal = new_dish['ingredients'][item]['amount'] * (new_dish['ingredients'][item]['kcal_value'] / 100);
+						break;
+					case "sztuka":
+						item_kcal = new_dish['ingredients'][item]['amount'] * new_dish['ingredients'][item]['kcal_value'];
+						break
+				};
+			}
+
+		}
+		dish_calories += item_kcal
+	};
+
+	new_dish['calories'] = dish_calories / new_dish['weight'] * 100;
+
+	nuts.cookbook[$("#imported-dish-name").val()] = new_dish;
+	delete dish_import_object;
+
+	dbmgr.saveNUTS();
+	location.reload();
 })
 
 // delete dish
@@ -377,13 +671,16 @@ $(document).on("click", "#cancel-dish", function(event) {
 $(document).on("click", "#dishes-add-button", function(event) {
 	let item_name = $("#dishes-add-name").val() == "" ? "Inne" : $("#dishes-add-name").val(); 
 	edited_dish[item_name] = Number($("#dishes-add-amount").val());
+
+	$("#dishes-add-name").val("");
+	$("#dishes-add-amount").val("");
 	
 	renderEditTable();
 });
 // edit ingredient amount
 $(document).on("click", ".ingredient-amount", function(event) {
 	var current_value = event.target.innerHTML;
-	var current_change_name = event.target.parentElement.childNodes[0].innerHTML;
+	var current_change_name = event.target.parentElement.childNodes[0].innerHTML.replaceAll(" ", "_");
 	//var current_text_id = "text-" + (Number(event.target.id.split("-")[1]) + 5)
 	
 	const edit_widget = document.createElement("div");
@@ -408,17 +705,23 @@ $(document).on("click", ".ingredient-amount", function(event) {
 	$("#" + event.target.id).removeClass("ingredient-amount").off('click');
 	
 	// change value in the database
-	$("#change-value-" + current_change_name).click(function(event) {
+	$("#change-value-" + current_change_name).on("click", function(event) {
 		let name_to_change = event.target.parentElement.parentElement.parentElement.childNodes[0].innerHTML;
 		let value_to_change = event.target.parentElement.childNodes[0].value;
 		
-		edited_dish[name_to_change] = value_to_change
+		if (typeof edited_dish[name_to_change] === "object") {
+			edited_dish[name_to_change]['amount'] = Number(value_to_change);
+
+		} else {
+			edited_dish[name_to_change] = Number(value_to_change);
+		}
+		
 		
 		renderEditTable();
 	});
 
 	// cancel, reverse
-	$("#cancel-change-" + current_change_name).click(function(event) {
+	$("#cancel-change-" + current_change_name).on("click", function(event) {
 		let button_parent = $("#" + event.target.parentElement.parentElement.id);
 		button_parent.html(current_value);// = current_value;
 		button_parent.addClass("ingredient-amount");
@@ -461,3 +764,23 @@ $(document).on("click", "#containers-add-button", function() {
 $(document).on("click", ".containers-delete", function(event) {
 	deleteContainers(event);
 });
+
+// SHORTCUTS //
+/*
+document.onkeyup = function(event) {
+	if (event.key === "Enter") {
+		if ($(`.dropdown-options`)[0].style.display === "block") {
+			if ($(".dropdown-option.selected").length !== 0) {
+				let value_to_insert = $(".dropdown-option.selected")[0].innerHTML;
+				$("#today-add-name").val(value_to_insert);
+				document.getElementById("today-add-amount").focus();
+
+			}
+		} else {
+			$("#today-add-button").click();
+			document.getElementById("today-add-name").focus();
+		}
+		
+	}
+};
+*/

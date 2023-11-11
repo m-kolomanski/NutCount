@@ -5,10 +5,11 @@
  * @param {array} full_item_list Array of all items to be added to the picklist 
  */
 addDropdownMenu = function(text_input_id, full_item_list) {
+    console.log(`adding to ${text_input_id}`)
     const main_container = $(`#${text_input_id}`).parent();
     main_container.off();
     // create container
-    container_id = `${text_input_id}-options`;
+    const container_id = `${text_input_id}-options`;
     $(`#${container_id}`).remove();
     const dropdown_container = document.createElement("div");
     dropdown_container.classList.add("dropdown-options");
@@ -27,6 +28,7 @@ addDropdownMenu = function(text_input_id, full_item_list) {
 
     // show dropdown
     $(main_container).on("focus", `#${text_input_id}`, () => {
+        console.log(`Showing ${container_id}`);
         $(`#${container_id}`).css("display", "block");
     });
     // hide dropdown
@@ -35,6 +37,7 @@ addDropdownMenu = function(text_input_id, full_item_list) {
     });
     // select option
     $(main_container).on("mousedown", ".dropdown-option", (event) => {
+        console.log(`Updating ${text_input_id} ${event.target.id}`);
         $(`#${text_input_id}`).val(event.target.id);
     });
     // filter dropdown

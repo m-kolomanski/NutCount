@@ -195,7 +195,7 @@ const filterItemsByCat = function() {
 			filtered.push(dish)
 		};
 	} else {
-		for (item in nuts.catalogue) {
+		for (item of dbmgr.getAvailableItems().sort()) {
 			if ($("#today-category-filter").val() == "" || nuts.catalogue[item].category.includes($("#today-category-filter").val())) {
 				filtered.push(item);
 			};

@@ -34,3 +34,7 @@
 #f-grid * button {
 	height: 2em;
 }
+
+#import-dish-ingredients-table .dropdown-options {
+	width: auto;
+}

@@ -1,3 +1,5 @@
+*Disclaimer: this application was created in order to learn new language and technologies I was unfamirial with. The code is bad, poorly optimized and not well thought-out. I have experimented with various techniques and technologies in order to learn. Since then I have learned a lot, but I have no intention of refactoring this simple application - it works for my purposes, so I don't care. I might cram in some more features in the future, but I expect to mostly forget this repo, as the application does what I and my small group of users want it to do. Do with this info as you wish.*
+
 # NutCount
 This is a very simple calorie counting app. A side-project to learn more raw HTML, JavaScript and SQLite, as well as deploying applications using Electron. Crude and could have been written better, but works for my needs.
 
