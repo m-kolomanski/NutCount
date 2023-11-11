@@ -430,13 +430,13 @@ $(document).on("click", "#begin-dish-import", (event) => {
 	if (dish_import_object['container'] != "") {
 		if (Object.keys(nuts.containers).includes(dish_import_object['container'])) {
 			if (nuts.containers[dish_import_object['container']] == dish_import_object['container_weight']) {
-				container_div.append($("<p/>", {html: `Pojemnik znaleziony: <p id='imported-container-name'>${dish_import_object['container']}</p>, waga zgodna`}))
+				container_div.append($("<span/>", {html: `Pojemnik znaleziony: <p id='imported-container-name'>${dish_import_object['container']}</span>, waga zgodna`}))
 			} else {
 				container_div.append($("<div/>", {
 					html: [
 						$("<label/>", {for: "imported-container-name", html: "Nazwa pojemnika:"}),
 						$("<input/>", {id: "imported-container-name", type: 'text', value: dish_import_object['container']}),
-						$("<p/>", {html: `Waga pojemnika: <p id='imported-container-weight'>${dish_import_object['container_weight']}</p>`}),
+						$("<p/>", {html: `Waga pojemnika: <span id='imported-container-weight'>${dish_import_object['container_weight']}</span>`}),
 						$("<select/>", {
 							id: "imported-container-action",
 							html: () => {
@@ -533,8 +533,7 @@ $(document).on("click", "#begin-dish-import", (event) => {
 			// ingredients table
 			ingredients_table,
 			$("<button/>", {html: "Importuj", id: "confirm-dish-import"})
-		]	
-	})
+		],})
 
 
 	$("#dish-import-container").empty();

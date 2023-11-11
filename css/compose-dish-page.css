@@ -38,3 +38,8 @@
 #import-dish-ingredients-table .dropdown-options {
 	width: auto;
 }
+
+#dish-import-container {
+	height:100%;
+	overflow-y:auto;
+}

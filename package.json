@@ -1,6 +1,6 @@
 {
   "name": "NutCount",
-  "version": "0.8.231110",
+  "version": "0.8.231111",
   "description": "Simple app for managing daily calorie intake.",
   "main": "main.js",
   "scripts": {
