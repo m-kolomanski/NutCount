@@ -1,0 +1,9 @@
+{
+    "navbar": {
+        "today_button": "Today",
+        "catalogue_button": "Catalogue",
+        "compose_dish_button": "Compose dish",
+        "history_button": "History",
+        "options_button": "Options"
+    }
+}

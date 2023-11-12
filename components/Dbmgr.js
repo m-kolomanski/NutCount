@@ -117,6 +117,13 @@ class Dbmgr {
         });
     }
     /**
+     * @method getLocale
+     * @returns {string} Returns current language string.
+     */
+    getLocale() {
+        return this.config.lang;
+    }
+    /**
      * @method getTodayDate
      * @returns {string} Returns today's date in the format YYYY-MM-DD.
      */

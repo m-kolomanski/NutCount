@@ -1,0 +1,9 @@
+{
+    "navbar": {
+        "today_button": "Dzisiaj",
+        "catalogue_button": "Katalog",
+        "compose_dish_button": "Skomponuj danie",
+        "history_button": "Historia",
+        "options_button": "Opcje"
+    }
+}
