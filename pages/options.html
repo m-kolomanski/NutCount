@@ -1,13 +1,37 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>NutCount</title>
-        <link rel="stylesheet" type="text/css" href="../global.css">
-    </head>
-    <body>
-        <top-navbar></top-navbar>
+  <head>
+    <meta charset="UTF-8">
+    <title>NutCount</title>
+	<link rel="stylesheet" type="text/css" href="../global.css">
 
-        options
-    </body>
+  </head>
+  <body>
+	<top-navbar></top-navbar>
+
+
+	
+	<div id="details" style="padding-top:5em;">
+    <span id="language-selection-label"></span>
+    <select id="language-selection">
+      <option value="pl">Polski</option>
+      <option value="en">English</option>
+    </select>
+    <br>
+    <span id="theme-selection-label"></span>
+    <select id="theme-selection">
+        <option id="theme-selection-nuts"      value="nuts"></option>
+        <option id="theme-selection-greyscale" value="greyscale"></options>
+    </select>
+    <br>
+    <span id="author-label"></span> Mateusz Kołomański<br>
+    <span>Github: </span><a href="https://github.com/m-kolomanski/NutCount">https://github.com/m-kolomanski/NutCount</a><br>
+    <span id="version-label"></span> <span id='version'></span><br>
+
+    <br>
+    <button id="check-for-updates"></button>
+    <p id="version-notification"></p>
+  </div>
+  <script src="options.js"></script>
+  </body>
 </html>

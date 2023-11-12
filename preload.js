@@ -8,6 +8,6 @@ window.fs = require('fs');
 window.path = require('path');
 window.dbmgr = new Dbmgr();
 window.customElements.define('top-navbar', Navbar);
-window.locale = require(path.join(__dirname, "/locale/", `${window.dbmgr.getLocale()}.json`));
+window.locale = require(path.join(__dirname, "/locale/", `${window.dbmgr.getConfig('lang')}.json`));
 
 window.ipcRenderer = ipcRenderer;

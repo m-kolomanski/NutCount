@@ -1,9 +1,17 @@
-:root {
+html[theme='nuts'] {
 	--orange: #f88d35;
 	--orange-muted: #fdb05e;
 	--orange-light: #f3ddc9;
 	--green-dark: #788e12;
 	--green-light: #f0f2dc;
+	--grey: #a39c8e;
+}
+html[theme='greyscale'] {
+	--orange: #525252;
+	--orange-muted: #424242;
+	--orange-light: #dadada;
+	--green-dark: #5c5c5c;
+	--green-light: #bdbdbd;
 	--grey: #a39c8e;
 }
 

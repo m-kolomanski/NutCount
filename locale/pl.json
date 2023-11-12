@@ -19,5 +19,14 @@
         "calculator-label": "Kalkulator kalorii:",
         "calculator-weight": "Ilość (g)",
         "calculator-kcal": "kcal/100g"
+    },
+    "options": {
+        "language-selection-label": "Język:",
+        "theme-selection-label": "Motyw:",
+        "theme-selection-nuts": "Orzeszki",
+        "theme-selection-greyscale": "Szary",
+        "author-label": "Autor:",
+        "version-label": "Wersja:",
+        "check-for-updates": "Sprawdź dostępność aktualizacji"
     }
 }

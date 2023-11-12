@@ -19,5 +19,14 @@
         "calculator-weight": "Amount (g)",
         "calculator-kcal": "kcal/100g",
         "leftover-nuts-label": "Pozostałe orzeszki:"
+    },
+    "options": {
+        "language-selection-label": "Language:",
+        "theme-selection-label": "Theme:",
+        "theme-selection-nuts": "Nuts",
+        "theme-selection-greyscale": "Greyscale",
+        "author-label": "Author:",
+        "version-label": "Version:",
+        "check-for-updates": "Check for updates"
     }
 }

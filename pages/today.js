@@ -12,5 +12,6 @@
         }
     });
 
-
+    // set theme //
+    document.documentElement.setAttribute('theme', dbmgr.getConfig('theme'));
 })();

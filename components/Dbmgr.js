@@ -117,11 +117,33 @@ class Dbmgr {
         });
     }
     /**
-     * @method getLocale
-     * @returns {string} Returns current language string.
+     * @method getConfig
+     * @argument {string} key - Config key, default: null.
+     * @returns {(string|object)} Returns config value of selected key or full config is key is null.
      */
-    getLocale() {
-        return this.config.lang;
+    getConfig(key = null) {
+        if (![...Object.keys(this.config), null].includes(key)) throw new Error("getConfig: invalid config key.");
+        switch (key) {
+            case null:
+                return this.config;
+            default:
+                return this.config[key];
+        }
+    }
+    /**
+     * @method setConfig
+     * @description Sets new config.
+     * @argument {string} key   - Config key.
+     * @argument {string} value - New config value.
+     * @returns {void}
+     */
+    setConfig(key, value) {
+        if (![...Object.keys(this.config), null].includes(key)) { console.error("setConfig: invalid config key."); return; }
+        this.config[key] = value;
+        fs.writeFile(path.join(__dirname, "../data/config.json"), JSON.stringify(this.config), err => {
+            if (err) console.error("Error editing config:", err);
+        });
+
     }
     /**
      * @method getTodayDate
