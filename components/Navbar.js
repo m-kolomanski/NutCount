@@ -4,11 +4,11 @@ class Navbar extends HTMLElement {
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.innerHTML = `
             <div class = "navbar">
-            <button onclick="location.href='today-page.html'"        class = "navbar-button">${locale.navbar.today_button}</button>
-            <button onclick="location.href='catalogue-page.html'"    class = "navbar-button">${locale.navbar.catalogue_button}</button>
-            <button onclick="location.href='compose-dish-page.html'" class = "navbar-button">${locale.navbar.compose_dish_button}</button>
-            <button onclick="location.href='history-page.html'"      class = "navbar-button">${locale.navbar.history_button}</button>
-            <button onclick="location.href='options-page.html'"      class = "navbar-button">${locale.navbar.options_button}</button>
+            <button onclick="location.href='today.html'"        class="navbar-button">${locale.navbar.today_button}</button>
+            <button onclick="location.href='catalogue.html'"    class="navbar-button">${locale.navbar.catalogue_button}</button>
+            <button onclick="location.href='compose-dish.html'" class="navbar-button">${locale.navbar.compose_dish_button}</button>
+            <button onclick="location.href='history.html'"      class="navbar-button">${locale.navbar.history_button}</button>
+            <button onclick="location.href='options.html'"      class="navbar-button">${locale.navbar.options_button}</button>
 
             <script>
                 let path = window.location.href.split("/")
