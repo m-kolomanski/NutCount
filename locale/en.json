@@ -5,5 +5,19 @@
         "compose_dish_button": "Compose dish",
         "history_button": "History",
         "options_button": "Options"
+    },
+    "today": {
+        "header": "Today's consumption",
+        "add-name-label": "Name",
+        "category-filter-label": "Category",
+        "add-amount-label": "Amount",
+        "add-button": "Add",
+        "consumed-nuts-label": "Consumed nuts:",
+        "burned-nuts-label": "Burned nuts:",
+        "planned-deficit-label": "Planned deficit:",
+        "calculator-label": "Calorie calculator",
+        "calculator-weight": "Amount (g)",
+        "calculator-kcal": "kcal/100g",
+        "leftover-nuts-label": "Pozostałe orzeszki:"
     }
 }

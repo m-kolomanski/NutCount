@@ -5,5 +5,19 @@
         "compose_dish_button": "Skomponuj danie",
         "history_button": "Historia",
         "options_button": "Opcje"
+    },
+    "today": {
+        "header": "Dzisiejszy dzień",
+        "add-name-label": "Nazwa",
+        "category-filter-label": "Kategoria",
+        "add-amount-label": "Ilość",
+        "add-button": "Dodaj",
+        "consumed-nuts-label": "Zjedzone orzeszki:",
+        "burned-nuts-label": "Spalone orzeszki:",
+        "planned-deficit-label": "Planowany deficyt:",
+        "leftover-nuts-label": "Pozostałe orzeszki:",
+        "calculator-label": "Kalkulator kalorii:",
+        "calculator-weight": "Ilość (g)",
+        "calculator-kcal": "kcal/100g"
     }
 }
