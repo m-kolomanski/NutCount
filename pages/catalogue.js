@@ -1,7 +1,8 @@
 (function() {
     // fetch locale content //
-    const locale = window.locale.today;
+    const locale = window.locale.catalogue;
     Object.keys(locale).map((element_id) => {
+        console.log(element_id)
         const element = document.getElementById(element_id);
         switch (element.nodeName) {
             case "INPUT":

@@ -20,6 +20,16 @@
         "calculator-weight": "Ilość (g)",
         "calculator-kcal": "kcal/100g"
     },
+    "catalogue": {
+        "header": "Katalog produktów",
+        "name-label": "Nazwa",
+        "calories-label": "Kalorie",
+        "unit-label": "Jednostka",
+        "portion-label": "Porcja",
+        "add-item": "Dodaj",
+        "new-category-label": "Nowa kategoria",
+        "add-category": "Dodaj"
+    },
     "options": {
         "language-selection-label": "Język:",
         "theme-selection-label": "Motyw:",

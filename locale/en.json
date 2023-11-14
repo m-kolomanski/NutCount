@@ -20,6 +20,16 @@
         "calculator-kcal": "kcal/100g",
         "leftover-nuts-label": "Pozostałe orzeszki:"
     },
+    "catalogue": {
+        "header": "Product catalogue",
+        "name-label": "Name",
+        "calories-label": "Calories",
+        "unit-label": "Unit",
+        "portion-label": "Portion",
+        "add-item": "Add",
+        "new-category-label": "New category",
+        "add-category": "Add"
+    },
     "options": {
         "language-selection-label": "Language:",
         "theme-selection-label": "Theme:",

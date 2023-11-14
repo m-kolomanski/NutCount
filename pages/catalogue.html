@@ -4,10 +4,81 @@
         <meta charset="UTF-8">
         <title>NutCount</title>
         <link rel="stylesheet" type="text/css" href="../global.css">
+        <style>
+            #food-catalogue {
+                padding-top:1em;
+            }
+            #food-catalogue th:nth-child(1) { width: 50%; }
+            #food-cataloguet th:nth-child(2) { width: 25%; }
+            #food-catalogue th:nth-child(3) { width: 10%; }
+            #food-catalogue th:nth-child(4) { width: 10% ; }
+            #food-catalogue th:nth-child(5) { width: 5% ; }
+
+            #catalogue-categories {
+                display:inline-block;
+                width:25%;
+                float:right;
+            }
+
+            #add-category {
+                margin-top: 1em;
+                width: 100%;
+            }
+            #categories-table {
+                padding-top: 1em;
+            }
+
+            #categories-table td:nth-child(1) { width: 85%; }
+            #categories-table td:nth-child(2) { width: 15%; }
+        </style>
     </head>
     <body>
         <top-navbar></top-navbar>
 
-        This is catalogue page
+        <p id="header"></p>
+        <div id="notification-container" style="height:30px;text-align:center"></div> 
+        
+        <div id="catalogue-table" style="display:inline-block;width:70%">
+            <div class="widget-backdrop">
+                <div id="adding-widgets" class="widget-container" style = "width:50%">
+                    <div class="input-widget" style="width:100%">
+                        <label id="name-label" for="name"></label><br>
+                        <input type = "text" id = "name"></input>
+                    </div>
+                    <br>
+                    <div class="input-widget" style="width:31%;">
+                        <label id="calories-label" for="calories"></label><br>
+                        <input type="text" id="calories"></input>
+                    </div>
+                    <div class="input-widget" style="width:31%;padding-left:2.5%;padding-right:2.5%">
+                        <label id="unit-label" for="unit"></label><br>
+                        <select name="unit" id="unit">
+                            <option value="100g">100g</option>
+                            <option id="portion-label" value="portion"></option>
+                        </select>
+                    </div>
+                    <div class = "input-widget" style = "width:31%">
+                        <button id="add-item"></button>
+                    </div>
+                    
+                </div>
+            </div>
+            <div id="food-catalogue" class="table-container"></div>
+        </div>
+        
+        <div id="catalogue-categories">
+            <div class="widget-backdrop">
+                <div class="widget-container">
+                    <div class="input-widget" style="width:100%;margin-top:0.25em;">
+                        <label id="new-category-label" for="new-category"></label><br>
+                        <input type="text" id="new-category"></input>
+                    </div>
+                    <button id = "add-category"></button>
+                </div>
+            </div>
+            <div id="categories-table" class="table-container"></div>
+        </div>
+
+        <script src="catalogue.js"></script>
     </body>
 </html>

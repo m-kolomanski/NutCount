@@ -1,123 +1,123 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>NutCount</title>
-	
-	<link rel="stylesheet" type="text/css" href="../global.css">
-    <style>
-        .widget-container > p {
-            margin: 0px;
-            height: 100%;
-            line-height: 250%
-        }
-        .widget-container > p > span.widget-label {
-            position: relative;
-            bottom: 5%;
-            border-bottom: 2px dashed #f88d35
-        }
-
-        .kcal-bottom-label1 {
-            position:relative;
-            bottom:20%;
-        }
-        .kcal-bottom-label2 {
-            position:relative;
-            bottom:13%;
-        }
-
-        #input-container {
-            display: inline-block;
-            width: 30%;
-        }
-        #today-table {
-            padding-top:1em;
-        }
-        th:nth-child(1) { width: 55%; }
-        th:nth-child(2) { width: 20%; }
-        th:nth-child(3) { width: 20%; }
-        th:nth-child(4) { width: 5% ; }
-
-        #calculator-container {
-            line-height: 150%;
-            position: relative;
-            top: 5%;
-        }
-        #calculator-result {
-            font-weight: bold;
-        }
-    </style>
-
-  </head>
-  <body>
-    <top-navbar></top-navbar>
-
-    <h1 id="header"></h1>
-    <div id="notification-container"></div>
-
-	<div class="widget-backdrop">
-		<div id="input-container" class="widget-container">
-			<div class="input-widget" style="width:100%">
-				<label for="add-name" id="add-name-label"></label><br>
-				<input type="text" id="add-name" name="add-name">
-			</div>
-			<br>
-			<div class="input-widget" style="width:50%;vertical-align:bottom;float:left;">
-				<label for="category-filter" id="category-filter-label"></label><br>
-				<select name="category-filter" id="category-filter"></select>
-			</div>
-			<div class="input-widget" style="width:25%;margin-left:-0.3rem">
-				<label for="add-amount" id="add-amount-label"></label><br>
-				<input type="text" id="add-amount"></input>
-			</div>
-			<div class="input-widget" style="width:20%;">
-				<button id="add-button" style="margin-left:0.8rem;"></button>
-			</div>
-		</div>
+	<head>
+		<meta charset="UTF-8">
+		<title>NutCount</title>
 		
-		<div id="consumed" class="widget-container">
-			<p>
-				<span id="consumed-nuts-label" class="widget-label"></span><br>
-				<span id="consumed-sum" style="font-size:32px;font-weight:bold;"></span><br>
-				<span class="kcal-bottom-label1">kcal</span>
-			</p>
-		</div>
-		<div id="burned" class = "widget-container">
-			<p>
-				<span id="burned-nuts-label" class="widget-label"></span><br>
-				<input type="text" class="calculation-trigger" id="burned-nuts"></input><br>
-				<span class="kcal-bottom-label2">kcal</span>
-			</p>
+		<link rel="stylesheet" type="text/css" href="../global.css">
+		<style>
+			.widget-container > p {
+				margin: 0px;
+				height: 100%;
+				line-height: 250%
+			}
+			.widget-container > p > span.widget-label {
+				position: relative;
+				bottom: 5%;
+				border-bottom: 2px dashed #f88d35
+			}
+
+			.kcal-bottom-label1 {
+				position:relative;
+				bottom:20%;
+			}
+			.kcal-bottom-label2 {
+				position:relative;
+				bottom:13%;
+			}
+
+			#input-container {
+				display: inline-block;
+				width: 30%;
+			}
+			#today-table {
+				padding-top:1em;
+			}
+			th:nth-child(1) { width: 55%; }
+			th:nth-child(2) { width: 20%; }
+			th:nth-child(3) { width: 20%; }
+			th:nth-child(4) { width: 5% ; }
+
+			#calculator-container {
+				line-height: 150%;
+				position: relative;
+				top: 5%;
+			}
+			#calculator-result {
+				font-weight: bold;
+			}
+		</style>
+
+	</head>
+	<body>
+		<top-navbar></top-navbar>
+
+		<h1 id="header"></h1>
+		<div id="notification-container"></div>
+
+		<div class="widget-backdrop">
+			<div id="input-container" class="widget-container">
+				<div class="input-widget" style="width:100%">
+					<label for="add-name" id="add-name-label"></label><br>
+					<input type="text" id="add-name" name="add-name">
+				</div>
+				<br>
+				<div class="input-widget" style="width:50%;vertical-align:bottom;float:left;">
+					<label for="category-filter" id="category-filter-label"></label><br>
+					<select name="category-filter" id="category-filter"></select>
+				</div>
+				<div class="input-widget" style="width:25%;margin-left:-0.3rem">
+					<label for="add-amount" id="add-amount-label"></label><br>
+					<input type="text" id="add-amount"></input>
+				</div>
+				<div class="input-widget" style="width:20%;">
+					<button id="add-button" style="margin-left:0.8rem;"></button>
+				</div>
+			</div>
+			
+			<div id="consumed" class="widget-container">
+				<p>
+					<span id="consumed-nuts-label" class="widget-label"></span><br>
+					<span id="consumed-sum" style="font-size:32px;font-weight:bold;"></span><br>
+					<span class="kcal-bottom-label1">kcal</span>
+				</p>
+			</div>
+			<div id="burned" class = "widget-container">
+				<p>
+					<span id="burned-nuts-label" class="widget-label"></span><br>
+					<input type="text" class="calculation-trigger" id="burned-nuts"></input><br>
+					<span class="kcal-bottom-label2">kcal</span>
+				</p>
+				
+			</div>
+			<div id="deficit" class="widget-container">
+				<p>
+					<span id="planned-deficit-label" class="widget-label"></span><br>
+					<input type="text" class="calculation-trigger" id="planned-deficit"></input><br>
+					<span style="padding-top:20px" class = "kcal-bottom-label2">kcal</span>
+				</p>
+
+			</div>
+			<div id = "left" class = "widget-container">
+				<p>
+					<span id="leftover-nuts-label" class="widget-label"></span><br>
+					<span id="leftover-nuts" style="font-size:32px;font-weight:bold;"></span><br>
+					<span class="kcal-bottom-label1">kcal</span>
+				</p>
+			</div>
+			<div id="calculator" class="widget-container">
+				<p id="calculator-container">
+					<span id="calculator-label" class="widget-label"></span><br>
+					<input type="text" class="calculator" id="calculator-weight" placeholder = "Ilość (g)"></input><br>
+					<input type="text" class="calculator" id="calculator-kcal" placeholder = "kcal/100g"></input><br>
+					<span id = "calculator-result"></span>
+				</p>
+			</div>
+		
 			
 		</div>
-		<div id="deficit" class="widget-container">
-			<p>
-				<span id="planned-deficit-label" class="widget-label"></span><br>
-				<input type="text" class="calculation-trigger" id="planned-deficit"></input><br>
-				<span style="padding-top:20px" class = "kcal-bottom-label2">kcal</span>
-			</p>
+		<div id = "today-table" class = "table-container"></div>
 
-		</div>
-		<div id = "left" class = "widget-container">
-			<p>
-				<span id="leftover-nuts-label" class="widget-label"></span><br>
-				<span id="leftover-nuts" style="font-size:32px;font-weight:bold;"></span><br>
-				<span class="kcal-bottom-label1">kcal</span>
-			</p>
-		</div>
-		<div id="calculator" class="widget-container">
-			<p id="calculator-container">
-				<span id="calculator-label" class="widget-label"></span><br>
-				<input type="text" class="calculator" id="calculator-weight" placeholder = "Ilość (g)"></input><br>
-				<input type="text" class="calculator" id="calculator-kcal" placeholder = "kcal/100g"></input><br>
-				<span id = "calculator-result"></span>
-			</p>
-		</div>
-	
-		
-	</div>
-	<div id = "today-table" class = "table-container"></div>
-
-    <script src="today.js"></script>
-  </body>
+		<script src="today.js"></script>
+	</body>
 </html>
