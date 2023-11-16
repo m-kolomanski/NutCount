@@ -25,7 +25,7 @@
         "name-label": "Nazwa",
         "calories-label": "Kalorie",
         "unit-label": "Jednostka",
-        "portion-label": "Porcja",
+        "portion-label": "porcja",
         "add-item": "Dodaj",
         "new-category-label": "Nowa kategoria",
         "add-category": "Dodaj"
@@ -38,5 +38,13 @@
         "author-label": "Autor:",
         "version-label": "Wersja:",
         "check-for-updates": "Sprawdź dostępność aktualizacji"
+    },
+    "colnames": {
+        "name": "Nazwa",
+        "kcal_per_unit": "Kcal/j",
+        "unit": "Jednostka",
+        "portion": "Porcja",
+        "amount": "Ilość",
+        "categories": "Kategoria"
     }
 }

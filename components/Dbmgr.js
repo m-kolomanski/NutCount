@@ -59,9 +59,10 @@ class Dbmgr {
 
             CREATE TABLE Catalogue (
                 item_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                name TEXT NOT NULL,
-                kcal_per_100g REAL NOT NULL,
-                portion_size REAL
+                name TEXT NOT NULL UNIQUE,
+                kcal_per_unit REAL NOT NULL,
+                unit TEXT NOT NULL,
+                categories TEXT
             );
 
             CREATE TABLE Cookbook (
@@ -91,7 +92,7 @@ class Dbmgr {
             CREATE TABLE Containers (
                 container_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                 name TEXT NOT NULL,
-                weigth REAL NOT NULL
+                weight REAL NOT NULL
             );
 
             CREATE TABLE Targets (
@@ -102,6 +103,78 @@ class Dbmgr {
                 deficit REAL NOT NULL
             )
         `);
+    }
+    /**
+     * @method getCatalogue
+     * @returns {object} Returns an object containing all items in the catalogue.
+     */
+    getCatalogue(cols = null) {
+        let cols_string = "*";
+        if (cols) cols_string = cols.join(",");
+        return this.db.prepare(`SELECT ${cols_string} FROM Catalogue ORDER BY Name;`).all();
+    }
+    /**
+     * @method getCatalogueItem
+     * @param {string} name - Name of the item to fetch.
+     * @returns {object} Returns an object containing data about item.
+     */
+    getCatalogueItem(name) {
+        return this.db.prepare(`SELECT * FROM Catalogue WHERE name = ?;`).get(name);
+    };
+    /**
+     * @method addItemToCatalogue
+     * @param {string} name 
+     * @param {number} kcal_per_unit 
+     * @param {string} unit 
+     * @param {string} categories
+     * @returns {void} 
+     */
+    addItemToCatalogue(name, kcal_per_unit, unit, categories) {
+        this.db.prepare(`INSERT INTO Catalogue (name, kcal_per_unit, unit, categories) VALUES (?, ?, ?, ?);`).run(name, kcal_per_unit, unit, categories);
+    }
+    /**
+     * @method removeItemFromCatalogue
+     * @param {string} name 
+     * @returns {void}
+     */
+    removeItemFromCatalogue(name) {
+        this.db.prepare(`DELETE FROM Catalogue WHERE name = ?;`).run(name);
+    }
+    /**
+     * @method updateCatalogueItem
+     * @param {string} name 
+     * @param {number} kcal_per_unit 
+     * @param {string} unit 
+     * @param {string} categories 
+     * @returns {void}
+     */
+    updateCatalogueItem(name, kcal_per_unit, unit, categories) {
+        this.db.prepare(`UPDATE Catalogue SET name = ?, kcal_per_unit = ?, unit = ?, categories = ? WHERE name = ?;`).run(name, kcal_per_unit, unit, categories, name);
+    }
+    /**
+     * @method getCategories
+     * @returns {object} Returns an object containing all categories.
+     */
+    getCategories(cols = null) {
+        let cols_string = "*";
+        if (cols) cols_string = cols.join(",");
+        return this.db.prepare(`SELECT ${cols_string} FROM Categories ORDER BY Name;`).all();
+    }
+    /**
+     * @method addCategory
+     * @param {string} name - Name of the category to add.
+     * @returns {void}
+     */
+    addCategory(name) {
+        this.db.prepare(`INSERT INTO Categories (name) VALUES (?);`).run(name);
+    }
+    /**
+     * @method removeCategory
+     * @param {string} name - Name of the category to remove.
+     * @returns {void}
+     */
+    removeCategory(name) {
+        this.db.prepare(`DELETE FROM Categories WHERE name = ?;`).run(name);
     }
     /**
      * @method createNewConfig

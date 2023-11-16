@@ -25,7 +25,7 @@
         "name-label": "Name",
         "calories-label": "Calories",
         "unit-label": "Unit",
-        "portion-label": "Portion",
+        "portion-label": "portion",
         "add-item": "Add",
         "new-category-label": "New category",
         "add-category": "Add"
@@ -38,5 +38,13 @@
         "author-label": "Author:",
         "version-label": "Version:",
         "check-for-updates": "Check for updates"
+    },
+    "colnames": {
+        "name": "Name",
+        "calories": "Kcal/unit",
+        "unit": "Unit",
+        "portion": "Portion",
+        "amount": "Amount",
+        "categories": "Category"
     }
 }
