@@ -6,3 +6,5 @@ data/*
 out/*
 # ignore old files
 old_files/*
+# ignore logs
+*.log
