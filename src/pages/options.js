@@ -8,8 +8,6 @@
         document.getElementById(element_id).innerHTML = locale[element_id];
     });
 
-    // set theme //
-    document.documentElement.setAttribute('theme', dbmgr.getConfig('theme'));
 
     // set option picklists to current value //
     document.querySelector([`option[value="${dbmgr.getConfig('lang')}"]`]).selected = true;

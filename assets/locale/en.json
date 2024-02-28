@@ -18,7 +18,7 @@
         "calculator-label": "Calorie calculator",
         "calculator-weight": "Amount (g)",
         "calculator-kcal": "kcal/100g",
-        "leftover-nuts-label": "Pozostałe orzeszki:"
+        "leftover-nuts-label": "Leftover nuts:"
     },
     "catalogue": {
         "header": "Product catalogue",
@@ -41,10 +41,16 @@
     },
     "colnames": {
         "name": "Name",
-        "calories": "Kcal/unit",
+        "kcal_per_unit": "Kcal/unit",
         "unit": "Unit",
         "portion": "Portion",
         "amount": "Amount",
-        "categories": "Category"
+        "categories": "Categories"
+    },
+    "general": {
+        "editing_item": "Editing entry",
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "delete": "Delete"
     }
 }

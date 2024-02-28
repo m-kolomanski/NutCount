@@ -2,13 +2,14 @@ class Navbar extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
+
         this.shadowRoot.innerHTML = `
             <nav class = "navbar">
-                <button ref="today"        onclick="location.href='today.html'"        class="navbar-button">${locale.navbar.today_button}</button>
-                <button ref="catalogue"    onclick="location.href='catalogue.html'"    class="navbar-button">${locale.navbar.catalogue_button}</button>
-                <button ref="compose-dish" onclick="location.href='compose-dish.html'" class="navbar-button">${locale.navbar.compose_dish_button}</button>
-                <button ref="history"      onclick="location.href='history.html'"      class="navbar-button">${locale.navbar.history_button}</button>
-                <button ref="options"      onclick="location.href='options.html'"      class="navbar-button">${locale.navbar.options_button}</button>
+                <button ref="today"        class="navbar-button">${locale.navbar.today_button}</button>
+                <button ref="catalogue"    class="navbar-button">${locale.navbar.catalogue_button}</button>
+                <button ref="compose-dish" class="navbar-button">${locale.navbar.compose_dish_button}</button>
+                <button ref="history"      class="navbar-button">${locale.navbar.history_button}</button>
+                <button ref="options"      class="navbar-button">${locale.navbar.options_button}</button>
 
                 <style>
                     .navbar {
@@ -40,7 +41,7 @@ class Navbar extends HTMLElement {
                         transition: background-color 1s, color 0.5s;
                     }
                     
-                    .navbar-button.navbar-button-active {
+                    .navbar-button.active {
                         background-color: var(--orange-muted);
                         color: white;
                     }
@@ -53,10 +54,24 @@ class Navbar extends HTMLElement {
             </nav>
         `;
 
-        let path = window.location.href.split("/")
-        let current_page = path[path.length - 1].split(".")[0]
-        this.shadowRoot.querySelector(`[ref='${current_page}'`).classList.add("navbar-button-active");
-        
+        Array.from(this.shadowRoot.querySelectorAll(".navbar-button")).map((element) => {
+            element.addEventListener("click", (event) => {
+                this.changePage(event);
+            });
+        });
+    }
+
+    changePage(event) {
+        this.shadowRoot.querySelector(".navbar-button.active")?.classList.remove("active");
+        event.target.classList.add("active");
+
+
+        this.dispatchEvent(new CustomEvent("page_change", {
+            bubbles: true,
+            detail: {
+                "page_name": event.target.getAttribute("ref")
+            }
+        }));
     }
 };
 

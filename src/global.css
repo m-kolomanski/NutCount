@@ -113,6 +113,9 @@ table {
 	width: 100%;
 	border-collapse: collapse;
 }
+tr:nth-child(odd) {
+	background-color: white;
+}
 tr:nth-child(even) {
 	background-color: var(--green-light);
 }
@@ -129,56 +132,57 @@ th {
 	font-weight: bold;
 	padding: 0.05em;
 }
+td.active {
+    background-color: var(--orange-muted);
+    color: white;
+}
 
-
-.delete-field {
+/* DELETE AFTER TESTING
+.delete-cell {
 	transition: background-color 0.5s;
 }
-.delete-field:hover {
+.delete-cell:hover {
 	background-color: red;
 }
-tr:nth-child(odd) > td.delete-field:after {
+tr:nth-child(odd) > td.delete-cell:after {
 	content: "X";
 	color: white;
 	font-weight: bold;	
 }
-tr:nth-child(even) > td.delete-field:after {
+tr:nth-child(even) > td.delete-cell:after {
 	content: "X";
 	color: var(--green-light);
 	font-weight: bold;
 }
-.delete-field-confirm {
+.delete-cell-confirm {
 	background-color: yellow;
 	transition: background-color 0.5s;
 }
-.delete-field-confirm:after {
+.delete-cell-confirm:after {
 	content: "Na pewno?";
 	color: black;
 	font-weight: bold;
 }
-.delete-field-confirm:hover {
+.delete-cell-confirm:hover {
 	background-color: orange;
 }
+*/
 
-.edit-field {
+.action-cell {
 	transition: background-color 0.5s;
 }
-.edit-field:hover {
+.action-cell:hover {
 	background-color: blue;
 }
-tr:nth-child(odd) > td.edit-field:after {
+tr:nth-child(odd) > td.action-cell:after {
 	content: "E";
 	color: white;
 	font-weight: bold;	
 }
-tr:nth-child(even) > td.edit-field:after {
+tr:nth-child(even) > td.action-cell:after {
 	content: "E";
 	color: var(--green-light);
 	font-weight: bold;
-}
-
-.category-cell-active {
-	background-color: orange;
 }
 
 /* BUTTONS */
@@ -234,4 +238,19 @@ button:active {
 }
 .dropdown-option.selected {
 	background-color: var(--orange-muted);
+}
+
+/* EDITING POPUP */
+.editing-item-body {
+    display: grid;
+    grid-template-columns: 30% auto;
+    row-gap: .5em;
+    justify-content: center;
+}
+
+.editing-item-footer {
+	display: grid;
+	grid-template-columns: 30% 30% 30%;
+	column-gap: 3%;
+	margin-top: 2em;
 }

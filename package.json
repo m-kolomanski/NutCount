@@ -2,7 +2,7 @@
   "name": "NutCount",
   "version": "0.8.231111",
   "description": "Simple app for managing daily calorie intake.",
-  "main": "main.js",
+  "main": "./src/main.js",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
@@ -38,7 +38,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "my_electron_app"
+            "name": "nut_count"
           }
         },
         {

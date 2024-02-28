@@ -10,7 +10,4 @@
                 element.innerHTML = locale[element_id]; break;
         }
     });
-
-    // set theme //
-    document.documentElement.setAttribute('theme', dbmgr.getConfig('theme'));
 })();

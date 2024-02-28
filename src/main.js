@@ -7,6 +7,12 @@ const getTimestamp = function() {
   return `${date.getFullYear()}-${String(date.getMonth()).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")} ${String(date.getHours()).padStart(2,"0")}:${String(date.getMinutes()).padStart(2,"0")}:${String(date.getSeconds()).padStart(2,"0")}`;
 }
 
+const logToFile = function(msg, level) {
+  fs.writeFile("./main.log", `${getTimestamp()} [${level}]: ${msg}\n`, {flag: "a"}, err => {
+    if (err)  console.error(err);
+  });
+}
+
 const createWindow = () => {
   const win = new BrowserWindow({
     webPreferences: {
@@ -17,7 +23,7 @@ const createWindow = () => {
     icon: 'ico.png'
   })
   win.maximize();
-  win.loadFile('index.html');
+  win.loadFile('./src/index.html');
 }
 
 app.whenReady().then(() => {
@@ -25,9 +31,7 @@ app.whenReady().then(() => {
 });
 
 ipcMain.handle('log', async (event, msg, level) => {
-  fs.writeFile("./main.log", `${getTimestamp()} [${level}]: ${msg}\n`, {flag: "a"}, err => {
-    if (err)  console.error(err);
-  });
+  logToFile(msg, level);
 });
 
 app.on('window-all-closed', () => {

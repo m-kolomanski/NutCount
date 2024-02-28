@@ -45,6 +45,12 @@
         "unit": "Jednostka",
         "portion": "Porcja",
         "amount": "Ilość",
-        "categories": "Kategoria"
+        "categories": "Kategorie"
+    },
+    "general": {
+        "editing_item": "Edycja wpisu",
+        "confirm": "Akceptuj",
+        "cancel": "Anuluj",
+        "delete": "Usuń"
     }
 }

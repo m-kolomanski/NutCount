@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <title>NutCount</title>
-        <link rel="stylesheet" type="text/css" href="../global.css">
         <style>
             #food-catalogue {
                 padding-top:1em;
@@ -24,8 +21,13 @@
                 margin-top: 1em;
                 width: 100%;
             }
-            #categories-table {
+            #categories-datatable {
                 padding-top: 1em;
+            }
+
+            td.active-category {
+                background-color: var(--orange-muted);
+                color: white;
             }
 
             #categories-table td:nth-child(1) { width: 85%; }
@@ -33,8 +35,6 @@
         </style>
     </head>
     <body>
-        <top-navbar></top-navbar>
-
         <p id="header"></p>
         <div id="notification-container" style="height:30px;text-align:center"></div> 
         
