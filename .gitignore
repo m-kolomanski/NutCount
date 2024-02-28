@@ -1,7 +1,7 @@
 # ignore node modules
 node_modules/*
 # ignore the database
-*data/*
+*assets/data/*
 # ignore out 
 out/*
 # ignore old files
