@@ -35,8 +35,8 @@
 
     // setup events //
     /**
+     * Adds an item to the catalogue.
      * @event addCatalogueItem
-     * @description Adds an item to the catalogue.
      */
     document.getElementById("add-item").addEventListener("click", (event) => {
         // get information about added item //
@@ -105,6 +105,12 @@
         });
         modal.querySelector("button#delete").addEventListener("click", (event) => {
             Log.info(`Catalog item deleting initialized for ${item_id}`);
+
+            dbmgr.removeItemFromCatalogue(item_id);
+            modal.remove()
+            catalogue_datatable.updateData(dbmgr.getCatalogue());
+
+            // TODO: Add confirmation notification when notifications are implemented
         });
         
     });

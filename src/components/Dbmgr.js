@@ -198,11 +198,11 @@ class Dbmgr {
     }
     /**
      * @method removeItemFromCatalogue
-     * @param {string} name 
+     * @param {number} item_id 
      * @returns {void}
      */
-    removeItemFromCatalogue(name) {
-        this.db.prepare(`UPDATE Catalogue SET visible = 'F' WHERE name = ?;`).run(name);
+    removeItemFromCatalogue(item_id) {
+        this.db.prepare(`UPDATE Catalogue SET visible = 'F' WHERE item_id = ?;`).run(item_id);
     }
     /**
      * @method updateCatalogueItem
