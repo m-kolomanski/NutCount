@@ -5,6 +5,7 @@ const Dbmgr = require(path.join(__dirname, "/components/Dbmgr"));
 const Navbar = require(path.join(__dirname, "/components/Navbar"));
 const PopupModal = require(path.join(__dirname, "/components/Popup"));
 const Datatable = require(path.join(__dirname, "/components/Datatable"));
+const Notification = require(path.join(__dirname, "/components/Notification"));
 
 window.Log = {
     debug: (msg) => {
@@ -35,6 +36,7 @@ window.assetsDirname = path.join(__dirname, "../");
 window.customElements.define('top-navbar', Navbar);
 window.customElements.define('popup-modal', PopupModal);
 window.customElements.define("data-table", Datatable);
+window.customElements.define("top-notification", Notification);
 
 const App = require(path.join(__dirname, "/components/App"));
 

@@ -5,6 +5,7 @@ html[theme='nuts'] {
 	--green-dark: #788e12;
 	--green-light: #f0f2dc;
 	--grey: #a39c8e;
+    --red: #A41623;
 }
 html[theme='greyscale'] {
 	--orange: #525252;
@@ -198,24 +199,6 @@ button:hover {
 }
 button:active {
 	border: 2px solid var(--green-light);
-}
-/* NOTIFICATIONS */
-#notification-container {
-	min-height: 1.9em;
-	width: 100%;
-	text-align: center;
-	font-weight: bold;
-	font-size: 28px;
-	padding-top: 0.5rem;
-}
-
-#notification {
-	padding-top: 0.2em;
-	padding-bottom: 0.2em;
-	background-color: var(--green-dark);
-	color: white;
-	border-radius: 0.7rem;
-	margin:0px
 }
 
 /* DROPDOWN MENU */
