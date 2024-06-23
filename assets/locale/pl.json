@@ -45,12 +45,27 @@
         "unit": "Jednostka",
         "portion": "Porcja",
         "amount": "Ilość",
-        "categories": "Kategorie"
+        "categories": "Kategorie",
+        "date": "Data",
+        "item_id": "ID",
+        "kcal": "kcal"
+
     },
     "general": {
-        "editing_item": "Edycja wpisu",
+        "editing-item": "Edycja pozycji",
+        "editing-entry": "Edycja wpisu",
         "confirm": "Akceptuj",
         "cancel": "Anuluj",
         "delete": "Usuń"
+    },
+    "notifications": {
+        "item-added": "Pozycja dodana",
+        "item-deleted": "Pozycja usunięta",
+        "item-modified": "Pozycja zmodyfikowana",
+        "item-exists": "Pozycja już istnieje",
+        "entry-added": "Wpis dodany",
+        "entry-deleted": "Wpis usunięty",
+        "entry-modified": "Wpis zmodyfikowany",
+        "entry-exists": "Wpis już istnieje"
     }
 }

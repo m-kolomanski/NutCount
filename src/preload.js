@@ -40,4 +40,4 @@ window.customElements.define("top-notification", Notification);
 
 const App = require(path.join(__dirname, "/components/App"));
 
-new App();
+window.app = new App();

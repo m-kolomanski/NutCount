@@ -20,7 +20,7 @@ class Datatable extends HTMLElement {
     }
 
     generateDatatable() {
-        if (this.data === null) return "";
+        if (this.data === null || this.data.length === 0) return "";
 
         return `
             <table id="${this.table_id}">
@@ -93,7 +93,16 @@ class Datatable extends HTMLElement {
         });
     }
 
-
+    selectRows(item_ids) {
+        for (let row of this.querySelectorAll("tbody tr")) {
+            if (item_ids.includes(row.getAttribute("item_id"))) {
+                row.children[0].classList.add("active"); // TODO: THIS IS NOT GOOD , it is a TEMP solution to get
+                                                         // categories table working, but wont work for anything else!
+            } else {
+                row.children[0].classList.remove("active");  // TODO: THIS IS NOT GOOD, , as above
+            }
+        }
+    }
 }
 
 module.exports = Datatable;

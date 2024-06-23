@@ -4,8 +4,9 @@ class App {
              // set theme //
             document.documentElement.setAttribute('theme', dbmgr.getConfig('theme'));
 
-            // fetch page content container //
+            // fetch page elements //
             this.page_container = document.querySelector("#page-container");
+            this.top_notification = document.querySelector("top-notification");
 
             // setup events //
             this.setupEvents();
@@ -21,7 +22,6 @@ class App {
         document.addEventListener("page_change", (event) => {
             this.changePage(event.detail.page_name);
         });
-
     }
 
     async changePage(page_name) {
@@ -35,6 +35,15 @@ class App {
         const script = await fetch(path.join(srcDirname, `/pages/${page_name}.js`));
         const pageScript = new Function(await script.text());
         pageScript();
+    }
+
+    showNotification(message = '', level = "success", autohide = true) {
+        console.log(this.top_notification)
+        this.top_notification.showNotification({
+            message: message,
+            level: level,
+            autohide: autohide
+        });
     }
 }
 

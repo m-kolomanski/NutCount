@@ -63,9 +63,17 @@ class Dbmgr {
 
             CREATE TABLE Catalogue (
                 item_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                name TEXT NOT NULL UNIQUE,
+                name TEXT NOT NULL,
                 kcal_per_unit REAL NOT NULL,
                 unit TEXT NOT NULL,
+                categories TEXT,
+
+                visible BOOL DEFAULT 'T'
+            );
+
+            CREATE TABLE Categories (
+                category_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                name TEXT NOT NULL,
 
                 visible BOOL DEFAULT 'T'
             );
@@ -90,21 +98,6 @@ class Dbmgr {
                 FOREIGN KEY (item_id) REFERENCES Catalogue (item_id)
             );
 
-            CREATE TABLE Categories (
-                category_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                name TEXT NOT NULL,
-
-                visible BOOL DEFAULT 'T'
-            );
-
-            CREATE TABLE Categories_assignment (
-                item_id INTEGER NOT NULL,
-                category_id INTEGER NOT NULL,
-
-                FOREIGN KEY (item_id) REFERENCES Catalogue (item_id),
-                FOREIGN KEY (category_id) REFERENCES Categories (category_id)
-            );
-
             CREATE TABLE Containers (
                 container_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                 name TEXT NOT NULL,
@@ -125,47 +118,57 @@ class Dbmgr {
      * @method getCatalogue
      * @returns {object} Returns an object containing all items in the catalogue.
      */
-    getCatalogue({column = null, mode = "concat_categories"} = {}) {
+    getCatalogue({column = null, mode = "concat_categories", filter_name = '', filter_category = []} = {}) {
         if (column !== null) {
             return this.db.prepare(`SELECT ${column} FROM Catalogue;`).all();
         }
-        let raw_data = this.db.prepare(`
-            SELECT Catalogue.item_id, Catalogue.name, Catalogue.kcal_per_unit, Catalogue.unit, Categories.name AS categories
+        let catalogue_data = this.db.prepare(`
+            SELECT item_id, name, kcal_per_unit, replace(unit, 'portion', '${window.locale.catalogue['portion-label']}') AS unit, categories
             FROM Catalogue
-            LEFT JOIN Categories_assignment ON Catalogue.item_id = Categories_assignment.item_id
-            LEFT JOIN Categories ON Categories_assignment.category_id = Categories.category_id
-            WHERE Catalogue.visible = 'T'
+            WHERE visible = 'T'
             ORDER BY Catalogue.name;
         `).all();
 
-        if (raw_data.length === 0 || raw_data[0]['item_id'] === null) return null
+        if (catalogue_data.length === 0 || catalogue_data[0]['item_id'] === null) return null
+
+        if (filter_name !== '') {
+            const filter_parsed = filter_name.toLowerCase().replace(" ", "");
+
+            catalogue_data = catalogue_data.filter((element) => {
+                return element['name'].toLowerCase().replace(" ", "").includes(filter_parsed);
+            });
+        }
+
+        if (filter_category.length !== 0) {
+            catalogue_data = catalogue_data.filter((element) => {
+                const element_categories = element['categories'].split(",");
+                const categories_overlap = element_categories.filter((cat) => {
+                    return filter_category.includes(cat);
+                });
+
+                return categories_overlap.length !== 0;
+            });
+        }
 
         switch (mode) {
             case "raw":
-                return raw_data;
+                break;
             case "concat_categories":
-                var transformed_data = [];
-                var current_id = raw_data[0]['item_id'];
-                var categories = [];
+                const all_categories = this.db.prepare(`SELECT name FROM Categories ORDER BY category_id;`).all().map((cat) => {
+                    return cat['name'];
+                });
 
-                                                                                                            // iterate over all entries
-                                                                                                            // due to left join on the sql and multiple categories being assigned,
-                                                                                                            // for each item there is an individual entry for each category it belongs to
-                                                                                                            // so in this mode we wan to concat categories and flatten the entry into single line
-                for (var i = 0; i < raw_data.length; i++) {
-                    categories.push(raw_data[i]['categories']);                                              // push the current category to the array
-                    if (raw_data[i + 1]?.item_id !== current_id) {                                           // if the next item in list is not the same item...
-                        transformed_data.push(raw_data[i]);                                                  // ...add current item to transformed data
-                        transformed_data[transformed_data.length - 1]['categories'] = categories.join(", "); // concat categories for current item and add to transformed data
-                        current_id = raw_data[i + 1]?.item_id;                                               // change current id for comparison to the next item in line
-                        categories = [];                                                                     // reset categories in preparation for the new item
-                    }                                                                                        // if the next item is the same, just continue iteration and add next category
+                for (let i = 0; i < catalogue_data.length; i++) {
+                    const item_categories_names = catalogue_data[i]['categories'].split(',').map((cat_id) => {
+                        return all_categories[Number(cat_id) - 1];
+                    });
+                    catalogue_data[i]['categories'] = item_categories_names.join(", ");
                 }
-                return transformed_data;
-                
-            
         }
-        
+
+
+
+        return catalogue_data;  
     }
     /**
      * @method getCatalogueItem
@@ -183,18 +186,9 @@ class Dbmgr {
      * @param {string} categories
      * @returns {void} 
      */
-    addItemToCatalogue(name, kcal_per_unit, unit, categories) {
-        this.db.prepare(`INSERT INTO Catalogue (name, kcal_per_unit, unit) VALUES (?, ?, ?);`).run(name, kcal_per_unit, unit);
-        const new_item_id = this.db.prepare(`SELECT MAX(item_id) FROM Catalogue;`).all()[0]['MAX(item_id)'];
-
-        if (categories.length !== 0) {
-            this.db.prepare(`INSERT INTO Categories_assignment (item_id, category_id) VALUES ${
-                categories.map((category_id) => {
-                    return `(${new_item_id}, ${category_id})`
-                }).join(", ")
-            };`).run();
-        }
-
+    addItemToCatalogue(name, kcal_per_unit, unit, categories = "") {
+        this.db.prepare(`INSERT INTO Catalogue (name, kcal_per_unit, unit, categories) VALUES (?, ?, ?, ?);`)
+            .run(name, kcal_per_unit, unit, categories.toString());
     }
     /**
      * @method removeItemFromCatalogue
@@ -206,22 +200,23 @@ class Dbmgr {
     }
     /**
      * @method updateCatalogueItem
+     * @param {number} id
      * @param {string} name 
      * @param {number} kcal_per_unit 
      * @param {string} unit 
      * @param {string} categories 
      * @returns {void}
      */
-    updateCatalogueItem(name, kcal_per_unit, unit, categories) {
-        this.db.prepare(`UPDATE Catalogue SET name = ?, kcal_per_unit = ?, unit = ?, categories = ? WHERE name = ?;`).run(name, kcal_per_unit, unit, categories, name);
+    updateCatalogueItem(id, name, kcal_per_unit, unit, categories) {
+        this.db.prepare(`UPDATE Catalogue SET name = ?, kcal_per_unit = ?, unit = ?, categories = ? WHERE item_id = ?;`)
+            .run(name, kcal_per_unit, unit, categories.toString(), id);
     }
     /**
      * @method getCategories
      * @returns {object} Returns an object containing all categories.
      */
-    getCategories(cols = null) {
-        let cols_string = cols ? cols.join(",") : "category_id, name"
-        const raw_data = this.db.prepare(`SELECT ${cols_string} FROM Categories ORDER BY Name;`).all();
+    getCategories() {
+        const raw_data = this.db.prepare(`SELECT category_id, name FROM Categories WHERE visible = 'T' ORDER BY Name;`).all();
 
         if (raw_data.length === 0) return null;
 
@@ -237,11 +232,39 @@ class Dbmgr {
     }
     /**
      * @method removeCategory
-     * @param {string} name - Name of the category to remove.
+     * @param {number} cat_id Category ID to be removed.
      * @returns {void}
      */
-    removeCategory(name) {
-        this.db.prepare(`UPDATE Categories SET visible = 'F' WHERE name = ?;`).run(name);
+    removeCategory(cat_id) {
+        // remove category from all items that have it assigned
+        const catalogue_data = this.db.prepare("SELECT item_id, categories FROM Catalogue;").all();
+        for (let item of catalogue_data) {
+            let category_array = item['categories'].split(","); 
+            if (category_array.includes(cat_id)) {
+                 category_array.splice(category_array.indexOf(cat_id),1);
+                this.db.prepare("UPDATE Catalogue SET Categories = ? WHERE item_id = ?;").run(category_array.toString(), item['item_id']);
+            }
+        }
+
+        // set visibility to false
+        this.db.prepare(`UPDATE Categories SET visible = 'F' WHERE category_id = ?;`).run(cat_id);
+    }
+    /**
+     * @method editCategoryName
+     * @param {number} cat_id   ID of the category to be updated.
+     * @param {string} new_name New name for the category.
+     * @returns {void}
+     */
+    editCategoryName(cat_id, new_name) {
+        this.db.prepare(`UPDATE Categories SET name = ? WHERE category_id = ?;`).run(new_name, cat_id);
+    }
+    /**
+     * @method getCategoryName
+     * @param {number} cat_id Category ID to be fetched.
+     * @returns {string} Category name.
+     */
+    getCategoryName(cat_id) {
+        return(this.db.prepare("SELECT name FROM Categories WHERE category_id = ?;").all(cat_id)[0]['name'])
     }
     /**
      * @method createNewConfig
@@ -286,6 +309,11 @@ class Dbmgr {
         });
 
     }
+    
+    getConsumed(date = this.getTodayDate()) {
+        return this.db.prepare(`SELECT * FROM Consumed WHERE date = ? ORDER BY date;`).all(date);
+    }
+
     /**
      * @method getTodayDate
      * @returns {string} Returns today's date in the format YYYY-MM-DD.

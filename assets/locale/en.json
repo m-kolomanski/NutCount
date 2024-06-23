@@ -48,9 +48,20 @@
         "categories": "Categories"
     },
     "general": {
-        "editing_item": "Editing entry",
+        "editing-item": "Editing item",
+        "editing-entry": "Editing entry",
         "confirm": "Confirm",
         "cancel": "Cancel",
         "delete": "Delete"
+    },
+    "notifications": {
+        "item-added": "Item added",
+        "item-deleted": "Item deleted",
+        "item-modified": "Item modified",
+        "item-exists": "Item already exists",
+        "entry-added": "Entry added",
+        "entry-deleted": "Entry deleted",
+        "entry-modified": "Entry modyfied",
+        "entry-exists": "Entry already exists"
     }
 }

@@ -109,6 +109,7 @@ select {
 .table-container {
 	width: 90%;
 	margin-left: 5%;
+    margin-top: .5em;
 }
 table {
 	width: 100%;
@@ -125,7 +126,7 @@ td, tr, th {
 	text-align: center;
 	vertical-align: middle;
 	padding: 0.5rem;
-}
+}   
 th {
 	background-color: var(--orange-muted);
 	color: white;
