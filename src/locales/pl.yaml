@@ -1,0 +1,39 @@
+app:
+  title: "NutCount"
+  description: "Aplikacja do śledzenia odżywiania"
+
+navigation:
+  today: "Dzisiaj"
+  catalogue: "Katalog"
+  dishes: "Dania"
+  history: "Historia"
+  settings: "Ustawienia"
+  home: "Strona główna"
+  about: "O aplikacji"
+
+settings:
+  language: "Język"
+  language_description: "Wybierz preferowany język"
+  english: "English"
+  polish: "Polski"
+  general: "Ustawienia ogólne"
+  appearance: "Wygląd"
+  theme: "Motyw"
+  theme_description: "Wybierz preferowany motyw"
+  light: "Jasny"
+  dark: "Ciemny"
+  auto: "Auto"
+
+common:
+  save: "Zapisz"
+  cancel: "Anuluj"
+  delete: "Usuń"
+  edit: "Edytuj"
+  add: "Dodaj"
+  close: "Zamknij"
+  ok: "OK"
+  yes: "Tak"
+  no: "Nie"
+  loading: "Ładowanie..."
+  error: "Błąd"
+  success: "Sukces"

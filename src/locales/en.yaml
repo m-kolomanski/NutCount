@@ -1,0 +1,37 @@
+app:
+  title: "NutCount"
+  description: "Nutrition tracking application"
+
+navigation:
+  today: "Today"
+  catalogue: "Catalogue"
+  dishes: "Dishes"
+  history: "History"
+  settings: "Settings"
+
+settings:
+  language: "Language"
+  language_description: "Choose your preferred language"
+  english: "English"
+  polish: "Polski"
+  general: "General Settings"
+  appearance: "Appearance"
+  theme: "Theme"
+  theme_description: "Choose your preferred theme"
+  light: "Light"
+  dark: "Dark"
+  auto: "Auto"
+
+common:
+  save: "Save"
+  cancel: "Cancel"
+  delete: "Delete"
+  edit: "Edit"
+  add: "Add"
+  close: "Close"
+  ok: "OK"
+  yes: "Yes"
+  no: "No"
+  loading: "Loading..."
+  error: "Error"
+  success: "Success"

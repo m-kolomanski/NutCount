@@ -1,0 +1,409 @@
+/* Custom Color Scheme - Light Theme */
+:root {
+  --orange: #f88d35;
+  --orange-muted: #fdb05e;
+  --orange-light: #f3ddc9;
+  --green-dark: #788e12;
+  --green-light: #f0f2dc;
+  --grey: #a39c8e;
+  --red: #A41623;
+  
+  /* Background and text colors */
+  --body-bg: #ffffff;
+  --body-color: #212529;
+  --card-bg: #ffffff;
+  --border-color: #dee2e6;
+  
+  /* Bootstrap Variable Overrides */
+  --bs-primary: var(--orange);
+  --bs-primary-rgb: 248, 141, 53;
+  --bs-secondary: var(--grey);
+  --bs-secondary-rgb: 163, 156, 142;
+  --bs-success: var(--green-dark);
+  --bs-success-rgb: 120, 142, 18;
+  --bs-danger: var(--red);
+  --bs-danger-rgb: 164, 22, 35;
+  --bs-warning: var(--orange-muted);
+  --bs-warning-rgb: 253, 176, 94;
+  --bs-info: var(--orange-light);
+  --bs-info-rgb: 243, 221, 201;
+  --bs-light: var(--green-light);
+  --bs-light-rgb: 240, 242, 220;
+  --bs-dark: #2c3e50;
+  --bs-dark-rgb: 44, 62, 80;
+  --bs-body-bg: var(--body-bg);
+  --bs-body-color: var(--body-color);
+  --bs-border-color: var(--border-color);
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  --orange: #ff9f51;
+  --orange-muted: #ffb570;
+  --orange-light: #2d2014;
+  --green-dark: #9bb517;
+  --green-light: #1a1d0f;
+  --grey: #b8b1a3;
+  --red: #ff4757;
+  
+  /* Background and text colors */
+  --body-bg: #1a1a1a;
+  --body-color: #e9ecef;
+  --card-bg: #2d2d2d;
+  --border-color: #495057;
+  
+  /* Bootstrap Variable Overrides for Dark */
+  --bs-primary: var(--orange);
+  --bs-primary-rgb: 255, 159, 81;
+  --bs-secondary: var(--grey);
+  --bs-secondary-rgb: 184, 177, 163;
+  --bs-success: var(--green-dark);
+  --bs-success-rgb: 155, 181, 23;
+  --bs-danger: var(--red);
+  --bs-danger-rgb: 255, 71, 87;
+  --bs-warning: var(--orange-muted);
+  --bs-warning-rgb: 255, 181, 112;
+  --bs-info: var(--orange-light);
+  --bs-info-rgb: 45, 32, 20;
+  --bs-light: var(--green-light);
+  --bs-light-rgb: 26, 29, 15;
+  --bs-dark: #495057;
+  --bs-dark-rgb: 73, 80, 87;
+  --bs-body-bg: var(--body-bg);
+  --bs-body-color: var(--body-color);
+  --bs-border-color: var(--border-color);
+}
+
+/* Apply theme colors to body and basic elements */
+body {
+  background-color: var(--body-bg) !important;
+  color: var(--body-color) !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.card {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--body-color) !important;
+}
+
+/* Bootstrap Component Overrides */
+.btn-primary {
+  background-color: var(--orange);
+  border-color: var(--orange);
+  color: white;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--orange-muted);
+  border-color: var(--orange-muted);
+  color: white;
+}
+
+.btn-primary:active,
+.btn-primary.active {
+  background-color: #e07d2a;
+  border-color: #e07d2a;
+}
+
+.btn-outline-primary {
+  color: var(--orange);
+  border-color: var(--orange);
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+  background-color: var(--orange);
+  border-color: var(--orange);
+  color: white;
+}
+
+.btn-success {
+  background-color: var(--green-dark);
+  border-color: var(--green-dark);
+  color: white;
+}
+
+.btn-success:hover,
+.btn-success:focus {
+  background-color: #6a7a10;
+  border-color: #6a7a10;
+}
+
+.btn-danger {
+  background-color: var(--red);
+  border-color: var(--red);
+  color: white;
+}
+
+.btn-danger:hover,
+.btn-danger:focus {
+  background-color: #8f1420;
+  border-color: #8f1420;
+}
+
+.btn-warning {
+  background-color: var(--orange-muted);
+  border-color: var(--orange-muted);
+  color: white;
+}
+
+.btn-warning:hover,
+.btn-warning:focus {
+  background-color: #fc9f4a;
+  border-color: #fc9f4a;
+}
+
+.btn-light {
+  background-color: var(--green-light);
+  border-color: var(--green-light);
+  color: var(--green-dark);
+}
+
+.btn-light:hover,
+.btn-light:focus {
+  background-color: #eaedd0;
+  border-color: #eaedd0;
+  color: var(--green-dark);
+}
+
+/* Navbar Customization */
+.navbar-primary {
+  background-color: var(--orange) !important;
+}
+
+.navbar-dark .navbar-brand,
+.navbar-dark .navbar-nav .nav-link {
+  color: white !important;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link:focus {
+  color: var(--orange-light) !important;
+}
+
+/* Card Customization */
+.card-header {
+  background-color: var(--green-light);
+  border-bottom: 1px solid var(--grey);
+  color: var(--green-dark);
+}
+
+.card {
+  border: 1px solid var(--grey);
+}
+
+/* Alert Customization */
+.alert-success {
+  background-color: var(--green-light);
+  border-color: var(--green-dark);
+  color: var(--green-dark);
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.alert-warning {
+  background-color: var(--orange-light);
+  border-color: var(--orange);
+  color: #8b4513;
+}
+
+/* Badge Customization */
+.badge.bg-primary {
+  background-color: var(--orange) !important;
+}
+
+.badge.bg-success {
+  background-color: var(--green-dark) !important;
+}
+
+.badge.bg-danger {
+  background-color: var(--red) !important;
+}
+
+.badge.bg-warning {
+  background-color: var(--orange-muted) !important;
+  color: white !important;
+}
+
+.badge.bg-light {
+  background-color: var(--green-light) !important;
+  color: var(--green-dark) !important;
+}
+
+.badge.bg-secondary {
+  background-color: var(--grey) !important;
+}
+
+/* Form Controls */
+.form-control:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 0.2rem rgba(248, 141, 53, 0.25);
+}
+
+.form-select:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 0.2rem rgba(248, 141, 53, 0.25);
+}
+
+/* Link Colors */
+a {
+  color: var(--orange);
+}
+
+a:hover {
+  color: var(--orange-muted);
+}
+
+/* Text Colors */
+.text-primary {
+  color: var(--orange) !important;
+}
+
+.text-success {
+  color: var(--green-dark) !important;
+}
+
+.text-danger {
+  color: var(--red) !important;
+}
+
+.text-warning {
+  color: var(--orange-muted) !important;
+}
+
+.text-muted {
+  color: var(--grey) !important;
+}
+
+/* Background Colors */
+.bg-primary {
+  background-color: var(--orange) !important;
+}
+
+.bg-success {
+  background-color: var(--green-dark) !important;
+}
+
+.bg-danger {
+  background-color: var(--red) !important;
+}
+
+.bg-warning {
+  background-color: var(--orange-muted) !important;
+}
+
+.bg-light {
+  background-color: var(--green-light) !important;
+}
+
+.bg-secondary {
+  background-color: var(--grey) !important;
+}
+
+/* Custom Utility Classes */
+.text-orange {
+  color: var(--orange) !important;
+}
+
+.text-orange-muted {
+  color: var(--orange-muted) !important;
+}
+
+.text-orange-light {
+  color: var(--orange-light) !important;
+}
+
+.text-green-dark {
+  color: var(--green-dark) !important;
+}
+
+.text-green-light {
+  color: var(--green-light) !important;
+}
+
+.bg-orange {
+  background-color: var(--orange) !important;
+}
+
+.bg-orange-muted {
+  background-color: var(--orange-muted) !important;
+}
+
+.bg-orange-light {
+  background-color: var(--orange-light) !important;
+}
+
+.bg-green-dark {
+  background-color: var(--green-dark) !important;
+}
+
+.bg-green-light {
+  background-color: var(--green-light) !important;
+}
+
+/* Dark Theme Additional Styling */
+[data-theme="dark"] .navbar-primary {
+  background-color: var(--orange) !important;
+}
+
+[data-theme="dark"] .card-header {
+  background-color: var(--green-light) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  color: var(--body-color) !important;
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--body-color) !important;
+}
+
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .form-select:focus {
+  background-color: var(--card-bg) !important;
+  border-color: var(--orange) !important;
+  color: var(--body-color) !important;
+  box-shadow: 0 0 0 0.2rem rgba(255, 159, 81, 0.25) !important;
+}
+
+[data-theme="dark"] .btn-outline-primary {
+  color: var(--orange) !important;
+  border-color: var(--orange) !important;
+}
+
+[data-theme="dark"] .btn-outline-primary:hover,
+[data-theme="dark"] .btn-outline-primary:focus {
+  background-color: var(--orange) !important;
+  border-color: var(--orange) !important;
+  color: #1a1a1a !important;
+}
+
+[data-theme="dark"] .alert-success {
+  background-color: rgba(155, 181, 23, 0.1) !important;
+  border-color: var(--green-dark) !important;
+  color: var(--green-dark) !important;
+}
+
+[data-theme="dark"] .alert-warning {
+  background-color: rgba(255, 181, 112, 0.1) !important;
+  border-color: var(--orange-muted) !important;
+  color: var(--orange-muted) !important;
+}
+
+[data-theme="dark"] .alert-danger {
+  background-color: rgba(255, 71, 87, 0.1) !important;
+  border-color: var(--red) !important;
+  color: var(--red) !important;
+}
+
+/* Smooth transitions for theme changes */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
