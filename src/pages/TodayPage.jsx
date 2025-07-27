@@ -10,6 +10,7 @@ const TodayPage = () => {
       <Row>
         <Col>
           <h1>{t('navigation.today')}</h1>
+          <button onClick={() => window.dbmgr.call("doSomething")}>Test</button>
         </Col>
       </Row>
     </Container>
