@@ -5,7 +5,11 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build:react": "vite build"
+    "build:react": "vite build",
+    "dev": "vite --port 3000",
+    "dev:electron": "concurrently \"npm run dev\" \"wait-on http://localhost:3000 && electron .\"",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "keywords": ["electron", "react"],
   "author": "Mateusz Kołomański",
