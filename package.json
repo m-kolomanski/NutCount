@@ -7,30 +7,58 @@
     "start": "electron .",
     "build:react": "vite build",
     "dev": "vite --port 3000",
-    "dev:electron": "concurrently \"npm run dev\" \"wait-on http://localhost:3000 && electron .\"",
+    "dev:electron": "concurrently \"npm run dev\" \"wait-on http://localhost:3000 && cross-env NODE_ENV=development electron .\"",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:win": "npm run build && electron-builder --win",
+    "test:build": "npm run build && electron ."
   },
-  "keywords": ["electron", "react"],
+  "keywords": [
+    "electron",
+    "react"
+  ],
   "author": "Mateusz Kołomański",
   "license": "MIT",
+  "build": {
+    "appId": "com.mateusz.nutcount",
+    "productName": "NutCount",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "dist-react/**/*",
+      "main.js",
+      "package.json",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "src/assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
   "devDependencies": {
-    "electron": "^28.0.0",
     "@vitejs/plugin-react": "^4.2.1",
-    "vite": "^5.0.8",
     "concurrently": "^8.2.2",
+    "cross-env": "^10.0.0",
+    "electron": "^28.0.0",
+    "electron-builder": "^26.0.12",
+    "vite": "^5.0.8",
     "wait-on": "^7.2.0"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "bootstrap": "^5.3.2",
-    "react-bootstrap": "^2.9.1",
     "bootstrap-icons": "^1.11.2",
-    "react-i18next": "^13.5.0",
     "i18next": "^23.7.6",
     "js-yaml": "^4.1.0",
-    "react-router-dom": "^6.20.1",
-    "react-router-bootstrap": "^0.26.2"
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.9.1",
+    "react-dom": "^18.2.0",
+    "react-i18next": "^13.5.0",
+    "react-router-bootstrap": "^0.26.2",
+    "react-router-dom": "^6.20.1"
   }
 }
