@@ -10,5 +10,10 @@ export default defineConfig({
     outDir: 'dist-react',
   },
   base: './',
-  assetsInclude: ['**/*.yaml', '**/*.yml']
+  assetsInclude: ['**/*.yaml', '**/*.yml'],
+  test: {
+    globals: true,
+    environment: 'node',
+    setupFiles: ['./tests/setup.js']
+  },
 })
