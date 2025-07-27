@@ -2,7 +2,10 @@ import { describe, it, expect, afterAll } from 'vitest';
 import path from 'path';
 import fs from 'fs';
 import sqlite from 'better-sqlite3';
-const DatabaseManager = require('../src/logic/DatabaseManager.js');
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+import DatabaseManager from '../src/logic/DatabaseManager.js';
 const db_path = path.join(__dirname, './data')
 
 let dbmgr;

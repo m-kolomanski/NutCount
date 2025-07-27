@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Card, Button, Badge } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const TodayPage = () => {

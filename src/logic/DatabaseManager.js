@@ -1,6 +1,6 @@
-const path = require('path');
-const fs = require('fs');
-const sqlite = require('better-sqlite3');
+import path from 'path';
+import fs from 'fs';
+import sqlite from 'better-sqlite3';
 
 class DatabaseManager {
   constructor(db_dir) {
@@ -104,4 +104,4 @@ class DatabaseManager {
   }
 }
 
-module.exports = DatabaseManager;
+export default DatabaseManager;

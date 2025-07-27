@@ -1,11 +1,12 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
-const path = require('path');
+import { app, BrowserWindow, ipcMain } from 'electron';
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const isDev = process.env.NODE_ENV === 'development';
-const DatabaseManager = require('./src/logic/DatabaseManager');
+import DatabaseManager from './src/logic/DatabaseManager.js';
 
 let mainWindow;
-const dbManager = new DatabaseManager();
-
+const dbManager = new DatabaseManager(path.join(__dirname, 'src', 'userdata', 'nuts.db'));
 
 const createWindow = () => {
   mainWindow = new BrowserWindow({
