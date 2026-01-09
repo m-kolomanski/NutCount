@@ -35,3 +35,18 @@ common:
   loading: "Loading..."
   error: "Error"
   success: "Success"
+
+pages:
+  catalogue:
+    title: "Catalogue"
+    button_add: "Add"
+    button_action: "Edit"
+    input_name: "Product name"
+    input_calories: "kcal"
+    input_unit: "Unit"
+    unit_100g: "per 100g"
+    unit_portion: "per portion"
+    notification_missing_fields: "Please fill in product name and calories."
+    notification_item_added: "Item added successfully."
+    notification_adding_item_failed: "Error adding item to catalogue."
+    placeholder_no_items: "No items in the catalogue."

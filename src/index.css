@@ -307,6 +307,19 @@ a:hover {
 }
 
 /* Custom Utility Classes */
+.btn-orange {
+  background-color: var(--orange) !important;
+  border-color: var(--orange) !important;
+  color: white !important;
+}
+
+.btn-orange:hover,
+.btn-orange:focus {
+  background-color: var(--orange-muted) !important;
+  border-color: var(--orange-muted) !important;
+  color: white !important;
+}
+
 .text-orange {
   color: var(--orange) !important;
 }

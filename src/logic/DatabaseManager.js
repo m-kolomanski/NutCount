@@ -45,14 +45,6 @@ class DatabaseManager {
         name TEXT NOT NULL,
         kcal_per_unit REAL NOT NULL,
         unit TEXT NOT NULL,
-        categories TEXT,
-
-        visible BOOL DEFAULT 'T'
-      );
-
-      CREATE TABLE Categories (
-        category_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-        name TEXT NOT NULL,
 
         visible BOOL DEFAULT 'T'
       );
@@ -99,8 +91,21 @@ class DatabaseManager {
     console.log("Checking configuration...");
   }
 
+  fetchCatalogue() {
+    return this.db.prepare("SELECT * FROM Catalogue WHERE visible = 'T';").all();
+  }
+
+  addCatalogueItem(name, kcal_per_unit, unit) {
+    this.db.prepare("INSERT INTO Catalogue (name, kcal_per_unit, unit) VALUES (?, ?, ?);")
+      .run(name, kcal_per_unit, unit);
+  }
+
   closeCon() {
     this.db.close();
+  }
+
+  doSomething() {
+    console.log("Something")
   }
 }
 
