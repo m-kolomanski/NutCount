@@ -97,49 +97,43 @@ const CataloguePage = () => {
           />
         </Col>
       </Row>
-      <Row>
-        <Col>
-          <div className="p-3 border rounded bg-light">
-            <div className="row g-3">
-              <div className="col-md-4">
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  placeholder={t('pages.catalogue.input_name')}
-                  value={productName}
-                  onChange={(e) => setProductName(e.target.value)}
-                />
-              </div>
-              <div className="col-md-3">
-                <input 
-                  type="number" 
-                  className="form-control" 
-                  placeholder={t('common.calories')}
-                  value={calories}
-                  onChange={(e) => setCalories(e.target.value)}
-                />
-              </div>
-              <div className="col-md-3">
-                <select 
-                  className="form-select"
-                  value={unit}
-                  onChange={(e) => setUnit(e.target.value)}
-                >
-                  <option value="100g">{t('common.unit_100g')}</option>
-                  <option value="portion">{t('common.unit_portion')}</option>
-                </select>
-              </div>
-              <div className="col-md-2">
-                <button 
-                  type="button" 
-                  className="btn btn-orange w-100"
-                  onClick={handleAddItem}
-                >
-                  {t('common.button_add')}
-                </button>
-              </div>
-            </div>
-          </div>
+      <Row className="p-3 border rounded bg-light">
+        <Col xs={4}>
+          <input 
+            type="text" 
+            className="form-control" 
+            placeholder={t('pages.catalogue.input_name')}
+            value={productName}
+            onChange={(e) => setProductName(e.target.value)}
+          />
+        </Col>
+        <Col xs={4}>
+          <input 
+            type="number" 
+            className="form-control" 
+            placeholder={t('common.calories')}
+            value={calories}
+            onChange={(e) => setCalories(e.target.value)}
+          />
+        </Col>
+        <Col xs={2}>
+          <select 
+            className="form-select"
+            value={unit}
+            onChange={(e) => setUnit(e.target.value)}
+          >
+            <option value="100g">{t('common.unit_100g')}</option>
+            <option value="portion">{t('common.unit_portion')}</option>
+          </select>
+        </Col>
+        <Col xs={2}>
+          <button 
+            type="button" 
+            className="btn btn-orange w-100"
+            onClick={handleAddItem}
+          >
+            {t('common.button_add')}
+          </button>
         </Col>
       </Row>
       <Row>
