@@ -110,7 +110,7 @@ const CataloguePage = () => {
                 <input 
                   type="number" 
                   className="form-control" 
-                  placeholder={t('pages.catalogue.input_calories')}
+                  placeholder={t('common.calories')}
                   value={calories}
                   onChange={(e) => setCalories(e.target.value)}
                 />
@@ -121,8 +121,8 @@ const CataloguePage = () => {
                   value={unit}
                   onChange={(e) => setUnit(e.target.value)}
                 >
-                  <option value="100g">{t('pages.catalogue.unit_100g')}</option>
-                  <option value="portion">{t('pages.catalogue.unit_portion')}</option>
+                  <option value="100g">{t('common.unit_100g')}</option>
+                  <option value="portion">{t('common.unit_portion')}</option>
                 </select>
               </div>
               <div className="col-md-2">
@@ -131,7 +131,7 @@ const CataloguePage = () => {
                   className="btn btn-orange w-100"
                   onClick={handleAddItem}
                 >
-                  {t('pages.catalogue.button_add')}
+                  {t('common.button_add')}
                 </button>
               </div>
             </div>
@@ -144,8 +144,8 @@ const CataloguePage = () => {
             <thead>
               <tr>
                 <th>{t('pages.catalogue.input_name')}</th>
-                <th>{t('pages.catalogue.input_calories')}</th>
-                <th>{t('pages.catalogue.input_unit')}</th>
+                <th>{t('common.calories')}</th>
+                <th>{t('common.unit')}</th>
                 <th></th>
               </tr>
             </thead>
@@ -169,7 +169,7 @@ const CataloguePage = () => {
                         className="btn btn-sm btn-outline-secondary me-2"
                         onClick={handleEditItem}
                       >
-                        {t('pages.catalogue.button_action')}
+                        {t('common.button_action')}
                       </button>
                     </td>
                   </tr>

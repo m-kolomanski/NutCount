@@ -37,17 +37,17 @@ common:
   loading: "Ładowanie..."
   error: "Błąd"
   success: "Sukces"
+  unit: "Jednostka"
+  unit_100g: "na 100g"
+  unit_portion: "na porcję"
+  calories: "kcal"
+  button_add: "Dodaj"
+  button_action: "Edytuj"
 
 pages:
   catalogue:
     title: "Katalog produktów"
-    button_add: "Dodaj"
-    button_action: "Edytuj"
     input_name: "Nazwa produktu"
-    input_calories: "kcal"
-    input_unit: "Jednostka"
-    unit_100g: "na 100g"
-    unit_portion: "na porcję"
     notification_missing_fields: "Proszę podać nazwę produktu i kalorie."
     notification_item_added: "Produkt dodany pomyślnie."
     notification_adding_item_failed: "Błąd przy dodawaniu produktu."
