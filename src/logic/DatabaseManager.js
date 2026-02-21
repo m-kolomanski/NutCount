@@ -1,19 +1,22 @@
 import path from 'path';
 import fs from 'fs';
 import sqlite from 'better-sqlite3';
+import log from 'electron-log/main.js';
+
+const logger = log.scope("dbmgr")
 
 class DatabaseManager {
   constructor(db_dir) {
     this.db_dir = db_dir;
     this.db_path = path.join(this.db_dir, "nuts.db");
-    console.log(`DatabaseManager initialized with path: ${this.db_path}`);
+    logger.debug(`DatabaseManager initialized with path: ${this.db_path}`);
 
     this.checkDatabase();
     this.checkConfig();
   }
 
   checkDatabase() {
-    console.log("Checking database at:", this.db_path);
+    logger.debug("Checking database at:", this.db_path);
     const db_exists = fs.existsSync(this.db_path);
 
     if (!db_exists) {
@@ -28,7 +31,7 @@ class DatabaseManager {
   }
 
   createDatabase() {
-    console.log("Creating database at:", this.db_path);
+    logger.debug("Creating database at:", this.db_path);
     this.db.exec(`
       CREATE TABLE Consumed (
         entry_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -88,19 +91,22 @@ class DatabaseManager {
   }
 
   checkConfig() {
-    console.log("Checking configuration...");
+    logger.silly("Checking configuration...");
   }
 
   fetchCatalogue() {
+    logger.silly("Fetching catalogue data")
     return this.db.prepare("SELECT * FROM Catalogue WHERE visible = 'T';").all();
   }
 
   addCatalogueItem(name, kcal_per_unit, unit) {
+    logger.debug(`Adding item into Ccatalogue: {name} | {kcal_per_unit} | {unit}`);
     this.db.prepare("INSERT INTO Catalogue (name, kcal_per_unit, unit) VALUES (?, ?, ?);")
       .run(name, kcal_per_unit, unit);
   }
 
   fetchConsumed(date) {
+    logger.debug(`Fetching consumed data for {date}`);
     return this.db.prepare(`
       SELECT
         Consumed.item_id,
@@ -115,12 +121,13 @@ class DatabaseManager {
   }
 
   addConsumedItem(date, amount, kcal, item_id) {
-    console.log(`Adding ${date} ${amount} ${kcal} ${item_id}`)
+    logger.debug(`Adding item into Consumed: ${date} ${amount} ${kcal} ${item_id}`)
     this.db.prepare("INSERT INTO Consumed (date, amount, kcal, item_id) VALUES (?, ?, ?, ?)")
       .run(date, amount, kcal, item_id);
   }
 
   closeCon() {
+    logger.silly("Closing connection to the database")
     this.db.close();
   }
 

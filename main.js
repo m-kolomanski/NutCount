@@ -5,6 +5,23 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const isDev = process.env.NODE_ENV === 'development';
 import DatabaseManager from './src/logic/DatabaseManager.js';
 
+// setup logger //
+import log from 'electron-log/main.js';
+log.initialize();
+
+const log_format = '[{y}-{m}-{d} {h}:{i}:{s}][{level}]{scope}{text}'
+log.transports.console.format = log_format;
+log.transports.file.format = log_format;
+
+log.transports.console.level = "silly";
+log.transports.file.level = "info";
+
+log.transports.console.useStyles = true;
+log.scope.labelPadding = false
+
+const logger = log.scope("main");
+logger.info("Main process starting")
+
 let mainWindow;
 const dbManager = new DatabaseManager(path.join(__dirname, 'src', 'userdata', 'nuts.db'));
 
@@ -36,7 +53,7 @@ ipcMain.handle('db:operation', async (event, method, ...args) => {
       throw new Error(`Method ${method} not found on DatabaseManager`);
     }
   } catch (error) {
-    console.error('Database operation error:', error);
+    logger.error('Database operation error:', error);
     throw error;
   }
 });

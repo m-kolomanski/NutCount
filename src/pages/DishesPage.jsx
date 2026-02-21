@@ -1,8 +1,12 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import log from 'electron-log/renderer';
+
+const logger = log.scope("DishesPage");
 
 const DishesPage = () => {
+  logger.silly("Page loaded")
   const { t } = useTranslation();
 
   return (

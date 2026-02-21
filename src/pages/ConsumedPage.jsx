@@ -2,8 +2,12 @@ import { Container, Table, Row, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useState, useEffect } from 'react';
 import Notification from '../components/Notification';
+import log from 'electron-log/renderer';
+
+const logger = log.scope("ConsumedPage");
 
 const ConsumedPage = () => {
+  logger.silly("Page loaded")
   const { t } = useTranslation();
 
   // Data //

@@ -4,12 +4,17 @@ import { useTranslation } from 'react-i18next';
 import { useTheme } from '../contexts/ThemeContext';
 import flagEn from '../assets/flag-en.svg';
 import flagPl from '../assets/flag-pl.svg';
+import log from 'electron-log/renderer';
+
+const logger = log.scope("SettingsPage");
 
 const SettingsPage = () => {
+  logger.silly("Page loaded")
   const { t, i18n } = useTranslation();
   const { theme, changeTheme } = useTheme();
 
   const changeLanguage = (lng) => {
+    logger.debug(`Changing language to ${lng}`);
     i18n.changeLanguage(lng);
   };
 
