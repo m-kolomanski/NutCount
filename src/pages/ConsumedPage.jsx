@@ -3,11 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { useState, useEffect } from 'react';
 import Notification from '../components/Notification';
 
-const TodayPage = () => {
+const ConsumedPage = () => {
   const { t } = useTranslation();
 
   // Data //
-  const [todayData, setTodayData] = useState([]);
+  const [consumedData, setConsumedData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Notification //
@@ -23,10 +23,10 @@ const TodayPage = () => {
     try {
       setLoading(true);
       const data = await window.dbmgr.call("fetchConsumed", "2026-01-01");
-      setTodayData(data || []);
+      setConsumedData(data || []);
     } catch (error) {
       console.error('Error fetching catalogue:', error);
-      setTodayData([]);
+      setConsumedData([]);
     } finally {
       setLoading(false);
     }
@@ -50,7 +50,7 @@ const TodayPage = () => {
     <Container className="mt-4">
       <Row>
         <Col>
-          <h1>{t('navigation.today')}</h1>
+          <h1>{t('navigation.consumed')}</h1>
           <button onClick={() => window.dbmgr.call("addConsumedItem", "2026-01-01", 50, 50 * 1.23, 1)}>Test</button>
         </Col>
       </Row>
@@ -84,12 +84,12 @@ const TodayPage = () => {
                 <tr>
                   <td colSpan="4" className="text-center">Loading...</td>
                 </tr>
-              ) : todayData.length === 0 ? (
+              ) : consumedData.length === 0 ? (
                 <tr>
                   <td colSpan="4" className="text-center">No products found</td>
                 </tr>
               ) : (
-                todayData.map((item) => (
+                consumedData.map((item) => (
                   <tr key={item.item_id}>
                     <td>{item.name || 'N/A'}</td>
                     <td>{item.total_amount || 'N/A'}</td>
@@ -113,4 +113,4 @@ const TodayPage = () => {
   );
 };
 
-export default TodayPage;
+export default ConsumedPage;

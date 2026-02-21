@@ -3,7 +3,7 @@ app:
   description: "Aplikacja do śledzenia odżywiania"
 
 navigation:
-  today: "Dzisiaj"
+  consumed: "Zjedzone"
   catalogue: "Katalog"
   dishes: "Dania"
   history: "Historia"

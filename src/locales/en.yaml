@@ -3,7 +3,7 @@ app:
   description: "Nutrition tracking application"
 
 navigation:
-  today: "Today"
+  consumed: "Consumed"
   catalogue: "Catalogue"
   dishes: "Dishes"
   history: "History"

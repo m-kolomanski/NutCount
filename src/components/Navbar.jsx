@@ -25,10 +25,10 @@ const AppNavbar = () => {
         
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <LinkContainer to="/today">
+            <LinkContainer to="/consumed">
               <Nav.Link>
                 <i className="bi bi-calendar-day me-1"></i>
-                {t('navigation.today')}
+                {t('navigation.consumed')}
               </Nav.Link>
             </LinkContainer>
             
