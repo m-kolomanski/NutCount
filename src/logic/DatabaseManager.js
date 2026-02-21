@@ -100,6 +100,26 @@ class DatabaseManager {
       .run(name, kcal_per_unit, unit);
   }
 
+  fetchConsumed(date) {
+    return this.db.prepare(`
+      SELECT
+        Consumed.item_id,
+        Catalogue.name,
+        SUM(Consumed.kcal) as total_kcal,
+        SUM(Consumed.amount) as total_amount
+      FROM Consumed
+      LEFT JOIN Catalogue ON Consumed.item_id = Catalogue.item_id
+      WHERE date = ?
+      GROUP BY Consumed.item_id, Catalogue.name
+    `).all(date);
+  }
+
+  addConsumedItem(date, amount, kcal, item_id) {
+    console.log(`Adding ${date} ${amount} ${kcal} ${item_id}`)
+    this.db.prepare("INSERT INTO Consumed (date, amount, kcal, item_id) VALUES (?, ?, ?, ?)")
+      .run(date, amount, kcal, item_id);
+  }
+
   closeCon() {
     this.db.close();
   }
@@ -107,6 +127,8 @@ class DatabaseManager {
   doSomething() {
     console.log("Something")
   }
+
+
 }
 
 export default DatabaseManager;
