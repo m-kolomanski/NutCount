@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useState, useEffect } from 'react';
 import Select from 'react-select';
 import Notification from '../components/Notification';
+import CalculatorWidget from '../components/CalculatorWidget';
 import log from 'electron-log/renderer';
 
 const logger = log.scope("ConsumedPage");
@@ -21,15 +22,24 @@ const ConsumedPage = () => {
   const [amount, setAmount] = useState('');
 
   // Stats //
+  const [consumed, setConsumed] = useState(0);
   const [burned, setBurned] = useState(0);
+  const [deficit, setDeficit] = useState(0);
+  const [left, setLeft] = useState(0);
 
   // Notification //
   const [notification, setNotification] = useState({ message: null, type: 'info' });
 
-  // Initial data load //
+  // Data load on date change //
   useEffect(() => { 
-    fetchData(); 
+    fetchData();
   }, [date]);
+
+  // Calculate leftover calories and update stats table //
+  useEffect(() => {
+    const leftover = burned - deficit - consumed;
+    setLeft(leftover);
+  }, [consumed, deficit, burned]);
 
   /**
    * Fetches the catalogue data from the database and updates the state.
@@ -49,8 +59,8 @@ const ConsumedPage = () => {
         });
       setCatalogueData(catalogue_data || [])
 
-      const burned = data.reduce((total, item) => total + item.total_kcal, 0);
-      setBurned(Math.round(burned));
+      const consumed = data.reduce((total, item) => total + item.total_kcal, 0);
+      setConsumed(Math.round(consumed));
     } catch (error) {
       console.error('Error fetching catalogue:', error);
       setConsumedData([]);
@@ -117,7 +127,7 @@ const ConsumedPage = () => {
                 type="text"
                 className="form-control"
                 placeholder="ilość"
-                value={amount}
+                value={amount || ''}
                 onChange={(e) => setAmount(e.target.value)}
               >          
               </input>
@@ -136,19 +146,39 @@ const ConsumedPage = () => {
         <Col xs={1}>
           <h3>Zjedzone orzeszki</h3>
           <br></br>
-          <span>{burned}</span>
+          <span>{consumed}</span>
         </Col>
         <Col xs={1}>
           <h3>Spalone orzeszki</h3>
+          <br></br>
+          <input
+            type="number" 
+            className="form-control" 
+            placeholder="Spalone kcale"
+            value={burned}
+            onChange={(e) => setBurned(e.target.value)}
+          />
         </Col>
         <Col xs={1}>
-          Planowany deficit
+          <h3>Planowany deficit</h3>
+          <br></br>
+          <input
+            type="number" 
+            className="form-control" 
+            placeholder="Deficyt"
+            value={deficit}
+            onChange={(e) => setDeficit(e.target.value)}
+          />
         </Col>
         <Col xs={1}>
-          Pozostało orzeszków
+          <h3>Pozostało orzeszków</h3>
+          <br></br>
+          <span>{left}</span>
         </Col>
         <Col xs={2}>
-          Kalkulator
+          <CalculatorWidget
+            onCaloriesChange={(calculated_calories) => setAmount(calculated_calories)}
+          />
         </Col>
       </Row>
       <Row>
