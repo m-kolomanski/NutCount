@@ -94,9 +94,12 @@ class DatabaseManager {
     logger.silly("Checking configuration...");
   }
 
-  fetchCatalogue() {
+  fetchCatalogue(just_names = false) {
     logger.silly("Fetching catalogue data")
-    return this.db.prepare("SELECT * FROM Catalogue WHERE visible = 'T';").all();
+
+    const selection = just_names ? "item_id, name" : "*"
+
+    return this.db.prepare(`SELECT ${selection} FROM Catalogue WHERE visible = 'T';`).all();
   }
 
   addCatalogueItem(name, kcal_per_unit, unit) {
@@ -120,9 +123,26 @@ class DatabaseManager {
     `).all(date);
   }
 
-  addConsumedItem(date, amount, kcal, item_id) {
-    logger.debug(`Adding item into Consumed: ${date} ${amount} ${kcal} ${item_id}`)
-    this.db.prepare("INSERT INTO Consumed (date, amount, kcal, item_id) VALUES (?, ?, ?, ?)")
+  addConsumedItem(date, item_id, amount) {
+    logger.debug(`Adding item into Consumed: ${date} | ${amount} | ${item_id}`)
+    
+    const catalogue_info = this.db.prepare(`
+      SELECT kcal_per_unit, unit
+      FROM Catalogue
+      WHERE item_id = ?
+    `).get(item_id);
+
+    let kcal;
+    switch(catalogue_info.unit) {
+      case "100g":
+        kcal = amount * (catalogue_info.kcal_per_unit / 100);
+        break;
+      case "portion":
+        kcal = amount * catalogue_info.kcal_per_unit;
+        break;
+    }
+
+    this.db.prepare("INSERT INTO Consumed (date, amount, kcal, item_id) VALUES (?, ?, ?, ?);")
       .run(date, amount, kcal, item_id);
   }
 
