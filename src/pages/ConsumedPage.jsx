@@ -20,6 +20,9 @@ const ConsumedPage = () => {
   const [productName, setProductName] = useState('');
   const [amount, setAmount] = useState('');
 
+  // Stats //
+  const [burned, setBurned] = useState(0);
+
   // Notification //
   const [notification, setNotification] = useState({ message: null, type: 'info' });
 
@@ -34,15 +37,20 @@ const ConsumedPage = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const data = await window.dbmgr.call("fetchConsumed", date);
+      const data = await window.dbmgr.call("fetchConsumed", date)
+        .then((data) => {
+          return data.map((item) => { item.total_kcal = Math.round(item.total_kcal); return item })
+        });
       setConsumedData(data || []);
 
       const catalogue_data = await window.dbmgr.call("fetchCatalogue", true)
         .then((data) => {
           return data.map(item => ({value: item.item_id, label: item.name}))
         });
-
       setCatalogueData(catalogue_data || [])
+
+      const burned = data.reduce((total, item) => total + item.total_kcal, 0);
+      setBurned(Math.round(burned));
     } catch (error) {
       console.error('Error fetching catalogue:', error);
       setConsumedData([]);
@@ -53,8 +61,6 @@ const ConsumedPage = () => {
 
   const handleAddItem = async () => {
     logger.debug(`Adding item ${productName} | ${amount}`);
-
-    const date = new Date().toISOString().split('T')[0];
     await window.dbmgr.call("addConsumedItem", date, productName, amount);
     fetchData();
   }
@@ -128,9 +134,12 @@ const ConsumedPage = () => {
           </Row>
         </Col>
         <Col xs={1}>
+          <h3>Zjedzone orzeszki</h3>
+          <br></br>
+          <span>{burned}</span>
         </Col>
         <Col xs={1}>
-          Spalone orzeszki
+          <h3>Spalone orzeszki</h3>
         </Col>
         <Col xs={1}>
           Planowany deficit
