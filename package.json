@@ -54,6 +54,7 @@
     "eslint": "^9.39.2",
     "eslint-plugin-react": "^7.37.5",
     "globals": "^17.3.0",
+    "sass": "^1.97.3",
     "vite": "^6.0.7",
     "vitest": "^4.0.18",
     "wait-on": "^9.0.4"

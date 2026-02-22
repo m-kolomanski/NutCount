@@ -1,0 +1,23 @@
+
+// Import components and utilities
+@use './styles/partials/variables';
+
+@use './styles/components/navbar';
+
+* {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 600;
+}
+
+h1 { font-weight: 700; }
+h2 { font-weight: 600; }
+
+// Button and form elements
+button, .btn {
+  font-family: inherit;
+  font-weight: 500;
+}

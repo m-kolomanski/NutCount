@@ -1,0 +1,23 @@
+:root {
+  --orange:       hsl(35, 92%, 59%);
+  --orange-muted: hsl(35, 97%, 68%);
+  --orange-light: hsl(35, 65%, 87%);
+  --green-dark: hsl(68, 76%, 32%);
+  --green:      hsl(68, 76%, 55%);
+  --green-light:hsl(68, 43%, 92%);
+  --grey:       hsl(42, 10%, 61%);
+  --dark-grey:  hsl(210, 29%, 24%);
+  --red:        hsl(353, 77%, 37%);
+  
+  --bs-primary: var(--orange);
+  --bs-secondary: var(--grey);
+  --bs-success: var(--green-dark);
+  --bs-danger: var(--red);
+  --bs-warning: var(--orange-muted);
+  --bs-info: var(--orange-light);
+  --bs-light: var(--green-light);
+  --bs-dark: var(--dark-grey);
+  --bs-body-bg: var(--body-bg);
+  --bs-body-color: var(--body-color);
+  --bs-border-color: var(--border-color);
+}

@@ -8,19 +8,18 @@ const AppNavbar = () => {
   const { t } = useTranslation();
 
   return (
-    <Navbar bg="primary" variant="dark" expand="lg" className="mb-0">
-      <Container>
-        <Navbar.Brand href="/">
-          <img 
-            src={logo} 
-            width="30" 
-            height="30" 
-            className="d-inline-block align-top me-2" 
-            alt="NutCount Logo"
-          />
-          {t('app.title')}
-        </Navbar.Brand>
-        
+    <Navbar variant="dark" expand="lg" className="mb-0">
+      <Container className="title-container">
+        <img 
+          src={logo} 
+          width="30" 
+          height="30" 
+          className="d-inline-block align-top me-2" 
+          alt="NutCount Logo"
+        />
+        <h2>{t('app.title')}</h2>
+      </Container>
+      <Container className="nav-container">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         
         <Navbar.Collapse id="basic-navbar-nav">
