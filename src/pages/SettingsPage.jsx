@@ -32,8 +32,10 @@ const SettingsPage = () => {
   return (
     <Container className="mt-4">
       <Row>
+        <h1 className="page-header">{t('navigation.settings')}</h1>
+      </Row>
+      <Row>
         <Col>
-          <h1 className="mb-4">{t('navigation.settings')}</h1>
           <Card className="mb-4">
             <Card.Header>
               <h5 className="mb-0">

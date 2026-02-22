@@ -92,15 +92,15 @@ const ConsumedPage = () => {
   return (
     <Container className="mt-4">
       <Row>
-        <Col>
-          <h1>{t('navigation.consumed')}</h1>
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="form-control"
-          />
-        </Col>
+        <h1 className='page-header'>{t('navigation.consumed')}</h1>
+      </Row>
+      <Row>
+        <input
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          className="form-control"
+        />
       </Row>
       <Row>
         <Col>

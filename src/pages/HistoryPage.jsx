@@ -12,9 +12,7 @@ const HistoryPage = () => {
   return (
     <Container className="mt-4">
       <Row>
-        <Col>
-          <h1>{t('navigation.history')}</h1>
-        </Col>
+        <h1 className="page-header">{t('navigation.history')}</h1>
       </Row>
     </Container>
   );
