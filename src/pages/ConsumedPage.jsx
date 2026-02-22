@@ -118,7 +118,7 @@ const ConsumedPage = () => {
               options={catalogueData || ''}
               value={catalogueData.find(option => option.value === productName) || ''}
               onChange={(e) => setProductName(e.value || '')}
-              placeholder="Select a product..."
+              placeholder={t("pages.consumed.select_product")}
             />
           </Row>
           <Row>
@@ -126,7 +126,7 @@ const ConsumedPage = () => {
               <input
                 type="text"
                 className="form-control"
-                placeholder="ilość"
+                placeholder={t("common.amount")}
                 value={amount || ''}
                 onChange={(e) => setAmount(e.target.value)}
               >          
@@ -138,40 +138,40 @@ const ConsumedPage = () => {
                 className="btn btn-orange w-100"
                 onClick={handleAddItem}
               >
-                {t("common.button_add")}
+                {t("common.add")}
               </button>
             </Col>
           </Row>
         </Col>
         <Col xs={1}>
-          <h3>Zjedzone orzeszki</h3>
+          <h3>{t("pages.consumed.consumed")}</h3>
           <br></br>
           <span>{consumed}</span>
         </Col>
         <Col xs={1}>
-          <h3>Spalone orzeszki</h3>
+          <h3>{t("pages.consumed.burned")}</h3>
           <br></br>
           <input
             type="number" 
             className="form-control" 
-            placeholder="Spalone kcale"
+            placeholder={t("pages.consumed.burned")}
             value={burned}
             onChange={(e) => setBurned(e.target.value)}
           />
         </Col>
         <Col xs={1}>
-          <h3>Planowany deficit</h3>
+          <h3>{t("pages.consumed.deficit")}</h3>
           <br></br>
           <input
             type="number" 
             className="form-control" 
-            placeholder="Deficyt"
+            placeholder={t("pages.consumed.deficit")}
             value={deficit}
             onChange={(e) => setDeficit(e.target.value)}
           />
         </Col>
         <Col xs={1}>
-          <h3>Pozostało orzeszków</h3>
+          <h3>{t("pages.consumed.left")}</h3>
           <br></br>
           <span>{left}</span>
         </Col>
@@ -186,9 +186,9 @@ const ConsumedPage = () => {
           <Table striped bordered hover responsive>
             <thead>
               <tr>
-                <th>HK Nazwa</th>
-                <th>HK Ilosc</th>
-                <th>Kcal</th>
+                <th>{t("common.name")}</th>
+                <th>{t("common.amount")}</th>
+                <th>{t("common.calories")}</th>
                 <th></th>
               </tr>
             </thead>
@@ -212,7 +212,7 @@ const ConsumedPage = () => {
                         className="btn btn-sm btn-outline-secondary me-2"
                         onClick={handleEditItem}
                       >
-                        {t('common.button_action')}
+                        {t('common.edit')}
                       </button>
                     </td>
                   </tr>

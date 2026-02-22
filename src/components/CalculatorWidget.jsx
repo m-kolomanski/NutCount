@@ -21,13 +21,13 @@ const CalculatorWidget = ({ onCaloriesChange }) => {
   return (
     <Container>
       <Row>
-        <h3>Kalkulator</h3>
+        <h3>{t('common.calculator')}</h3>
       </Row>
       <Row>
         <input
           type="number" 
           className="form-control" 
-          placeholder="Ilość (g)"
+          placeholder={`${t('common.amount')} (g)`}
           value={amount || ""}
           onChange={(e) => setAmount(e.target.value)}
         />
@@ -36,7 +36,7 @@ const CalculatorWidget = ({ onCaloriesChange }) => {
         <input
           type="number" 
           className="form-control" 
-          placeholder="kcal/100g"
+          placeholder={`${t('common.calories')}/100g`}
           value={kcal || ""}
           onChange={(e) => setKcal(e.target.value)}
         />
